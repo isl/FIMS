@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 sp1 (http://www.altova.com) by User (free.org) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Person">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="IdentificationNumber" type="identificationNumber"/>
+				<xs:element ref="Appellation" maxOccurs="unbounded"/>
+				<xs:element ref="Type" maxOccurs="unbounded"/>
+				<xs:element ref="Period"/>
+				<xs:element ref="BirthDeathNote"/>
+				<xs:element ref="BeMemberOf" maxOccurs="unbounded"/>
+				<xs:element name="Residence" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Type"/>
+							<xs:element ref="Location"/>
+							<xs:element ref="ContactInfo"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="Description"/>
+				<xs:element name="RelatedToPerson" type="link" maxOccurs="unbounded"/>
+				<xs:element ref="admin" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Type" type="term"/>
+	<xs:element name="BirthDeathNote" type="xs:string"/>
+	<xs:element name="Period" type="date"/>
+	<xs:element name="Location" type="link"/>
+	<xs:element name="BeMemberOf" type="link"/>
+	<xs:element name="ContactInfo" type="xs:string"/>
+	<xs:element name="Description" type="xs:string"/>
+	<xs:element name="admin">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="id" type="xs:string"/>
+				<xs:element name="uri_id" type="xs:string"/>
+				<xs:element name="lang" type="xs:string"/>
+				<xs:element name="organization" type="xs:string"/>
+				<xs:element name="creator" type="xs:string"/>
+				<xs:element name="saved" type="xs:string"/>
+				<xs:element name="locked" type="xs:string"/>
+				<xs:element name="status" type="xs:string"/>
+				<xs:element name="versions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="numOfVersions" minOccurs="0"/>
+							<xs:element name="webVersion" minOccurs="0"/>
+							<xs:element name="versionId"/>
+							<xs:element name="versionUser"/>
+							<xs:element name="versionDate"/>
+							<xs:element name="comment" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="type" minOccurs="0"/>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element name="read" type="xs:string"/>
+					<xs:element name="write" type="xs:string" maxOccurs="unbounded"/>
+					<xs:element name="info" type="xs:string" minOccurs="0"/>
+					<xs:element name="translationFrom" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="entityType" minOccurs="0"/>
+					<xs:element name="publicationEnable" type="xs:string" minOccurs="0"/>
+					<xs:element name="schemaVersion" minOccurs="0"/>
+					<xs:element name="copyFrom" type="xs:string" minOccurs="0"/>
+					<xs:element name="imported" type="xs:string" minOccurs="0"/>
+					<xs:element name="createdAt" minOccurs="0"/>
+					<xs:element name="lastModified" minOccurs="0"/>
+					<xs:element name="refs" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ref" minOccurs="1" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute name="sps_type" use="required"/>
+										<xs:attribute name="sps_id" use="required"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="refs_by" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ref_by" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute name="sps_type" use="required"/>
+										<xs:attribute name="sps_id" use="required"/>
+										<xs:attribute name="isUnpublished"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="identificationNumber">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="sps_fixed" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="term">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="sps_id" type="xs:string" use="required"/>
+				<xs:attribute name="sps_vocabulary" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="date">
+		<xs:sequence>
+			<xs:element name="DateValue">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="time_span">
+							<xs:attribute name="x" type="xs:string" use="required"/>
+							<xs:attribute name="y" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="link">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="sps_id" type="xs:string" use="required"/>
+				<xs:attribute name="sps_type" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="time_span">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\s*"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])?"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])?"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])?"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?\s?-\s?\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?\s?-\s?(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?\s?-\s?\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})\s?-\s?(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})\s?-\s?\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})\s?-\s?\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ]\s?-\s?\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ]\s?-\s?(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ]\s?-\s?\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?\s?-\s?\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])?"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?\s?-\s?(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])?"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?\s?-\s?(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])?"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})\s?-\s?(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])?"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})\s?-\s?\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])?"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})\s?-\s?(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])?"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]\s?-\s?\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])?"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]\s?-\s?(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])?"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]\s?-\s?(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])?"/>
+			<xs:pattern value="([αΑ][ρΡ][χΧ][εέΕ][ςΣ]|[μΜ][εέΕ][σΣ][αΑ]|[τΤ][εέΕ][λΛ][ηΗ]|(α|β)'\s[μΜ][ιΙ][σΣ][οόΟ]|(α|β|γ|δ)'\s[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][οΟ])\s\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ](\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="([eE][aA][rR][lL][yY]|[mM][iI][dD]|[lL][aA][tT][eE]|(1st|2nd)\s[hH][aA][lL][fF]|(1st|2nd|3rd|4th)\s[qQ][uU][aA][rR][tT][eE][rR])\s(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])?"/>
+			<xs:pattern value="\d{1,4}\s,\sca\.(\s[πΠ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,4}\s,\sca\.(\s[bB][cC][eE])?"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)\s?-\s?\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)\s?-\s?(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[πΠ]\.[χΧ]\.)\s?-\s?\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)\s?-\s?(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)\s?-\s?\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[πΠ]\.[χΧ]\.)\s?-\s?\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)\s?-\s?\d{1,4}(\s([ιΙ][αΑ][νΝ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[φΦ][εΕ][βΒ][ρΡ][οΟ][υΥ][αάΑ][ρΡ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ρΡ][τΤ][ιΙ][οΟ][ςΣ]|[αΑ][πΠ][ρΡ][ιίΙ][λΛ][ιΙ][οΟ][ςΣ]|[μΜ][αάΑ][ιΙϊ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][νΝ][ιΙ][οΟ][ςΣ]|[ιΙ][οΟ][υύΥ][λΛ][ιΙ][οΟ][ςΣ]|[αΑ][υύΥ][γΓ][οΟ][υΥ][σΣ][τΤ][οΟ][ςΣ]|[σΣ][εΕ][πΠ][τΤ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[οΟ][κΚ][τΤ][ωώΩ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[νΝ][οΟ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]|[δΔ][εΕ][κΚ][εέΕ][μΜ][βΒ][ρΡ][ιΙ][οΟ][ςΣ]))?(\s([12]\d|3[01]|[1-9]))?(\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)\s?-\s?(([πΠ][ρΡ][ωώΩ][τΤ][ηΗ]|[δΔ][εΕ][υύΥ][τΤ][εΕ][ρΡ][ηΗ]|[τΤ][ρΡ][ιίΙ][τΤ][ηΗ]|[τΤ][εέΕ][τΤ][αΑ][ρΡ][τΤ][ηΗ]|[πΠ][εέΕ][μΜ][πΠ][τΤ][ηΗ]|[εέΕ][κΚ][τΤ][ηΗ]|[εέΕ][βΒ][δΔ][οΟ][μΜ][ηΗ]|[οόΟ][γΓ][δΔ][οΟ][ηΗ]|[εέΕ][νΝ][αΑ][τΤ][ηΗ]|[δΔ][εέΕ][κΚ][αΑ][τΤ][ηΗ]|[τΤ][εΕ][λΛ][εΕ][υΥ][τΤ][αΑ][ιίΙ][αΑ])+\s)?[δΔ][εΕ][κΚ][αΑ][εΕ][τΤ][ιίΙ][αΑ]\s[τΤ][οΟ][υΥ] (\d{1,3}ου\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ]|\d{1,4})(\s[μΜ]\.[χΧ]\.)?"/>
+			<xs:pattern value="\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[πΠ]\.[χΧ]\.)\s?-\s?\d{1,3}ος\s[αΑ][ιΙ][ωώΩ][νΝ][αΑ][ςΣ](\s[μΜ]\.[χΧ]\.)"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])\s?-\s?\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[cC][eE])"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])\s?-\s?(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[cC][eE])"/>
+			<xs:pattern value="\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[bB][cC][eE])\s?-\s?(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[cC][eE])"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])\s?-\s?(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[cC][eE])"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])\s?-\s?\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[cC][eE])"/>
+			<xs:pattern value="(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[bB][cC][eE])\s?-\s?(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[cC][eE])"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])\s?-\s?\d{1,4}(\s([jJ][aA][nN][uU][aA][rR][yY]|[fF][eE][bB][rR][uU][aA][rR][yY]|[mM][aA][rR][cC][hH]|[aA][pP][rR][iI][lL]|[mM][aA][yY]|[jJ][uU][nN][eE]|[jJ][uU][lL][yY]|[aA][uU][gG][uU][sS][tT]|[sS][eE][pP][tT][eE][mM][bB][eE][rR]|[oO][cC][tT][oO][bB][eE][rR]|[nN][oO][vV][eE][mM][bB][eE][rR]|[dD][eE][cC][eE][mM][bB][eE][rR]))?(\s([12]\d|3[01]|[1-9]))?(\s[cC][eE])"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])\s?-\s?(([fF][iI][rR][sS][tT]|[sS][eE][cC][oO][nN][dD]|[tT][hH][iI][rR][dD]|[fF][oO][uU][rR][tT][hH]|[fF][iI][fF][tT][hH]|[sS][iI][xX][tT][hH]|[sS][eE][vV][eE][nN][tT][hH]|[eE][iI][gG][hH][tT][hH]|[nN][iI][nN][tT][hH]|[tT][eE][nN][tT][hH] |[lL][aA][sS][tT])+\s)?[dD][eE][cC][aA][dD][eE]\s[oO][fF] ((\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY]|\d{1,4})(\s[cC][eE])?"/>
+			<xs:pattern value="(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[bB][cC][eE])\s?-\s?(\d{1,3}th|[1]st|[2]nd|3rd)\s[cC][eE][nN][tT][uU][rR][yY](\s[cC][eE])"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Appellation" type="term"/>
+</xs:schema>

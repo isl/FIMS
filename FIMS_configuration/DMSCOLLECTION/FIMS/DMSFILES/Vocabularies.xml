@@ -1,0 +1,78 @@
+
+<!--
+Copyright 2015 Institute of Computer Science,
+Foundation for Research and Technology - Hellas
+
+Licensed under the EUPL, Version 1.1 or - as soon they will be approved
+by the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+http://ec.europa.eu/idabc/eupl
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and limitations
+under the Licence.
+
+Contact:  POBox 1385, Heraklio Crete, GR-700 13 GREECE
+Tel:+30-2810-391632
+Fax: +30-2810-391638
+E-mail: isl@ics.forth.gr
+http://www.ics.forth.gr/isl
+
+Authors : Konstantina Konsolaki, Georgios Samaritakis
+
+This file is part of the FIMS webapp.
+
+-->
+<Vocabularies>
+	<Person>
+		<displayname>
+			<gr>Πρόσωπο</gr>
+			<en>Person</en>
+			<fr>Personne</fr>
+			<it>Persona</it>
+			<ar>شخص  كيان</ar>
+			<sv>Person</sv>
+			<nl>Persoon</nl>
+		</displayname>
+		<PersonAppellation>
+			<displayname>
+				<gr>Λεξιλόγιο Ονοματεπώνυμου Προσώπου</gr>
+				<en>Vocabulary of Fullname of Person</en>
+				<fr>Vocabulaire de Nom et Prenom</fr>
+				<it>Lessico nome e cognome persona</it>
+				<ar>مفردات إسم ولقب الشخص</ar>
+				<sv>Ordlista över personnamn</sv>
+				<nl>Woordenlijst van Volledige naam van Persoon</nl>
+			</displayname>
+			<file>PersonAppellation.xml</file>
+		</PersonAppellation>
+		<PersonType>
+			<displayname>
+				<gr>Λεξιλόγιο Τύπου</gr>
+				<en>Vocabulary of Type</en>
+				<fr>Vocabulaire de Qualite de Personne</fr>
+				<it>Lessico qualifica persona</it>
+				<ar>مفردات خاصية الشخص</ar>
+				<sv>Ordlista över arbetsförmåga</sv>
+				<nl>Woordenlijst van Capaciteit van Persoon</nl>
+			</displayname>
+			<file>PersonType.xml</file>
+		</PersonType>
+		<PersonResidenceType>
+			<displayname>
+				<gr>Λεξιλόγιο Κοινωνικής Ομάδας Προσώπου</gr>
+				<en>Vocabulary of Social Group of Person</en>
+				<fr>Vocabulaire de Groupe Social de Personne</fr>
+				<it>Lessico gruppo sociale persona</it>
+				<ar>مفردات المجموعة  الإجتماعية للشخص</ar>
+				<sv>Ordlista över personers socialgrupper</sv>
+				<nl>Woordenlijst van Sociale Groep van Persoon</nl>
+			</displayname>
+			<file>PersonResidenceType.xml</file>
+		</PersonResidenceType>
+	</Person>	
+</Vocabularies>

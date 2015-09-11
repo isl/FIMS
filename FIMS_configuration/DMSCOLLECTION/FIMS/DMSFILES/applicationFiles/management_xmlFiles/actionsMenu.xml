@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2015 Institute of Computer Science,
+Foundation for Research and Technology - Hellas
+
+Licensed under the EUPL, Version 1.1 or - as soon they will be approved
+by the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+http://ec.europa.eu/idabc/eupl
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and limitations
+under the Licence.
+
+Contact:  POBox 1385, Heraklio Crete, GR-700 13 GREECE
+Tel:+30-2810-391632
+Fax: +30-2810-391638
+E-mail: isl@ics.forth.gr
+http://www.ics.forth.gr/isl
+
+Authors : Konstantina Konsolaki, Georgios Samaritakis
+
+This file is part of the FIMS webapp.
+
+-->
+
+<actions>
+	<!--New-->
+    <menugroup id="1" type="topcontent">
+        <menu id="New" img_src="/formating/images/create.png" help="newHelp">
+            <actionPerType id="Person">
+                <userRights href="javascript:centeredPopup('editor_url','win_new','800','600','yes');">editor</userRights>
+                <userRights href="javascript:centeredPopup('editor_url','win_new','800','600','yes');">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminUser">
+                <userRights href="AdminUser?action=toinsert">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminOrg">
+                <userRights href="AdminOrg?action=toinsert&amp;mode=sys">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVoc">
+                <userRights href="AdminVoc?action=toinsert&amp;mode=&amp;file=&amp;menuId=AdminVoc">editor</userRights>
+                <userRights href="AdminVoc?action=toinsert&amp;mode=&amp;file=&amp;menuId=AdminVoc">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVocTrans">
+                <userRights href="AdminVoc?action=toinsert_trans&amp;mode=&amp;file=&amp;menuId=AdminVocTrans">editor</userRights>
+                <userRights href="AdminVoc?action=toinsert_trans&amp;mode=&amp;file=&amp;menuId=AdminVocTrans">admin</userRights>
+                <label>AdminVocTrans</label>
+            </actionPerType>
+            <actionPerType id="Backup">
+                <userRights href="javascript:backupRestore('Storage?action=backup', 'backup','', 'true')">admin</userRights>
+                <userRights href="javascript:backupRestore('Storage?action=backup', 'backup','', 'true')">sysadmin</userRights>
+            </actionPerType>
+            <label>Eisagwgi</label>
+        </menu>
+    </menugroup>
+    <menugroup id="2" type="topcontent">
+		<!--View-->
+        <menu id="View" img_src="/formating/images/view.png">
+            <actionPerType id="Person">
+                <userRights href="javascript:void(0)" id="editor_url" onclick="">editor</userRights>
+                <userRights href="javascript:void(0)" id="editor_url" onclick="">guest</userRights>
+                <userRights href="javascript:void(0)" id="editor_url" onclick="">admin</userRights>
+                <userRights href="javascript:void(0)" id="editor_url" onclick="">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminUser">
+                <userRights id="AdminUser?action=view&amp;id=" href="">admin</userRights>
+                <userRights id="AdminUser?action=view&amp;id=" href="">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminOrg">
+                <userRights id="AdminOrg?action=view&amp;id=" href="">admin</userRights>
+                <userRights id="AdminOrg?action=view&amp;mode=sys&amp;id=" href="">sysadmin</userRights>
+            </actionPerType>
+            <label>Proboli</label>
+        </menu>
+    </menugroup>
+    <menugroup id="3" type="topcontent">
+		<!--Edit-->
+        <menu id="Edit" img_src="/formating/images/editdoc.gif">
+            <actionPerType id="Person">
+                <userRights href="javascript:void(0)" id="editor_url" onclick="">editor</userRights>
+                <userRights href="javascript:void(0)" id="editor_url" onclick="">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminUser">
+                <userRights id="AdminUser?action=toedit&amp;mode=&amp;id=" href="#">admin</userRights>
+                <userRights id="AdminUser?action=toedit&amp;mode=sys&amp;id=" href="">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminOrg">
+                <userRights id="AdminOrg?action=toedit&amp;id=" href="#">admin</userRights>
+                <userRights id="AdminOrg?action=toedit&amp;mode=sys&amp;id=" href="#">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVoc">
+                <userRights id="javascript:location.href='AdminVoc?action=toedit&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVoc';" href="#">editor</userRights>
+                <userRights id="javascript:location.href='AdminVoc?action=toedit&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVoc';" href="#">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVocTrans">
+                <userRights id="AdminVoc?action=toedit_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans" href="#">editor</userRights>
+                <userRights id="AdminVoc?action=toedit_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans" href="#">admin</userRights>
+                <label>AdminVocTrans</label>
+            </actionPerType>
+            <label>Epexergasia</label>
+        </menu>
+    </menugroup>
+    <menugroup id="5" type="topcontent">
+		<!--Delete-->
+        <menu id="Delete" img_src="/formating/images/deletedoc.gif">
+            <actionPerType id="Person">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&amp;id=';" href="">editor</userRights>
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&amp;id=';" href="">admin</userRights>
+				<!--userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&id=';" href="">sysadmin</userRights-->
+            </actionPerType>
+            <actionPerType id="AdminUser">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminUser?action=delete&amp;id=&amp;mode=';" href="">admin</userRights>
+				<!--userRights id="javascript:if ( confirmAction(str) ) location.href='AdminUser?action=delete&id=&mode=sys';" href="">sysadmin</userRights-->
+            </actionPerType>
+            <actionPerType id="AdminOrg">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminOrg?action=delete&amp;id=&amp;mode=sys';" href="">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVoc">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete&amp;id=&amp;file=&amp;menuId=AdminVoc';" href="#">editor</userRights>
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete&amp;id=&amp;file=&amp;menuId=AdminVoc';" href="#">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVocTrans">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans'" href="#">editor</userRights>
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans'" href="#">admin</userRights>
+                <label>AdminVocTrans</label>
+            </actionPerType>
+            <actionPerType id="Backup">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='Storage?action=delete&amp;menuId=Backup&amp;id='" href="#">sysadmin</userRights>
+            </actionPerType>
+            <label>Diagrafi</label>
+        </menu>
+    </menugroup>
+    <menugroup id="6" type="topcontent">
+		<!--More-->
+        <menu id="Eisagwgh_Eksagwgh">
+            <submenu id="EksagwghProtipu" img_src="/formating/images/export.png">
+                <actionPerType id="Person">
+                    <userRights href="ExportTemplate?type=Person">editor</userRights>
+                    <userRights href="ExportTemplate?type=Person">admin</userRights>
+                    <userRights href="ExportTemplate?type=Person">sysadmin</userRights>
+                </actionPerType>
+                <label>EksagwghProtipu</label>
+            </submenu>
+            <submenu id="EksagwghXML" img_src="/formating/images/export.png">
+                <actionPerType id="Person">
+                    <userRights id="ExportXML?type=Person&amp;id=" href="#">editor</userRights>
+                    <userRights id="ExportXML?type=Person&amp;id=" href="#">admin</userRights>
+                    <userRights id="ExportXML?type=Person&amp;id=" href="#">sysadmin</userRights>
+                </actionPerType>
+                <label>EksagwghXML</label>
+            </submenu>
+            <submenu id="EksagwghRDF" img_src="/formating/images/export.png">
+                <actionPerType id="Person">
+                    <userRights id="ExportRDF?type=Person&amp;id=" href="#">editor</userRights>
+                    <userRights id="ExportRDF?type=Person&amp;id=" href="#">admin</userRights>
+                    <userRights id="ExportRDF?type=Person&amp;id=" href="#">sysadmin</userRights>
+                </actionPerType>
+                <label>EksagwghRDF</label>
+            </submenu>
+            <submenu id="ExportVoc" img_src="/formating/images/export.png">
+                <actionPerType id="AdminVoc">
+                    <userRights href="ExportVocabulary?type=AdminVoc&amp;file=&amp;menuId=AdminVoc">editor</userRights>
+                    <userRights href="ExportVocabulary?type=AdminVoc&amp;file=&amp;menuId=AdminVoc">admin</userRights>
+                </actionPerType>
+                <label>ExportVoc</label>
+            </submenu>
+            <submenu id="ImportVoc" img_src="/formating/images/import.png">
+                <actionPerType id="AdminVoc">
+                    <userRights href="ImportVocabulary?type=AdminVoc&amp;file=&amp;menuId=AdminVoc">editor</userRights>
+                    <userRights href="ImportVocabulary?type=AdminVoc&amp;file=&amp;menuId=AdminVoc">admin</userRights>
+                </actionPerType>
+                <label>ImportVoc</label>
+            </submenu>
+            <submenu id="EisagwghXML" img_src="/formating/images/import.png">
+                <actionPerType id="Person">
+                    <userRights href="ImportXML?type=Person">editor</userRights>
+                    <userRights href="ImportXML?type=Person">admin</userRights>
+                </actionPerType>
+                <label>EisagwghXML</label>
+            </submenu>
+            <label>Eisagwgh_Eksagwgh</label>
+        </menu>
+        <menu id="Versions">
+            <submenu id="CreateVersion" img_src="/formating/images/create.png">
+                <actionPerType id="Person">
+                    <userRights id="CreateVersion?action=insertComment&amp;type=Person&amp;id=" href="#">editor</userRights>
+                    <userRights id="CreateVersion?action=insertComment&amp;action=insertComment&amp;type=Person&amp;id=" href="#">admin</userRights>
+                </actionPerType>
+                <label>Create_Version</label>
+            </submenu>
+            <submenu id="ViewVersion" img_src="/formating/images/view.png">
+                <actionPerType id="Person">
+                    <userRights id="ViewVersions?type=Person&amp;id=" href="#">editor</userRights>
+                    <userRights id="ViewVersions?type=Person&amp;id=" href="#">admin</userRights>
+                </actionPerType>
+                <label>View_Version</label>
+            </submenu>
+            <label>Versions</label>
+        </menu>
+        <menu id="Metafrasi" img_src="/formating/images/translate.png">
+            <submenu id="MetafrasiSub">
+                <actionPerType id="Person">
+                    <userRights id="TranslateServlet?action=totranslate&amp;type=Person&amp;id=" href="">editor</userRights>
+                    <userRights id="TranslateServlet?action=totranslate&amp;type=Person&amp;id=" href="">admin</userRights>
+                </actionPerType>
+                <label>Metafrasi</label>
+            </submenu>
+        </menu>
+        <menu id="Copy" img_src="/formating/images/copy.png">
+            <submenu id="MetafrasiSub">
+                <actionPerType id="Person">
+                    <userRights id="CreateCopy?type=Person&amp;id=" href="">editor</userRights>
+                    <userRights id="CreateCopy?type=Person&amp;id=" href="">admin</userRights>
+                </actionPerType>
+                <label>Copy</label>
+            </submenu>
+        </menu>
+        <menu id="restore_backup" img_src="/formating/images/restore.gif">
+            <submenu id="restore_backupSub">
+                <actionPerType id="Backup">
+                    <userRights id="javascript:  var date=  $('tr.highlighted_resultRow').find('#date')[0].innerHTML; var time=  $('tr.highlighted_resultRow').find('#time')[0].innerHTML; if ( confirmActionRestore(strRestore,date,time)) backupRestore('Storage?action=restore&amp;menu=admin&amp;menuId=Backup&amp;id=', 'restore', '','true')" href="#">sysadmin</userRights>
+                </actionPerType>
+                <label>restore_backup</label>
+            </submenu>
+        </menu>
+        <label>Perissotera</label>
+    </menugroup>
+    <menugroup id="Anazitisi" type="topcontent" img_src="formating/images/arrow_down.png">
+        <menu id="Imported">
+            <submenu id="Imported">
+                <actionPerType id="Person">
+                    <userRights href="ListEntity?type=Person&amp;status=imported">editor</userRights>
+                    <userRights href="ListEntity?type=Person&amp;status=imported">guest</userRights>
+                    <userRights href="ListEntity?type=Person&amp;status=imported">admin</userRights>
+                    <userRights href="ListEntity?type=Person&amp;status=imported">sysadmin</userRights>
+                </actionPerType>
+                <label>Imported</label>
+            </submenu>
+        </menu>
+        <menu id="Ola">
+            <submenu id="OlaSub">
+                <actionPerType id="Person">
+                    <userRights href="ListEntity?type=Person">editor</userRights>
+                    <userRights href="ListEntity?type=Person">guest</userRights>
+                    <userRights href="ListEntity?type=Person">admin</userRights>
+                    <userRights href="ListEntity?type=Person">sysadmin</userRights>
+                </actionPerType>
+                <label>Ola</label>
+            </submenu>
+        </menu>
+        <menu id="sunthethAnazhthsh">
+            <submenu id="sunthethAnazhthshSub">
+                <actionPerType id="Person">
+                    <userRights href="Search?category=Person">editor</userRights>
+                    <userRights href="Search?category=Person">guest</userRights>
+                    <userRights href="Search?category=Person">admin</userRights>
+                    <userRights href="Search?category=Person">sysadmin</userRights>
+                </actionPerType>
+                <label>sunthethAnazhthsh</label>
+            </submenu>
+        </menu>
+        <label>Anazitisi</label>
+    </menugroup>
+</actions>
