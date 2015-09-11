@@ -1,4 +1,4 @@
-/*
+
 Copyright 2015 Institute of Computer Science,
 Foundation for Research and Technology - Hellas
 
@@ -25,13 +25,13 @@ Authors : Konstantina Konsolaki, Georgios Samaritakis
 
 This file is part of the FIMS webapp.
 
- */
+ 
 
 FIMS
 ====
 
 FIMS is a web application suitable for documenting, recording and managing XML files stored in an XML database. 
-FIMS project dependecies are described in file [FIMS-Dependencies-LicensesUsed.txt](https://github.com/isl/FIMS/blob/master/FIMS/FIMS-Dependencies-LicensesUsed.txt)
+FIMS project dependecies are described in file [FIMS-Dependencies-LicensesUsed.txt](https://github.com/isl/FIMS/blob/master/FIMS-Dependencies-LicensesUsed.txt.txt)
 
 ##Build - Deploy - Run##
 
