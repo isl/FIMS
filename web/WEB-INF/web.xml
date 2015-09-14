@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- COPYRIGHT (c) 20??-2014 by Institute of Computer Science,
- Foundation for Research and Technology - Hellas
- Contact:
- POBox 1385, Heraklio Crete, GR-700 13 GREECE
- Tel:+30-2810-391632
- Fax: +30-2810-391638
- E-mail: isl@ics.forth.gr
- http://www.ics.forth.gr/isl
+Copyright 2015 Institute of Computer Science,
+Foundation for Research and Technology - Hellas
 
- Authors : Konstantina Konsolaki, Georgios Samaritakis.
+Licensed under the EUPL, Version 1.1 or - as soon they will be approved
+by the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
 
- This file is part of the FIMS webapp..
+http://ec.europa.eu/idabc/eupl
 
- FIMS webapp is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+Unless required by applicable law or agreed to in writing, software distributed
+under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and limitations
+under the Licence.
 
- FIMS webapp is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+Contact:  POBox 1385, Heraklio Crete, GR-700 13 GREECE
+Tel:+30-2810-391632
+Fax: +30-2810-391638
+E-mail: isl@ics.forth.gr
+http://www.ics.forth.gr/isl
 
- You should have received a copy of the GNU General Public License
- along with FIMS webapp. If not, see &lt;http://www.gnu.org/licenses/>.
+Authors : Konstantina Konsolaki, Georgios Samaritakis
+
+This file is part of the FIMS webapp.
 -->
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <description>FIMS Description</description>
