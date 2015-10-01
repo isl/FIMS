@@ -508,8 +508,9 @@ public class Utils extends ApplicationBasicServlet {
         try {
 
             String host = "smtp.gmail.com";
-            String user = "islgroupforth";
-            String password = "islGr0up!";
+            String user = emailAdress;
+            String password = emailPass;
+
             String port = "587";
             String from = "no-reply-" + systemName + "@gmail.com";
             Properties props = System.getProperties();
@@ -615,7 +616,7 @@ public class Utils extends ApplicationBasicServlet {
         }
     }
 
-    public static void updateVocabularies(XMLEntity xmlE, String database, String xmlId, String xmlType, String dbPass, String dbUser,String lang) {
+    public static void updateVocabularies(XMLEntity xmlE, String database, String xmlId, String xmlType, String dbPass, String dbUser, String lang) {
         String[] vocsToCheck = xmlE.queryString("//*[@sps_vocabulary!='' and @sps_id!='' and ./text()!='']");
         for (String vocTag : vocsToCheck) {
             Element e = Utils.getElement(vocTag);

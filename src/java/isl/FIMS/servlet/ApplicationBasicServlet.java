@@ -76,6 +76,9 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected String status, topmenu, lang, type, category;
     protected String action = "";
     protected String servletName;
+    protected static String emailPass;
+    protected static String emailAdress;
+
     //  protected  String username;
     protected static String pageTitle = "PageTitle";
     protected static String schemaFolder;
@@ -116,6 +119,9 @@ public class ApplicationBasicServlet extends HttpServlet {
         this.export_import_Folder = getServletContext().getInitParameter("Export_Import_Folder");
         this.URI_Reference_Path = getServletContext().getInitParameter("URI_Reference_Path");
         this.dbSchemaFolder = getServletContext().getInitParameter("dbSchemaFolder");
+        this.emailPass = getServletContext().getInitParameter("emailPass");
+        this.emailAdress = getServletContext().getInitParameter("emailAdress");
+
         File export = new File(this.export_import_Folder);
         if (!export.exists()) {
             export.mkdir();
