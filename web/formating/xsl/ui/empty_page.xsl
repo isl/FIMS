@@ -38,8 +38,8 @@ This file is part of the FIMS webapp.
         <html>
             <xsl:call-template name="head_html">
                 <xsl:with-param name="title" select="$title"/>
-                <xsl:with-param name="javascript" select="formating/javascript/utils/scripts.js"/>
-                <xsl:with-param name="css" select="formating/css/page.css)"/>
+                 <xsl:with-param name="javascript" select="concat('','formating/javascript/utils/scripts.js')"/>
+                <xsl:with-param name="css" select="concat('','formating/css/page.css')"/>
             </xsl:call-template>
             <body topmargin="0" leftmargin="0" onload="javascript:window.resizeTo(700,500);">
                 <table border="0" cellspacing="0">
