@@ -128,8 +128,6 @@ This file is part of the FIMS webapp.
 	<context-param>
 		<param-name>ListStep</param-name>
 		<!-- Results to each page -->
-
-
 		<param-value>20</param-value>
 	</context-param>
 	<context-param>
@@ -140,8 +138,6 @@ This file is part of the FIMS webapp.
 	<context-param>
 		<param-name>maxCollsize</param-name>
 		<!-- eXist collection size -->
-
-
 		<param-value>999</param-value>
 	</context-param>
 	<context-param>
@@ -177,28 +173,19 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<description>
-
-
-            Email password
+            gmail password
 		</description>
 		<param-name>emailPass</param-name>
 		<param-value/>
 	</context-param>
 	<context-param>
 		<description>
-            gmmail address
+            gmail address
 		</description>
 		<param-name>emailAdress</param-name>
-		<param-value></param-value>
+		<param-value/>
 	</context-param>
 	<context-param>
-
-
-
-
-
-
-
 		<param-name>BugReportURL</param-name>
 		<param-value/>
 	</context-param>
