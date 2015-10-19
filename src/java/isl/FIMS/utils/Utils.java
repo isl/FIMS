@@ -794,7 +794,7 @@ public class Utils extends ApplicationBasicServlet {
         return uniquename;
     }
 
-    public static String findMime(DBFile uploads, String file) {
+    public static String findMime(DBFile uploads, String file, String use) {
 
         file = file.substring(file.lastIndexOf(".") + 1);
         file = file.toLowerCase();
@@ -804,7 +804,12 @@ public class Utils extends ApplicationBasicServlet {
         if (mimes.length == 0) {
             return "Other";
         } else {
-            return mimes[0];
+            if (mimes.length > 1) {
+                String mime = uploads.queryString("//mime[type/@use ='"+use+"' and type='" + file + "']/../name()")[0];
+                return mime;
+            } else {
+                return mimes[0];
+            }
         }
 
     }

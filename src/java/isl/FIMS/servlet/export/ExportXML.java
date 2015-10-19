@@ -66,7 +66,7 @@ public class ExportXML extends ApplicationBasicServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.initVars(request);
-                String username = getUsername(request);
+        String username = getUsername(request);
 
         boolean isGuest = this.getRights(username).equals("guest");
         if (!isGuest) {
@@ -95,13 +95,13 @@ public class ExportXML extends ApplicationBasicServlet {
                     ServletOutputStream outStream = response.getOutputStream();
                     response.setContentType("application/octet-stream");
                     response.setHeader("Content-Disposition", "attachment;filename=\"" + id + ".zip\"");
-                    writeFile(type, id, currentDir,username);
+                    writeFile(type, id, currentDir, username);
                     for (int i = 0; i < res.length; i++) {
                         Element e = Utils.getElement(res[i]);
                         String sps_type = e.getAttribute("sps_type");
                         String sps_id = e.getAttribute("sps_id");
                         sps_id = sps_type + sps_id;
-                        writeFile(sps_type, sps_id, currentDir,username);
+                        writeFile(sps_type, sps_id, currentDir, username);
                     }
                     //check if any disk files to export
                     ArrayList<String> externalFiles = new <String> ArrayList();
@@ -117,12 +117,14 @@ public class ExportXML extends ApplicationBasicServlet {
                         }
                         String[] result = dbf.queryString(q);
                         for (String extFile : result) {
-                            externalFiles.add(extFile);
+                            externalFiles.add(extFile + "#" + attr);
                         }
                     }
                     for (String extFile : externalFiles) {
                         DBFile uploadsDBFile = new DBFile(this.DBURI, this.adminDbCollection, "Uploads.xml", this.DBuser, this.DBpassword);
-                        String mime = Utils.findMime(uploadsDBFile, extFile);
+                        String attr = extFile.substring(extFile.lastIndexOf("#") + 1, extFile.length());
+                        extFile = extFile.substring(0, extFile.lastIndexOf("#"));
+                        String mime = Utils.findMime(uploadsDBFile, extFile, attr);
                         String path = "";
                         if (mime.equals("Photos")) {
                             path = this.systemUploads + File.separator + type + File.separator + mime + File.separator + "original" + File.separator + extFile;
@@ -140,7 +142,7 @@ public class ExportXML extends ApplicationBasicServlet {
                                 }
                                 if (file.exists()) {
                                     String content = FileUtils.readFileToString(file);
-                                    content = content.replaceAll("../"+extFile, extFile);
+                                    content = content.replaceAll("../" + extFile, extFile);
                                     FileUtils.writeStringToFile(file, content);
 
                                 }

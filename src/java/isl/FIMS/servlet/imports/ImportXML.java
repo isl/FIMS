@@ -103,7 +103,7 @@ public class ImportXML extends ApplicationBasicServlet {
             throws ServletException, IOException {
 
         this.initVars(request);
-                String username = getUsername(request);
+        String username = getUsername(request);
 
         Config conf = new Config("EisagwghXML_RDF");
         String xsl = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/import/ImportXML.xsl";
@@ -168,7 +168,7 @@ public class ImportXML extends ApplicationBasicServlet {
                             }
                             String uriValue = this.URI_Reference_Path + uri_name + "/";
                             boolean insertEntity = false;
-                            if (xmlContent.contains(uriValue)) {
+                            if (xmlContent.contains(uriValue) || file.getName().contains(type)) {
                                 insertEntity = true;
                             }
                             Element root = doc.getDocumentElement();
@@ -194,7 +194,7 @@ public class ImportXML extends ApplicationBasicServlet {
                                 notValidMXL.put(file.getName(), null);
                             } else if (insertEntity) {
                                 id = initInsertFile(type, false);
-                                doc = createAdminPart(id[0], type, doc,username);
+                                doc = createAdminPart(id[0], type, doc, username);
                                 writer = new StringWriter();
                                 transformer.transform(new DOMSource(doc), new StreamResult(writer));
                                 xmlString = writer.getBuffer().toString().replaceAll("\r", "");
@@ -217,7 +217,7 @@ public class ImportXML extends ApplicationBasicServlet {
                                     }
                                     String[] res = dbF.queryString(q);
                                     for (String extFile : res) {
-                                        externalFiles.add(extFile);
+                                        externalFiles.add(extFile + "#" + attr);
                                     }
                                 }
                                 q = "//";
@@ -240,6 +240,8 @@ public class ImportXML extends ApplicationBasicServlet {
                                 }
                                 ArrayList<String> missingExternalFiles = new <String> ArrayList();
                                 for (String extFile : externalFiles) {
+                                    extFile = extFile.substring(0, extFile.lastIndexOf("#"));
+
                                     List<File> f = (List<File>) FileUtils.listFiles(dir, FileFilterUtils.nameFileFilter(extFile), TrueFileFilter.INSTANCE);
                                     if (f.size() == 0) {
                                         missingExternalFiles.add(extFile);
@@ -264,12 +266,15 @@ public class ImportXML extends ApplicationBasicServlet {
                                 if (missingExternalFiles.isEmpty() && worngFiles.isEmpty()) {
 
                                     for (String extFile : externalFiles) {
+                                        String attr = extFile.substring(extFile.lastIndexOf("#") + 1, extFile.length());
+                                        extFile = extFile.substring(0, extFile.lastIndexOf("#"));
+
                                         List<File> f = (List<File>) FileUtils.listFiles(dir, FileFilterUtils.nameFileFilter(extFile), TrueFileFilter.INSTANCE);
                                         File uploadFile = f.iterator().next();
                                         String content = FileUtils.readFileToString(uploadFile);
 
                                         DBFile uploadsDBFile = new DBFile(this.DBURI, this.adminDbCollection, "Uploads.xml", this.DBuser, this.DBpassword);
-                                        String mime = Utils.findMime(uploadsDBFile, uploadFile.getName());
+                                        String mime = Utils.findMime(uploadsDBFile, uploadFile.getName(), attr);
                                         String uniqueName = Utils.createUniqueFilename(uploadFile.getName());
                                         File uploadFileUnique = new File(uploadFile.getPath().substring(0, uploadFile.getPath().lastIndexOf(File.separator)) + File.separator + uniqueName);
                                         uploadFile.renameTo(uploadFileUnique);
@@ -301,7 +306,7 @@ public class ImportXML extends ApplicationBasicServlet {
                                     dbF.setXMLAsString(xmlString);
                                     dbF.store();
                                     Utils.updateReferences(xmlNew, this.DBURI, id[0].split(type)[1], type, this.DBpassword, this.DBuser);
-                                    Utils.updateVocabularies(xmlNew,this.DBURI, id[0].split(type)[1], type, this.DBpassword, this.DBuser, lang);
+                                    Utils.updateVocabularies(xmlNew, this.DBURI, id[0].split(type)[1], type, this.DBpassword, this.DBuser, lang);
                                     savedIDs.add(id[0]);
                                 } else {
                                     dbF.remove();
@@ -379,7 +384,7 @@ public class ImportXML extends ApplicationBasicServlet {
                         }
                     }
                 }
-                   Utils.deleteDir(currentDir);
+                Utils.deleteDir(currentDir);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 displayMsg += Messages.NOT_VALID_IMPORT;
