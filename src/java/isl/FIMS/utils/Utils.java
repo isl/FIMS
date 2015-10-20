@@ -804,7 +804,7 @@ public class Utils extends ApplicationBasicServlet {
         if (mimes.length == 0) {
             return "Other";
         } else {
-            if (mimes.length > 1) {
+            if (use!=null && use.length()>0 && mimes.length > 1) {
                 String mime = uploads.queryString("//mime[type/@use ='"+use+"' and type='" + file + "']/../name()")[0];
                 return mime;
             } else {
