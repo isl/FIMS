@@ -35,7 +35,7 @@ FIMS project dependecies are described in file [FIMS-Dependencies-LicensesUsed.t
 
 ##Build - Deploy - Run##
 
-Folders src, web and lib contain all the files needed to build the web app and create a war file. 
+Folder src contain all the files needed to build the web app and create a war file. This project is a Maven project, providing all the libs in pom.xml. 
 You may use any application server that supports war files. (has been tested with Apache Tomcat version 7 or later). 
 Currently, the database supported is [eXist version 2.2](http://www.exist-db.org).
 
