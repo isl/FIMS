@@ -31,7 +31,6 @@ FIMS
 ====
 
 FIMS is a web application suitable for documenting, recording and managing XML files stored in an XML database. 
-FIMS project dependecies are described in file [FIMS-Dependencies-LicensesUsed.txt](https://github.com/isl/FIMS/blob/master/FIMS-Dependencies-LicensesUsed.txt)
 
 ##Build - Deploy - Run##
 
