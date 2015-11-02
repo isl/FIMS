@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>Forth-ICS</groupId>
+    <groupId>gr.forth.ics.isl</groupId>
     <artifactId>FIMS</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
@@ -13,7 +13,13 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+    <licenses>
+        <license>
+            <name>EUPL v.1.1</name>
+            <url>http://ec.europa.eu/idabc/eupl</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <repositories>
         <repository>
             <id>FORTH-ISL-MAVEN</id>
