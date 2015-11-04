@@ -66,7 +66,7 @@ This file is part of the FIMS webapp.
                         <xsl:variable name="topmenus" select="//topmenu/menugroup/menu"/>
                         <xsl:variable name="image" select="string(//topmenu/menugroup/@img_src)"/>
                    
-                        <div class="userIcon">
+                        <div  id ="topDrop" style="/*position:absolute;*/ background-repeat: no-repeat; height: 100px; background-image: url('{ concat('formating/images/layout_header_right_', $lang, '.jpg') }'); ">
                             <ul id="sddm">
                                 <li style="margin-top:59px;">              
                                     <a style="white-space:nowrap; color:white;" onmouseout="mclosetime()" href="#" onmouseover="mopen('topMenu')" >
