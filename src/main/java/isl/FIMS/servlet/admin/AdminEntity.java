@@ -135,13 +135,13 @@ public class AdminEntity extends AdminBasicServlet {
             if (mainCurrentName.length() == 0) {
                 this.displayMsg += Messages.EMPTY_FIELD_MainCurrentName + Messages.NL;
             }
-           /* if (!this.dbSchemaFolder.equals("")) {
-                String[] target_schemama_id = request.getParameterValues("target_schema");
-                if (target_schemama_id == null) {
-                    this.displayMsg += Messages.EMPTY_FIELD_TargetSchema + Messages.NL;
-                }
+            /* if (!this.dbSchemaFolder.equals("")) {
+             String[] target_schemama_id = request.getParameterValues("target_schema");
+             if (target_schemama_id == null) {
+             this.displayMsg += Messages.EMPTY_FIELD_TargetSchema + Messages.NL;
+             }
 
-            }*/
+             }*/
 
             if (this.displayMsg.length() == 0) {
                 Utils u = new Utils();
@@ -179,6 +179,14 @@ public class AdminEntity extends AdminBasicServlet {
                             namespace += (r.split("</target_schema>")[1]).split("</target_info>")[0];
                             target += "<target_info>" + target_schema + "\n<target_collection/>\n" + "</target_info>";
                         }
+                        xmlE.xInsertAfter("//info/source_info", target);
+                        xmlE.xAppend("//namespaces", namespace);
+                    } else {
+                        String target = " <target_info>\n"
+                                + "            <target_schema type=\"\" version=\"\"></target_schema>\n"
+                                + "            <target_collection/>\n"
+                                + "        </target_info>";
+                        String namespace = "<namespace prefix=\"\" uri=\"\"/>";
                         xmlE.xInsertAfter("//info/source_info", target);
                         xmlE.xAppend("//namespaces", namespace);
                     }
