@@ -288,7 +288,7 @@ This file is part of the FIMS webapp.
                     {
                       
                     });
-                    var url = '/MappingAnalyzerServer/x3mlTextDiff.html?id1='+id1+'&amp;id2='+id2;
+                    var url = '/Maze/multmappings.html?id1='+id1+'&amp;id2='+id2;
                       centeredPopup(url,'win_new','800','600','yes');      
             }else{
                   return false;

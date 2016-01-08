@@ -154,7 +154,16 @@ This file is part of the FIMS webapp.
             <nl>Gebruiker</nl>
         </user>
     </topmenu>
-    <leftmenu>   
+    <leftmenu>
+        <Contract>
+            <gr>Συμβόλαια</gr>                      
+            <en>Contracts</en>
+            <fr>Contrat</fr>
+            <it>Contrarre</it>
+            <ar>عقد</ar>
+            <sv>Kontrakt</sv>
+            <nl>Contract</nl>	
+        </Contract>     
         <DigitalRepresentation>
             <gr>Ψηφιακή Αναπαράσταση</gr>                      
             <en>Digital Representation</en>
@@ -4186,7 +4195,7 @@ This file is part of the FIMS webapp.
         </SelectCompareFiles>
         
 	<Graph_Representation>
-		<en>Graph Representation</en>
+		<en>Analysis</en>
 	</Graph_Representation>
         
     </context>

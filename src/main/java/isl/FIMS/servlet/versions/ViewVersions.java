@@ -72,14 +72,17 @@ public class ViewVersions extends ApplicationBasicServlet {
         StringBuffer xml = new StringBuffer(this.xmlStart(this.topmenu, username, this.pageTitle, this.lang, "", request));
         String fileId = request.getParameter("id");
         String id = fileId.split(type)[1];
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "";
+        }
 
         String xsl = "";
-
+        StringBuffer resultsTag = new StringBuffer("<results>\n");
         XMLEntity xmlE = new XMLEntity(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, fileId);
 
         try {
             StringBuffer outputsTag = new StringBuffer();
-            StringBuffer resultsTag = new StringBuffer("<results>\n");
 
             DBCollection versionColOfId = new DBCollection(this.DBURI, this.versionDbCollection + type + "/" + fileId, this.DBuser, this.DBpassword);
             String query = "for $i in collection('" + versionColOfId.getName() + "')\n"
@@ -124,11 +127,16 @@ public class ViewVersions extends ApplicationBasicServlet {
         xml.append("<Display>").append(displayMsg).append("</Display>\n");
 
         xml.append(this.xmlEnd());
-        try {
-            XMLTransform xmlTrans = new XMLTransform(xml.toString());
-            xmlTrans.transform(out, xsl);
-        } catch (DMSException e) {
-            e.printStackTrace();
+        if (action.equals("getXML")) {
+            response.setContentType("text/xml");
+            out.println(resultsTag);
+        } else {
+            try {
+                XMLTransform xmlTrans = new XMLTransform(xml.toString());
+                xmlTrans.transform(out, xsl);
+            } catch (DMSException e) {
+                e.printStackTrace();
+            }
         }
         out.close();
 
