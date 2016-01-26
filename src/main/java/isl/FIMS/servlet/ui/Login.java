@@ -31,9 +31,9 @@ import isl.FIMS.utils.ApplicationConfig;
 import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.dbms.DBCollection;
 import isl.dms.DMSException;
+import isl.dms.file.DMSFile;
 import isl.dms.file.DMSUser;
 import isl.dms.xml.XMLTransform;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
@@ -71,9 +71,28 @@ public class Login extends ApplicationBasicServlet {
         StringBuffer xml = new StringBuffer();
 
         String username = this.getUsername(request);
+
+        String comment = "";
+        DMSFile df = new DMSFile(this.conf.USERS_FILE, this.conf);
+        try {
+
+            String temp[] = df.queryString("/DMS/users/user[./@username='" + username + "']/info/comment/text()");
+            if (temp.length > 0) {
+                comment = temp[0];
+            }
+        } catch (DMSException ex) {
+        }
+
         if (username != null) {
             if (!username.equals("")) {
                 if (defaultEntity.equals("")) {
+                    response.sendRedirect("FirstPage");
+                } else if (!defaultEntity.equals("") && comment.equals("firstLogin")) {
+                    try {
+                        DMSUser user = new DMSUser(username, conf);
+                        user.setInfo("comment", "");
+                    } catch (DMSException ex) {
+                    }
                     response.sendRedirect("FirstPage");
                 } else {
                     response.sendRedirect("ListEntity?type=" + defaultEntity);
@@ -174,7 +193,7 @@ public class Login extends ApplicationBasicServlet {
                 cookie.setMaxAge(10800);
                 response.addCookie(cookie);
             }
-            if (userHasAction("guest",username)) {
+            if (userHasAction("guest", username)) {
                 status = "org";
             } else {
                 status = "allunpublished";
@@ -190,7 +209,25 @@ public class Login extends ApplicationBasicServlet {
             xml.append("</Langs>\n");
             xml.append("<signUp>" + signUp + "</signUp>");
             xml.append(this.xmlEnd());
+
+            String comment = "";
+            DMSFile df = new DMSFile(this.conf.USERS_FILE, this.conf);
+            try {
+                String temp[] = df.queryString("/DMS/users/user[./@username='" + username + "']/info/comment/text()");
+                if (temp.length > 0) {
+                    comment = temp[0];
+                }
+            } catch (DMSException ex) {
+            }
+
             if (defaultEntity.equals("")) {
+                response.sendRedirect("FirstPage");
+            } else if (!defaultEntity.equals("") && comment.equals("firstLogin")) {
+                try {
+                    DMSUser user = new DMSUser(username, conf);
+                    user.setInfo("comment", "");
+                } catch (DMSException ex) {
+                }
                 response.sendRedirect("FirstPage");
             } else {
                 response.sendRedirect("ListEntity?type=" + defaultEntity);

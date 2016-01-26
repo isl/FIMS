@@ -52,8 +52,8 @@ This file is part of the FIMS webapp.
 		</PersonAppellation>
 		<PersonType>
 			<displayname>
-				<gr>Λεξιλόγιο Τύπου</gr>
-				<en>Vocabulary of Type</en>
+                <gr>Λεξιλόγιο Ρόλος-Ιδιότητα</gr>
+                <en>Vocabulary of Role-Capacity</en>
 				<fr>Vocabulaire de Qualite de Personne</fr>
 				<it>Lessico qualifica persona</it>
 				<ar>مفردات خاصية الشخص</ar>

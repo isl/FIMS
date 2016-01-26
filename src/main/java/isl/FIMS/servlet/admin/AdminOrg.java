@@ -272,6 +272,8 @@ public class AdminOrg extends AdminBasicServlet {
                             group.setCountry(country);
                             group.setInformation(information);
                             this.displayMsg = Messages.ACTION_SUCCESS;
+                            response.sendRedirect("AdminOrg?action=list");
+
                         }
                     }
                 } catch (EntryExistException e) {
@@ -304,7 +306,6 @@ public class AdminOrg extends AdminBasicServlet {
         xml.append("<Display>").append(this.displayMsg).append("</Display>\n");
         xml.append("<DisplayError>").append(this.error).append("</DisplayError>\n");
         xml.append(this.xmlEnd());
-       // System.out.println(this.displayMsg);
         String xsl = conf.DISPLAY_XSL;
         try {
             XMLTransform xmlTrans = new XMLTransform(xml.toString());

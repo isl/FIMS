@@ -47,9 +47,12 @@ import javax.servlet.http.HttpSession;
 import isl.FIMS.utils.UtilsQueries;
 import isl.FIMS.utils.UtilsXPaths;
 import isl.FIMS.utils.entity.GetEntityCategory;
+import isl.dms.file.DMSFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ApplicationBasicServlet extends HttpServlet {
     //parameters from web.xml
@@ -85,8 +88,8 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected static String defaultLang = "";
     protected static String defaultEntity = "";
     protected static String systemName = "";
-    protected static String systemVersion = "";
-    protected static String systemAcronymDescription = "";
+    protected static String espaLogo = "";
+    protected static String contactEmail = "";
     protected static String dbSchemaFolder = "";
     public static int thumbSize, normalSize;
 
@@ -135,8 +138,8 @@ public class ApplicationBasicServlet extends HttpServlet {
         defaultLang = getServletContext().getInitParameter("defaultLang");
         defaultEntity = getServletContext().getInitParameter("defaultEntity");
         this.systemName = getServletContext().getInitParameter("systemName");
-        this.systemVersion = getServletContext().getInitParameter("systemVersion");
-        this.systemAcronymDescription = getServletContext().getInitParameter("systemAcronymDescription");
+        this.espaLogo = getServletContext().getInitParameter("espaLogo");
+        this.contactEmail = getServletContext().getInitParameter("contactEmail");
         thumbSize = Integer.parseInt(getServletContext().getInitParameter("thumbSize"));
         normalSize = Integer.parseInt(getServletContext().getInitParameter("normalSize"));
         this.entityListPhoto = getServletContext().getInitParameter("entityListPhoto").split(",");
@@ -187,7 +190,24 @@ public class ApplicationBasicServlet extends HttpServlet {
         String UserRights = getRights(username);
         String userOrg = this.getUserGroup(username);
         HttpSession session = request.getSession(true);
-        String pageXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<page user=\"" + user + "\" UserRights=\"" + UserRights + "\" userOrg=\"" + userOrg + "\" title=\"" + title + "\" language=\"" + lang + "\" mode=\"" + mode + "\">\n" +/* "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n" +*/ "<header>\n" + "</header>\n" + session.getAttribute("topSettings") + "\n" + session.getAttribute("leftmenu") + "\n" + "<context>\n" + session.getAttribute("actionsMenu") + "\n";
+        System.out.println("user--> " + user);
+        DMSFile df = new DMSFile(this.conf.USERS_FILE, this.conf);
+        String firstname = "";
+        String lastname = "";
+        String temp[];
+        try {
+            temp = df.queryString("/DMS/users/user[./@username='" + user + "']/info/firstname/text()");
+            if (temp.length > 0) {
+                firstname = temp[0];
+            }
+            temp = df.queryString("/DMS/users/user[./@username='" + user + "']/info/lastname/text()");
+            if (temp.length > 0) {
+                lastname = temp[0];
+            }
+        } catch (DMSException ex) {
+        }
+
+        String pageXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<page user=\"" + user + "\" fullname=\""+firstname+" "+lastname+"\" UserRights=\"" + UserRights + "\" userOrg=\"" + userOrg + "\" title=\"" + title + "\" language=\"" + lang + "\" mode=\"" + mode + "\">\n" +/* "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n" +*/ "<header>\n" + "</header>\n" + session.getAttribute("topSettings") + "\n" + session.getAttribute("leftmenu") + "\n" + "<context>\n" + session.getAttribute("actionsMenu") + "\n";
         return pageXML;
     }
 
@@ -197,17 +217,16 @@ public class ApplicationBasicServlet extends HttpServlet {
             DBFile dbf = col.getFile(fileName + ".xml");
             menu = dbf.getXMLAsString();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
         return menu;
     }
 
     public String xmlEnd() {
         String systemNameInfo = "<systemName>" + this.systemName + "</systemName>";
-        String systemVersion = "<systemVersion>" + this.systemVersion + "</systemVersion>";
-        String systemAcronymDescription = "<systemAcronymDescription>" + this.systemAcronymDescription + "</systemAcronymDescription>";
+        String espaLogo = "<espaLogo>" + this.espaLogo + "</espaLogo>";
+        String contactEmail = "<contactEmail>" + this.contactEmail + "</contactEmail>";
 
-        return systemAcronymDescription + "\n" + systemVersion + "\n" + systemNameInfo + "\n" + "\n</context>\n<footer/>\n</page>";
+        return contactEmail + "\n" + espaLogo + "\n" + systemNameInfo + "\n" + "\n</context>\n<footer/>\n</page>";
     }
 
     public String getAction() {

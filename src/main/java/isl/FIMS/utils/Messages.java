@@ -35,6 +35,9 @@ public class Messages {
     public static String UNPUBLISHED = "unpublished";
     public static String PENDING = "pending";
     public static String REJECTED = "rejected";
+
+    public static String wentWorng = "wentWorng";
+
     //various messages
     public static String REJECTED_NO_COMMENT = "REJECTED_NO_COMMENT";
     public static String IS_EDITED_BY_USER = "IS_EDITED_BY_USER";
@@ -68,7 +71,7 @@ public class Messages {
     public static String FIELD_Password_NOT_VERIFIED = "FIELD_Password_NOT_VERIFIED";
     public static String EMPTY_FIELD_LastName = "EMPTY_FIELD_LastName";
     public static String EMPTY_FIELD_FirstName = "EMPTY_FIELD_FirstName";
-        public static String EMPTY_FIELD_TargetSchema = "EMPTY_FIELD_TargetSchema";
+    public static String EMPTY_FIELD_TargetSchema = "EMPTY_FIELD_TargetSchema";
 
     public static String USER_EXIST = "USER_EXIST";
     public static String Email_EXIST = "Email_EXIST";

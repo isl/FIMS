@@ -49,10 +49,11 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <td colSpan="{$columns}" vAlign="top" class="content">
+        <xsl:if test="$AdminAction='list'">
             <xsl:call-template name="actions"/>
-            <br/>
-            <script type="text/JavaScript">
+        </xsl:if>
+        <div class="row context">
+            <script type="text/javascript">
                 var ret=false;
                 <xsl:variable name="tag" select=" 'NoTerm' "/>
                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
@@ -66,95 +67,104 @@ This file is part of the FIMS webapp.
                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                 var str = '<xsl:value-of select="$translated"/>';
             </script>
-            <div align="center" class="divA" >
-                <xsl:value-of select="$VocFileName"/>               
-            </div>
-            <br/>
-            <div  id="fileType" style="display:none;"> 
-                <xsl:value-of select="$VocFile"/> 
-            </div>
-            <form id="newTermFrm" method="post" onsubmit="ret= addNewVocTerm(getObj('newterm').value, 'AdminVoc?action={$AdminAction}&amp;menuId={$EntityType}', noTermStr, termExistsStr); alertMsg(ret);  return ret;">
-                <div style="text-align:center;" align="center">
-                    <br/>
-                    <table border="0" id="results" class="results" cellspacing="2">
-                        <thead>
-                            <tr align="center" class="contentHeadText">
-                                <th style="display:none;">                                                         
-                                </th>
-                                <th align="center" valign="middle">
-                                    <xsl:variable name="tag" select=" 'Oroi' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <b>
-                                        <xsl:value-of select="$translated"/>
-                                    </b>
-                                </th>
+  
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:value-of select="$VocFileName"/>        
+                </h4>
+                <div  id="fileType" style="display:none;"> 
+                    <xsl:value-of select="$VocFile"/> 
+                </div>
+                <table id="results">
+                    <thead>
+                        <tr class="contentHeadText">
+                            <th style="display:none;">                                                         
+                            </th>
+                            <th>
+                                <xsl:variable name="tag" select=" 'Oroi' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                         
+                                <xsl:value-of select="$translated"/>                         
+                            </th>
                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <xsl:for-each select="//Όρος">
-                                <xsl:variable name="ID" select="./@id"/>
-                                <tr id="resultRow" align="left" valign="middle" class="resultRow">
-                                    <td class="invisible">
-                                        <xsl:value-of select="./@id"/>
-                                    </td>
-                                  
-                                    <td align="center" valign="middle">
-                                        <input type="hidden" id="term" name="term" value="{./text()}"></input>
-                                        <xsl:value-of select="./text()"/>
-                                    </td>                                   
-                                </tr>
-                            </xsl:for-each>
-                        </tbody>
-                    </table>
-                </div>
-                <br/>				
-                <input type="hidden" name="EntityXMLFile" value="{$EntityXMLFile}"></input>
-                <div id="addNewTerm" align="center" style="visibility:hidden;">
-                    <table border="0">
-                        <tr>
-                            <xsl:variable name="tag" select=" 'NeosOros' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td class="divA" style="padding-right:10px;">
-                                <xsl:value-of select="$translated"/>
-                            </td>
-                            <td vAlign="top">
-                                <input type="text" id="newterm" name="newterm" style="width:250px;margin-right:10px;" value="{$TermValue}"></input>
-                                <input type="hidden" id="id" name="id" style="width:250px" value="{$TermId}"></input>
-                                <input type="hidden" name="file" value="{$VocFile}" class="button"></input>
-                                <xsl:variable name="tag" select=" 'Kataxwrisi' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <input style="text-align:center;" type="submit" value="{$translated}" class="button"></input>
-                            </td>
                         </tr>
-                    </table>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//Όρος">
+                            <xsl:variable name="ID" select="./@id"/>
+                            <tr class="resultRow">
+                                <td class="invisible">
+                                    <xsl:value-of select="./@id"/>
+                                </td>                                  
+                                <td>
+                                    <input type="hidden" id="term" name="term" value="{./text()}"></input>
+                                    <xsl:value-of select="./text()"/>
+                                </td>                                   
+                            </tr>
+                        </xsl:for-each>
+                    </tbody>
+                </table>
+                         
+            </div>
+        </div>
+        <xsl:if test="$AdminAction ='insert' or $AdminAction =  'edit'">
+            <div class="row">            
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h4 class="title">
+                        <xsl:value-of select="$VocFileName"/>        
+                    </h4>
+                    <h5 class="subtitle">
+                        <xsl:variable name="tag">
+                            <xsl:choose>
+                                <xsl:when test="$AdminAction='insert'">
+                                    <xsl:value-of select=" 'Eisagwgi' "/>
+                                </xsl:when>
+                                <xsl:when test="$AdminAction='edit'">
+                                    <xsl:value-of select=" 'Epexergasia' "/>
+                                </xsl:when>
+                            </xsl:choose>
+                        </xsl:variable>                            
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <xsl:value-of select="$translated"/>                            
+                    </h5>
+                    <form id="newTermForm" method="post" onsubmit="ret=addNewVocTerm(getObj('newterm').value, 'AdminVoc?action={$AdminAction}&amp;menuId={$EntityType}', noTermStr, termExistsStr); return ret;">
+
+                        <div id="addNewTerm"  class="row">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select=" 'NeosOros' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>:                           
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-10 col-md-10 col-lg-10">
+                                <p>
+                                    <input id="newterm" class="inputwidth" type="text" name="newterm" value="{$TermValue}" required="true"/>
+                                </p>
+                            </div>               
+                        </div>
+                        <input type="hidden" name="EntityXMLFile" value="{$EntityXMLFile}"></input>
+                        <input type="hidden" id="id" name="id"  value="{$TermId}"></input>
+                        <input type="hidden" name="file" value="{$VocFile}"></input>
+                        <xsl:variable name="tag" select=" 'Kataxwrisi' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                            <xsl:value-of select="$translated"/>
+                        </button>        
+                    </form>               
                 </div>
-                <script language="javascript">getObj('newterm').focus();</script>
-            </form>   
-            <script type="text/javascript">
-                function alertMsg(ret){
-                if(ret){
-                
-                if('<xsl:value-of select="$AdminAction"/>'=="insert"){                            
-                <xsl:variable name="tag" select="'TERM_ADD_SUCCESS'"/>  
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                var msg='<xsl:value-of select="$translated"/>';
-                alert(msg);
-                }else if('<xsl:value-of select="$AdminAction"/>'=="edit"){
-                <xsl:variable name="tag" select="'TERM_UPDATE_SUCCESS'"/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                var msg='<xsl:value-of select="$translated"/>';
-                alert(msg);
-                }                       
-                }
-                }
-                if('<xsl:value-of select="$AdminAction"/>'=="edit" || '<xsl:value-of select="$AdminAction"/>'=="insert"){                   
-                var elemID= document.getElementById('addNewTerm');    
-                elemID.style.visibility='visible'; 
-                }
-            </script>                              
-        </td>
+            </div>
+        </xsl:if>
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+
+            if('<xsl:value-of select="$AdminAction"/>'=="edit" || '<xsl:value-of select="$AdminAction"/>'=="insert"){                   
+            $('.context').css('display','none'); 
+            }
+            });
+        </script>
+      
     </xsl:template>
 </xsl:stylesheet>

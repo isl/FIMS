@@ -32,45 +32,10 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
- 
-    <xsl:template name="replaceNL">
-        <xsl:param name="string"/>
-        <xsl:choose>
-            <xsl:when test="contains($string,'&#10;')">
-                <xsl:value-of select="substring-before($string,'&#10;')"/>
-                <br/>
-                <xsl:call-template name="replaceNL">
-                    <xsl:with-param name="string" select="substring-after($string,'&#10;')"/>
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$string"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <xsl:template name="replaceNL_Translate">
-        <xsl:param name="string"/>
-        <xsl:choose>
-            <xsl:when test="contains($string,'&#10;')">
-                <xsl:variable name="tag" select="substring-before($string,'&#10;')"/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <xsl:value-of select="$translated"/>
-                <br/>
-                <xsl:call-template name="replaceNL_Translate">
-                    <xsl:with-param name="string" select="substring-after($string,'&#10;')"/>
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="tag" select="$string"/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <xsl:value-of select="$translated"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
+    <xsl:include href="../utils/utils.xsl"/>
     <xsl:include href="empty_page.xsl"/>
-      <xsl:include href="../entity/view_dependancies.xsl"/>
+    <xsl:include href="../entity/view_dependancies.xsl"/>
+      
     <xsl:variable name="DisplayError" select="//context/DisplayError"/>
     <xsl:variable name="Display" select="//context/Display"/>
     <xsl:variable name="Unlock" select="//context/Unlock"/>
@@ -81,81 +46,80 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <td colSpan="{$columns}" vAlign="top" class="content">
-            <br/>
-            <p align="center" class="contentText">
-                <b>
-                    <xsl:call-template name="replaceNL_Translate">
-                        <xsl:with-param name="string" select="$Display"/>
-                    </xsl:call-template>
-                </b>
-      
-                <br/>
-                <!--Sam's touch-->
-                <xsl:if test="$Display='IS_EDITED_BY_USER'">
-                    <xsl:text> </xsl:text>
-                    <xsl:value-of select="$Owner"/>
-                </xsl:if>
-                <br/>                
-                <xsl:if test=" $Unlock != 'false'  ">
-             
-                    <xsl:variable name="tag" select=" 'SinexeiaEpexergasiasMsg' "/>
-                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <font>
-                        <xsl:call-template name="replaceNL">
-                            <xsl:with-param name="string" select="$translated"/>
-                        </xsl:call-template>
-                    </font>
-                    <br/>
-                    <xsl:variable name="tag" select=" 'SinexeiaEpexergasias' "/>
-                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <a href="{$Unlock}">
-                        <xsl:value-of select="$translated"/>
-                    </a>
-                </xsl:if>
-                <xsl:if test=" $GoOnImport != 'false'  ">
-                    <xsl:variable name="tag" select=" 'SinexeiaEisagwgisMsg' "/>
-                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <font>
-                        <xsl:call-template name="replaceNL">
-                            <xsl:with-param name="string" select="$translated"/>
-                        </xsl:call-template>
-                    </font>
-                    <br/>
-                    <xsl:variable name="tag" select=" 'SinexeiaEisagwgis' "/>
-                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <a href="{$GoOnImport}">
-                        <xsl:value-of select="$translated"/>
-                    </a>
-                </xsl:if>
-            </p>
-                <xsl:variable name="result"  select="//context/query/results"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            h = $(window).height();
+            $('#displayRow').height(h);
+            });
+        </script>
+        <xsl:variable name="result"  select="//context/query/results"/>
 
-            <p align="right" style="padding-left:20px; padding-right:20px ;font-size:12;">
-                <!--xsl:variable name="tag" select=" 'Epistrofi' "/>
-               <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <a href="javascript:window.history.go(-1);window.resizeTo(screen.width-150,screen.height-80);window.moveTo(0,0);">
-                <xsl:value-of select="$translated"/></a>&#160;&#160;-->
-              
-                <xsl:choose>
-                <xsl:when test=" $result != ''  ">
-                    <xsl:text> </xsl:text>
-                    <xsl:text> </xsl:text>
-                    <xsl:text> </xsl:text>
-                      <xsl:call-template name="view_dependants">
-                         </xsl:call-template>
+        <div class="my-row special" id="displayRow">
+            <div class="v-m text-center">
+                <p class="displayParagraph">    
+                    <b>
+                        <xsl:call-template name="replaceNL_Translate">
+                            <xsl:with-param name="string" select="$Display"/>
+                        </xsl:call-template>
+                    </b>
+                    <br/>
+                    <xsl:if test="$Display='IS_EDITED_BY_USER'">
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="$Owner"/>
+                    </xsl:if>
+                   
+                    <xsl:if test=" $Unlock != 'false'">
+                        <xsl:variable name="tag" select=" 'SinexeiaEpexergasiasMsg' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <xsl:call-template name="replaceNL">
+                            <xsl:with-param name="string" select="$translated"/>
+                        </xsl:call-template>                              
+                    </xsl:if>
+                    <xsl:if test=" $GoOnImport != 'false'  ">
+                        <xsl:variable name="tag" select=" 'SinexeiaEisagwgisMsg' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <font>
+                            <xsl:call-template name="replaceNL">
+                                <xsl:with-param name="string" select="$translated"/>
+                            </xsl:call-template>
+                        </font>                               
+                    </xsl:if>
+                </p>
+                <p class="displayButtons">
+                    <xsl:variable name="tag" select=" 'Kleisimo' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <a class="btn btn-default .btn-sm displayButton" href="javascript:window.close();" >
+                        <xsl:value-of select="$translated"/>
+                    </a>
+                          
+                    <xsl:choose>
+                        <xsl:when test="$Unlock != 'false'">
+                            <xsl:variable name="tag" select=" 'SinexeiaEpexergasias' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <a class="btn btn-default .btn-sm displayButton" href="{$Unlock}">
+                                <xsl:value-of select="$translated"/>
+                            </a>
                         </xsl:when>
-                        <xsl:otherwise>
-                              <xsl:variable name="tag" select=" 'Kleisimo' "/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <a href="javascript:window.close();" >
-                    <xsl:value-of select="$translated"/>
-                </a>
-                        </xsl:otherwise>
-                </xsl:choose>
-            </p>
-            <!--/xsl:otherwise>
-            </xsl:choose-->
-        </td>
-    </xsl:template>
+                        <xsl:when test="$GoOnImport != 'false'">
+                            <xsl:variable name="tag" select=" 'SinexeiaEisagwgis' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <a class="btn btn-default .btn-sm displayButton" href="{$GoOnImport}">
+                                <xsl:value-of select="$translated"/>
+                            </a>
+                        </xsl:when>
+                        <xsl:when test="$result != ''"> 
+                            <xsl:variable name="tag" select=" 'ViewDependencies' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <a class="btn btn-default .btn-sm displayButton" href="#" onclick="javascript: $('#displayRow').remove(); toggleVisibility(document.getElementById('dependants'));">
+                                <xsl:value-of select="$translated"/>
+                            </a>
+                        </xsl:when>                       
+                    </xsl:choose>
+                </p>
+            </div>
+        </div>
+        <xsl:if test="$result != ''">
+            <xsl:call-template name="view_dependants"/>
+        </xsl:if>
+   </xsl:template>
 </xsl:stylesheet>

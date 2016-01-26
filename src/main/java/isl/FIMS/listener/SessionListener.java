@@ -111,7 +111,6 @@ public class SessionListener extends ApplicationBasicServlet implements HttpSess
         String q = "for $b in collection(\"" + this.systemDbCollection + "\")\n"
                 + " return \n"
                 + " update value $b//admin/locked[./text() = '" + session.getAttribute("username") + "']/text() with \"no\" ";
-     //   System.out.println("q--------------------->"+q);
         String[] res = queryCol.query(q);
    
         InformLogFile(LogMessage);
@@ -200,7 +199,6 @@ public class SessionListener extends ApplicationBasicServlet implements HttpSess
             LogFile.write(message.getBytes("UTF-8"));
             LogFile.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 

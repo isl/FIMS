@@ -108,7 +108,6 @@ public class ValidateAction extends ApplicationBasicServlet implements Filter {
              String[] value = (String[]) pairs.getValue();
              if (!pairs.getKey().equals("id") && !pairs.getKey().equals("file")) {
              query += " and (contains(./@href,'" + pairs.getKey() + "=" + value[0] + "') or contains(./@id,'" + pairs.getKey() + "=" + value[0] + "'))";
-             System.out.println(pairs.getKey() + " = " + value[0]);
              } else {
              query += " and (contains(./@href,'" + pairs.getKey() + "=') or contains(./@id,'" + pairs.getKey() + "='))";
 
@@ -118,7 +117,6 @@ public class ValidateAction extends ApplicationBasicServlet implements Filter {
             //   query+= ") or ((contains(./@href,'" + servlet_name + "') or contains(./@id,'" + servlet_name + "')) and (contains(./@href,'action=*') or contains(./@id,'action=*')))";
             query += "]/text()";
             String[] res = col.query(query);
-            //System.out.println(query);
             boolean flag = false;
             for (String db : res) {
                 String result = db.toString();

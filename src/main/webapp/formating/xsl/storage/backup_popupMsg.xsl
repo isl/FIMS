@@ -32,7 +32,7 @@ This file is part of the FIMS webapp.
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions">
     <xsl:template name="splashB">
         <div id="pleasewaitScreenB" style="position:absolute;z-index:5;top:17%;left:38%;visibility:hidden;">
-            <table bgcolor="#000000" border="1" bordercolor="#000000" cellpadding="0" cellspacing="0" height="200" width="300">
+            <table bgcolor="#000000" border="1" bordercolor="#000000" cellpadding="0" cellspacing="0" height="400" width="600">
                 <tr>
                     <td width="100%" height="100%" bgcolor="#FFFFFF" align="center" valign="middle">
                         <br/>                                                

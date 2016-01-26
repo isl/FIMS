@@ -41,70 +41,65 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        
-        <td colSpan="{$columns}" vAlign="top" class="content">
-            <xsl:call-template name="actions"/>
-            <script type="text/JavaScript">
-                <xsl:variable name="tag" select=" 'PromptMessage' "/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                var str = '<xsl:value-of select="$translated"/>';
-                <xsl:variable name="tag" select=" 'RestoreMSG' "/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                var strRestore = '<xsl:value-of select="$translated"/>';              
-            </script>
-            <br/>
-            <br/>
-            <xsl:if test="count(//result)&gt;0">
-                <script language="JavaScript" src="formating/javascript/utils/sortable.js"></script>
-                <table border="0" align="center" class="sortable" cellspacing="1" id="results">
-                    <thead>
-                        <tr align="center" vAlign="bottom" class="contentHeadText">
-                            <th style="display:none;">                                                         
-                            </th>
-                            <th style="display:none;">                                                         
-                            </th>
-                            <th style="display:none;">                                                         
-                            </th>
-                        <xsl:for-each select="$restoreFiles">
-                            <th>
-                                <strong>
-                                    <xsl:variable name="tag" select=" ./text() "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <xsl:value-of select="$translated"/>
-                                </strong>
-                            </th>
-                        </xsl:for-each>                        
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <xsl:for-each select="//result">
-                            <xsl:variable name="FileName" select="./filename/text()"/>
-                            <xsl:variable name="RestoreMsgDate" select="./date/text()"/>
-                            <xsl:variable name="RestoreMsgTime" select="./time/text()"/>
-                            <tr id="resultRow" align="center" vAlign="bottom" class="resultRow" >
-                                <td class="invisible">
-                                    <xsl:value-of select="$FileName"/>
-                                </td>
-                                <td id="date" class="invisible">
-                                    <xsl:value-of select="$RestoreMsgDate"/>
-                                </td>
-                                <td id="time" class="invisible">
-                                    <xsl:value-of select="$RestoreMsgTime"/>
-                                </td>
-                               
-                                <xsl:for-each select="./*[name() != 'filename']">
-                                    <td>
-                                        <!--xsl:if test="position() > 1">
-                                            <br/>
-                                        </xsl:if-->
-                                        <xsl:value-of select="./text()"/>
-                                    </td>
-                                </xsl:for-each>
+        <xsl:call-template name="actions"/>
+        <div class="row context">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <script type="text/JavaScript">
+                    <xsl:variable name="tag" select=" 'PromptMessage' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    var str = '<xsl:value-of select="$translated"/>';
+                    <xsl:variable name="tag" select=" 'RestoreMSG' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    var strRestore = '<xsl:value-of select="$translated"/>';              
+                </script>
+                <xsl:if test="count(//result)&gt;0">
+                    <table id="results">
+                        <thead>
+                            <tr class="contentHeadText">
+                                <th style="display:none;">                                                         
+                                </th>
+                                <th style="display:none;">                                                         
+                                </th>
+                                <th style="display:none;">                                                         
+                                </th>
+                                <xsl:for-each select="$restoreFiles">
+                                    <th>
+                                        <strong>
+                                            <xsl:variable name="tag" select=" ./text() "/>
+                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                            <xsl:value-of select="$translated"/>
+                                        </strong>
+                                    </th>
+                                </xsl:for-each>                        
                             </tr>
-                        </xsl:for-each>
-                    </tbody>
-                </table>
-            </xsl:if>
-        </td>
+                        </thead>
+                        <tbody>
+                            <xsl:for-each select="//result">
+                                <xsl:variable name="FileName" select="./filename/text()"/>
+                                <xsl:variable name="RestoreMsgDate" select="./date/text()"/>
+                                <xsl:variable name="RestoreMsgTime" select="./time/text()"/>
+                                <tr class="resultRow" >
+                                    <td class="invisible">
+                                        <xsl:value-of select="$FileName"/>
+                                    </td>
+                                    <td id="date" class="invisible">
+                                        <xsl:value-of select="$RestoreMsgDate"/>
+                                    </td>
+                                    <td id="time" class="invisible">
+                                        <xsl:value-of select="$RestoreMsgTime"/>
+                                    </td>
+                               
+                                    <xsl:for-each select="./*[name() != 'filename']">
+                                        <td>                                           
+                                            <xsl:value-of select="./text()"/>
+                                        </td>
+                                    </xsl:for-each>
+                                </tr>
+                            </xsl:for-each>
+                        </tbody>
+                    </table>
+                </xsl:if>
+            </div>
+        </div>        
     </xsl:template>
 </xsl:stylesheet>

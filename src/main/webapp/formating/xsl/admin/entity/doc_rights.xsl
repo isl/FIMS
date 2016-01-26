@@ -32,92 +32,113 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
-	<xsl:include href="../../ui/page.xsl"/>
+    <xsl:include href="../../ui/page.xsl"/>
 
-	<xsl:variable name="CodeValue" select="//context/CodeValue"/>
-	<xsl:variable name="MainCurrentName" select="//context/MainCurrentName"/>
+    <xsl:variable name="CodeValue" select="//context/CodeValue"/>
+    <xsl:variable name="MainCurrentName" select="//context/MainCurrentName"/>
 	
-	<xsl:variable name="Users" select="//context/user"/>
+    <xsl:variable name="Users" select="//context/user"/>
 
-	<xsl:variable name="FileId" select="//context/FileId"/>
+    <xsl:variable name="FileId" select="//context/FileId"/>
 
-	<xsl:variable name="EntityType" select="//context/EntityType"/>
-	<xsl:variable name="AdminAction" select="//context/AdminAction"/>
+    <xsl:variable name="EntityType" select="//context/EntityType"/>
+    <xsl:variable name="AdminAction" select="//context/AdminAction"/>
 
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-		<td colSpan="{$columns}" vAlign="top" align="center" class="content">
-			<xsl:variable name="tag" select=" 'DiaxeirisiDikaiwmatwn' "/>
-			<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-			<br/>
-			<p class="contentText" style="font-size:11pt">
-				<b><xsl:value-of select="$translated"/></b>
-			</p>
-			<form id="userForm" method="post" action="AdminEntity?type={$EntityType}&amp;action=setrights&amp;id={$FileId}" style="margin-bottom:0px;">
-				<table width="100%" class="contentText">
-					<tr>
-						<xsl:variable name="tag" select=" 'ΤιμήΚωδικού' "/>
-						<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-						<td width="20%" align="right"><xsl:value-of select="$translated"/></td>
-						<td><input type="text" id="codeValue" name="codeValue" style="width:400px" value="{$CodeValue}" disabled="disabled"></input></td>
-					</tr>
-					<tr>
-						<xsl:variable name="tag" select=" concat ('PrimaryInsertField',$EntityType) "/>
-						<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-						<td width="20%" align="right"><xsl:value-of select="$translated"/></td>
-						<td><input type="text" id="mainCurrentName" name="mainCurrentName" style="width:400px" value="{$MainCurrentName}" disabled="disabled"></input></td>
-					</tr>
-					<tr>
-						<td colspan="2"><hr size="1"/></td>
-					</tr>
-					<tr>
-						<xsl:variable name="tag" select=" 'Dikaiwma' "/>
-						<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-						<td width="20%" align="right"><xsl:value-of select="$translated"/>:</td>
-						<td>
-							<xsl:variable name="tag" select=" 'Write' "/>
-							<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-							<b><xsl:value-of select="$translated"/></b>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">
-							<br/>
-							<xsl:variable name="tag" select=" 'Xristes' "/>
-							<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-							<p class="contentText">
-								<b><xsl:value-of select="$translated"/></b>
-							</p>
-						</td>
-						<td></td>
-					</tr>
-					<xsl:for-each select="$Users">
-						<tr>
-							<td align="right">
-								<input type="checkbox" id="username" name="username" value="{./text()}">
-									<xsl:if test=" ./@write='true' ">
-										<xsl:attribute name="checked">checked</xsl:attribute>
-									</xsl:if>
-								</input>
-							</td>
-							<td><xsl:value-of select="./text()"/></td>
-						</tr>
-					</xsl:for-each>
-					<tr>
-						<td></td>
-						<td>
-							<br/>
-							<input type="hidden" name="lang" value="{$lang}"/>
-							<xsl:variable name="tag" select=" 'Oloklirwsi' "/>
-							<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-							<input type="submit" class="button" value="{$translated}"></input>	
-						</td>
-					</tr>
-				</table>
-			</form>
-			<br/>
-		</td>
-	</xsl:template>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+            $('.chzn-select').select2();                 
+            });
+        </script>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:variable name="tag" select=" 'DiaxeirisiDikaiwmatwn' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h4>
+                <form action="AdminEntity?type={$EntityType}&amp;action=setrights&amp;id={$FileId}" method="post">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select=" 'ΤιμήΚωδικού' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <input type="hidden" name="codeValue" value="{$CodeValue}" disabled="disabled"/>
+                                <xsl:value-of select="$CodeValue"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="concat ('PrimaryInsertField',$EntityType)"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <input type="hidden" id="mainCurrentName" name="mainCurrentName"  value="{$MainCurrentName}"/>                            
+                                <xsl:value-of select="$MainCurrentName"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Xristes'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">   
+                            <xsl:variable name="tag" select="'Epilogi_more'"/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>         
+                            <select data-placeholder="{$translated}" class="chzn-select" multiple="multiple" name="username" style="width:45%;">
+                                <option value=""></option>  
+                                <xsl:for-each select="$Users">
+                                    <xsl:choose>
+                                        <xsl:when test=" ./@write='true' ">
+                                            <option value="{./text()}" selected="selected">
+                                                <xsl:value-of select="./text()"/>                                        
+                                            </option>   
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <option value="{./text()}">
+                                                <xsl:value-of select="./text()"/>                                        
+                                            </option>
+                                        </xsl:otherwise>
+                                    </xsl:choose>                                           
+                                </xsl:for-each>                           
+                            </select>                     
+                        </div>
+                    </div>
+                    <input type="hidden" name="lang" value="{$lang}"/>
+                    <xsl:variable name="tag" select="'Oloklirwsi'"/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>         
+                    <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                        <xsl:value-of select="$translated"/>
+                    </button>                             
+                </form>
+
+            </div>
+        </div>
+    </xsl:template>
 </xsl:stylesheet>

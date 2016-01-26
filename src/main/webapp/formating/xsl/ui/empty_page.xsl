@@ -36,19 +36,15 @@ This file is part of the FIMS webapp.
     <xsl:include href="vars.xsl"/>
     <xsl:template name="page">
         <html>
-            <xsl:call-template name="head_html">
-                <xsl:with-param name="title" select="$title"/>
-                 <xsl:with-param name="javascript" select="concat('','formating/javascript/utils/scripts.js')"/>
-                <xsl:with-param name="css" select="concat('','formating/css/page.css')"/>
-            </xsl:call-template>
-            <body topmargin="0" leftmargin="0" onload="javascript:window.resizeTo(700,500);">
-                <table border="0" cellspacing="0">
-                    <tbody>										
-                        <tr>
+            <xsl:call-template name="head_html"/>    
+            <body style="    background-color: white!important;">
+                <div class="container">                         
+                    <div class="row " id="content">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
                             <xsl:call-template name="context"/>
-                        </tr>						
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                </div>
             </body>
         </html>
     </xsl:template>

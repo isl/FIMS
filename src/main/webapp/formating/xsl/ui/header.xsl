@@ -32,9 +32,7 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:template name="header">
-        <xsl:param name="logo"/>
-        <xsl:param name="name"/>
-        <xsl:param name="user"/>
+        
         <xsl:variable name="tag" select=" 'User_Manual' "/>
         <xsl:variable name="User_Manual" select="$locale/topmenu/*[name()=$tag]/*[name()=$lang]"/>  
         <xsl:variable name="tag" select=" 'Guest_Manual' "/>
@@ -43,225 +41,129 @@ This file is part of the FIMS webapp.
         <xsl:variable name="Admin_Manual" select="$locale/topmenu/*[name()=$tag]/*[name()=$lang]"/> 
         <xsl:variable name="tag" select=" 'SysAdmin_Manual' "/>
         <xsl:variable name="SysAdmin_Manual" select="$locale/topmenu/*[name()=$tag]/*[name()=$lang]"/>
-        <script>
-            var language='<xsl:value-of select="$lang"/>';
-            var LanguageOfManual = '';			
-            if (language=='it' || language=='ar'){
-            LanguageOfManual='en';
-            }else{
-            LanguageOfManual= '<xsl:value-of select="$lang"/>';
-            
-            }
-        </script>
-        <tr>
-            <td width="18%" class="headerLogo" align="center">
-                <img src="formating/images/layout_header_left.jpg"></img>
-            </td>
-            <td width="82%" class="headerLogo headerPosition" align="left" colspan="{$columns}">
-                <!--img  src="{ concat('formating/images/layout_header_right_', $lang, '.jpg') }">
-                </img-->
-          
-                <xsl:choose>                   
-                    <xsl:when test="$user!=''">
-                        <xsl:variable name="topmenus" select="//topmenu/menugroup/menu"/>
-                        <xsl:variable name="image" select="string(//topmenu/menugroup/@img_src)"/>
-                   
-                        <div  id ="topDrop" style="/*position:absolute;*/ background-repeat: no-repeat; height: 100px; background-image: url('{ concat('formating/images/layout_header_right_', $lang, '.jpg') }'); ">
-                            <ul id="sddm">
-                                <li style="margin-top:59px;">              
-                                    <a style="white-space:nowrap; color:white;" onmouseout="mclosetime()" href="#" onmouseover="mopen('topMenu')" >
-                                        <img src="./formating/images/user.png"/>
-                                        <xsl:text> </xsl:text>
-                                        <xsl:value-of select="$user"/>
-                                        <xsl:text> </xsl:text>
-                                        <img  src="{$image}"/>                            
-                                    </a>
-                                    <div id="topMenu"    onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-                                        <xsl:for-each select="$topmenus">
-                                            <xsl:variable name="langArg">
-                                                <xsl:choose>
-                                                    <xsl:when test="./@id='BugReport'">
-                                                        <xsl:choose>
-                                                            <xsl:when test="$lang='ar' or $lang='it' or $lang='fr'or $lang='sv'">
-                                                                <xsl:text>&amp;language=en&amp;username=</xsl:text>
-                                                                <xsl:value-of select="$user"/>
-                                                            </xsl:when>
-                                                            <xsl:otherwise>
-                                                                <xsl:text>&amp;language=</xsl:text>
-                                                                <xsl:value-of select="$lang"/>
-                                                                <xsl:text>&amp;username=</xsl:text>
-                                                                <xsl:value-of select="$user"/>
-                                                            </xsl:otherwise>
-                                                        </xsl:choose>
-                                                    </xsl:when>
-                                                    <!--plays with manual of roles(admin/editor/guest/sysadmin) -->
-                                                    <!--xsl:when test="./@id='Help'">
-                                                        <xsl:choose>
-                                                            <xsl:when test="$lang='ar' or $lang='it'"> 
-                                                               <xsl:text>_en.html</xsl:text>
-                                                            </xsl:when>
-                                                            <xsl:otherwise>
-                                                                <xsl:text>_</xsl:text>
-                                                                <xsl:value-of select="$lang"/>
-                                                                <xsl:text>.html</xsl:text>
-                                                            </xsl:otherwise>
-                                                        </xsl:choose>
-                                                    </xsl:when-->
-                                                    <xsl:when test="./@id='Help'">
-                                                        <xsl:choose>
-                                                            <xsl:when test="$lang='gr' or $lang='en'">
-                                                                <xsl:value-of select="$lang"/> 
-                                                                <xsl:text>/manual.pdf</xsl:text>
-                                                            </xsl:when>
-                                                            <xsl:otherwise>
-                                                                <xsl:value-of select="$lang"/>
-                                                                <xsl:text>/manual.html</xsl:text>
-                                                            </xsl:otherwise>
-                                                        </xsl:choose>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <xsl:value-of select="''"/> 
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                            </xsl:variable>                                        
-                                            <a class="newMenu">
-                                                <!--plays with manual of roles(admin/editor/guest/sysadmin) -->
-                                                <!--xsl:if test="./@id!='Help'"-->
-                                                <xsl:if test="./@id='BugReport' or ./@id='Help'">
-                                                    <xsl:attribute name="target">_blank</xsl:attribute>
-                                                </xsl:if>
-                                                <xsl:attribute name="href">
-                                                    <xsl:value-of select="./@href"/>
-                                                    <xsl:value-of select="$langArg"/>
-                                                </xsl:attribute>
-                                                <!--/xsl:if-->
-                                                <xsl:if test="./@id='Help'">                                                 
-                                                    <xsl:attribute name="onmouseover">
-                                                        <xsl:value-of select="./@onmouseover"/>
-                                                    </xsl:attribute>
-                                                </xsl:if>
-                                                <xsl:variable name="tag" select="."/>
-                                                <xsl:variable name="translated" select="$locale/topmenu/*[name()=$tag]/*[name()=$lang]"/>
-                                                <xsl:value-of select="$translated"/>  
-                                            </a>
-                                            <!--plays with manual of roles(admin/editor/guest/sysadmin) -->
-                                            <!--xsl:if test="./@id='Help'"> 
-                                                <xsl:if test=" $UserRights = 'admin' ">                                                            
-                                                    <a  style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_anagnwsth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$Guest_Manual"/>                            
-                                                    </a>
-                                                    <a style="display:none;"  class="help ">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_syntakth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$User_Manual"/>                            
-                                                    </a>
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_diax_forea/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$Admin_Manual"/>                            
-                                                    </a>
-                                                </xsl:if>
-                                                <xsl:if test="$UserRights = 'editor' "> 
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_anagnwsth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$Guest_Manual"/>                            
-                                                    </a>
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_syntakth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$User_Manual"/>                            
-                                                    </a> 
-                                                </xsl:if>
-                                                <xsl:if test=" $UserRights = 'guest' "> 
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_anagnwsth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$Guest_Manual"/>                            
-                                                    </a>
-                                                </xsl:if>
-                                                <xsl:if test=" $UserRights = 'sysadmin' "> 
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_anagnwsth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$Guest_Manual"/>                            
-                                                    </a>
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_syntakth/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$User_Manual"/>                            
-                                                    </a> 
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_diax_forea/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$Admin_Manual"/>                            
-                                                    </a>
-                                                    <a style="display:none;" class="help">
-                                                        <xsl:attribute name="onclick">javascript:window.open('Manuals/'+LanguageOfManual+'/manual_diax_syst/manual.html')</xsl:attribute>
-                                                        <xsl:attribute name="href">javascript:void(0)</xsl:attribute>
-                                                        -
-                                                        <xsl:value-of select="$SysAdmin_Manual"/>                            
-                                                    </a>  
-                                                </xsl:if>                                            
-                                            </xsl:if-->
-                                            
-                                        </xsl:for-each>
-                                    </div>
-                                </li>
-                            </ul>                             
-                        </div>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <!--img  src="{ concat('formating/images/layout_header_right_', $lang, '.jpg') }">
-                        </img-->
-                        <xsl:variable name="topmenus" select="//topmenu/menugroup/menu"/>
-                        <xsl:variable name="image" select="string(//topmenu/menugroup/@img_src)"/>
-                        <xsl:choose>
-                        <xsl:when test="count(//context/Langs/Lang) &gt; 1">
-                            <div style=" height: 100px;background-repeat: no-repeat;background-image: url('{ concat('formating/images/layout_header_right_', $lang, '.jpg') }');z-index:10;top: 60px;">                            
-                                <ul id="sddm">
-                                    <li style="margin-top:59px;">              
-                                        <a style="white-space:nowrap; color:white;" onmouseout="mclosetime()" href="#" onmouseover="mopen('topMenu')" >
-                                            <xsl:variable name="tag" select=" $lang "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <xsl:value-of select="$translated"/>
-                                            (<xsl:value-of select="$lang"/>)<xsl:text> </xsl:text>
-                                            <img  src="formating/images/arrowDownWhite.png"/>                            
-                                        </a>
-                                        <div id="topMenu"    onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-                                            <xsl:for-each select="//context/Langs/Lang">
-                                                <a class="newMenu" href="SetLanguage?lang={./text()}">
-                                                    <xsl:variable name="tag" select="./text()"/>
-                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$tag]"/>
-                                                    <xsl:value-of select="$translated"/> (<xsl:value-of select="./text()"/>)
-                                                </a>
-                                            </xsl:for-each>                                                         
-                                        </div>
-                                    </li>
-                                </ul>                             
-                            </div>
-                        </xsl:when>
-                        <xsl:otherwise>
-                              <img  src="{ concat('formating/images/layout_header_right_', $lang, '.jpg') }">
-                        </img>
-                        </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:otherwise>
-                  
-                </xsl:choose>
+        <xsl:variable name="topmenus" select="//topmenu/menugroup/menu"/>
+        <xsl:variable name="image" select="string(//topmenu/menugroup/@img_src)"/>
+        <xsl:variable name="contactEmail" select="//context/contactEmail/text()"/>
+        <xsl:variable name="tag" select="'contactEmail'"/>
+        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+        <script language="JavaScript">
 
-            </td>            
-        </tr>
+            $(document).ready(function () {
+    
+            $('#contact').qtip({
+            content: {
+            text: '<xsl:value-of select="$contactEmail"/>',
+            title: '<xsl:value-of select="$translated"/>',
+            button: 'Close'
+            },
+            hide: {
+            event: false
+            },
+            style: {
+            classes: 'qtip-dark',
+      
+            }
+    
+            });
+    
+            });   
+        </script>
+        <img class="img-responsive" src="{ concat('formating/images/header_', $lang, '.png') }"></img> 
+        <xsl:choose>                   
+            <xsl:when test="$user!=''">
+                <div class="dropdown headerDropDown">
+                
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"> 
+                        <img src="./formating/images/user.png"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="$fullname"/>
+                        <xsl:text> </xsl:text>
+                        <span class="caret"></span> 
+                    </a>
+                    <ul id="insideHeaderDrop" class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <xsl:for-each select="$topmenus">     
+                            <xsl:variable name="langArg">
+                                <xsl:choose>                                          
+                                    <xsl:when test="./@id='Help'">
+                                        <xsl:choose>
+                                            <xsl:when test="$lang='gr' or $lang='en'">
+                                                <xsl:value-of select="$lang"/> 
+                                                <xsl:text>/manual.pdf</xsl:text>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$lang"/>
+                                                <xsl:text>/manual.html</xsl:text>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="''"/> 
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>                                     
+                            <li role="presentation">
+                                <a>
+                                    <xsl:if test="./@id='Help'">
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                    </xsl:if>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of select="./@href"/>
+                                        <xsl:value-of select="$langArg"/>
+                                    </xsl:attribute>
+                                    <xsl:if test="./@id='Help'">                                                 
+                                        <xsl:attribute name="onmouseover">
+                                            <xsl:value-of select="./@onmouseover"/>
+                                        </xsl:attribute>
+                                    </xsl:if>
+                                    <xsl:variable name="tag" select="."/>
+                                    <xsl:variable name="translated" select="$locale/topmenu/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>  
+                                </a>                            
+                            </li>                       
+                        </xsl:for-each>
+                    </ul>
+                </div>
+                <xsl:if test="$contactEmail!=''">
+
+                    <div class="dropdown headerDropDown" style="margin-right:10px;">                
+
+                        <img id="contact" class="img-responsive" src="formating/images/contact.png"/>
+                    </div>
+                </xsl:if>      
+            </xsl:when>
+            <xsl:otherwise>                                       
+                <xsl:if test="count(//context/Langs/Lang) &gt; 1">
+
+                    <div class="dropdown headerDropDown">                
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle"> 
+                            <xsl:variable name="tag" select=" $lang "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:value-of select="$translated"/>
+                            (<xsl:value-of select="$lang"/>)<xsl:text> </xsl:text>
+                            <span class="caret"></span> 
+                        </a>
+                        <ul id="outsideHeaderDrop" class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                            <xsl:for-each select="//context/Langs/Lang">
+                                <li role="presentation">
+                                    <a href="SetLanguage?lang={./text()}">
+                                        <xsl:variable name="tag" select="./text()"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$tag]"/>
+                                        <xsl:value-of select="$translated"/> (<xsl:value-of select="./text()"/>)
+                                    </a>                            
+                                </li>
+                       
+                            </xsl:for-each>
+                        </ul>
+                    </div>                                      
+                </xsl:if>   
+                <xsl:if test="$contactEmail!=''">
+
+                    <div class="dropdown headerDropDown" style="margin-right:10px;">                
+
+                        <img id="contact" class="img-responsive" src="formating/images/contact.png"/>
+                    </div>
+                </xsl:if>            
+            </xsl:otherwise>                  
+        </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>

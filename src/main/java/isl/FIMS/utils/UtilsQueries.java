@@ -157,6 +157,8 @@ public class UtilsQueries extends ApplicationBasicServlet {
         queryRet.append("{$i/" + rootPath + "/admin/organization}\n");
         queryRet.append("<hasPublicDependants>{exists($i/" + rootPath + "/admin/refs_by/ref_by[./@isUnpublished='false'])}\n</hasPublicDependants>");
         queryRet.append("<userHasWrite>{$i/" + rootPath + "/admin/write/text()='" + username + "'}\n</userHasWrite>");
+        queryRet.append("<versionId>{$i/" + rootPath + "/admin/versions/versionId/text()}\n</versionId>");
+
         queryRet.append("<isImported>{exists($i/" + rootPath + "/admin/imported)}\n</isImported>");
         queryRet.append("</hiddenResults>");
         queryRet.append("</result>\n");
@@ -190,7 +192,6 @@ public class UtilsQueries extends ApplicationBasicServlet {
 
         //========== PAGING CODE ==========
     //    querySource.append("}\n</stats>");
-        System.out.println(querySource.toString());
         return querySource.toString();
 
     }

@@ -78,7 +78,7 @@ public class DeleteEntity extends ApplicationBasicServlet {
 
         boolean isUnpublished = xmlE.hasAdminProperty("status", Messages.UNPUBLISHED);
         boolean isRejected = xmlE.hasAdminProperty("status", Messages.REJECTED);
-        boolean isAdmin = this.userHasAction("admin",username);
+        boolean isAdmin = this.userHasAction("admin", username);
 
         if (mode == null) {
             if (isAdmin) {
@@ -187,7 +187,9 @@ public class DeleteEntity extends ApplicationBasicServlet {
                 return;
             }
         }
-
+        xml.append("<EntityType>").append(type).append("</EntityType>\n");
+        String nameValue = xmlE.queryString("//admin/uri_id/text()")[0];
+        xml.append("<termvalue>").append(nameValue).append("</termvalue>\n");
         if (displayMsg.length() != 0) {
             Config conf = new Config(type);
 

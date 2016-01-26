@@ -48,9 +48,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ChangePass extends ApplicationBasicServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -67,7 +66,7 @@ public class ChangePass extends ApplicationBasicServlet {
         String username = getUsername(request);
 
         String userOrg = this.getUserGroup(username);
-        boolean isEditor = this.userHasAction("editor",username);
+        boolean isEditor = this.userHasAction("editor", username);
         StringBuffer resultsTag = new StringBuffer();
         String type = "changePass";
         Config conf = new Config(type);
@@ -150,8 +149,6 @@ public class ChangePass extends ApplicationBasicServlet {
                     user.setInfo("address", address);
                     user.setInfo("email", email);
 
-                
-
                     displayMsg = Messages.ACTION_SUCCESS;
                 }
             } catch (EntryNotFoundException ex) {
@@ -181,8 +178,7 @@ public class ChangePass extends ApplicationBasicServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -196,8 +192,7 @@ public class ChangePass extends ApplicationBasicServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

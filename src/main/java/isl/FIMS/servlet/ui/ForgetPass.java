@@ -112,6 +112,7 @@ public class ForgetPass extends ApplicationBasicServlet {
                     if (isSend) {
                         dbUser.setPassword(newPass);
                         displayMsg = "NewPassSend";
+                        response.sendRedirect("Login");
                     } else {
                         displayMsg = "wentWorng";
                     }
@@ -137,7 +138,7 @@ public class ForgetPass extends ApplicationBasicServlet {
     public String xmlStart(String lang) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<page  language=\"" + lang + "\">\n"
-           /*     + "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n"*/
+                /*     + "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n"*/
                 + "<header>\n"
                 + "</header>\n"
                 + "<topmenu>\n"
@@ -146,9 +147,7 @@ public class ForgetPass extends ApplicationBasicServlet {
                 + "</leftmenu>\n" + "<context>\n";
     }
 
- 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

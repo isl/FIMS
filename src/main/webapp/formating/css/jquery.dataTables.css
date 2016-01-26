@@ -5,11 +5,12 @@
 
 table.dataTable td, tr {
     border: 1px solid;
+    border-bottom: 3px solid;
     border-spacing: 2px;
     border-color: #ebebeb;
 }
 table.dataTable {
-    width: 100%;
+    width: 100%  !important;
     margin: 0 auto;
     clear: both;
     border-collapse: separate;
@@ -29,8 +30,8 @@ table.dataTable tfoot th {
 }
 table.dataTable thead th,
 table.dataTable thead td {
-    padding: 10px 18px;
-    border-bottom: 1px solid #111111;
+    padding: 5px 18px;
+    /*    border-bottom: 1px solid #111111;*/
 }
 table.dataTable thead th:active,
 table.dataTable thead td:active {
@@ -66,8 +67,7 @@ table.dataTable tbody tr {
     background-color: white;
 }
 table.dataTable tbody tr.selected {
-   /* background-color: #b0bed9;*/
-    background-image: url(../images/bg_color2.gif);
+    background-color: #F4F4F4;
 }
 table.dataTable tbody th,
 table.dataTable tbody td {

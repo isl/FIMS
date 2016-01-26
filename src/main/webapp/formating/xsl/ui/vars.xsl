@@ -35,7 +35,6 @@ This file is part of the FIMS webapp.
     <xsl:variable name="locale" select="document(concat('', '../../multi_lang.xml'))/locale"/>
     <xsl:variable name="lang" select="//page/@language"/>
     <xsl:variable name="name" select="$locale/header/name/*[name()=$lang]"/>
-    <xsl:variable name="logo" select="//logo"/>
     <xsl:variable name="text" select="$locale/footer/text1/*[name()=$lang]"/>
 
     <xsl:variable name="tag" select="//page/@title"/>
@@ -44,19 +43,13 @@ This file is part of the FIMS webapp.
 
     <xsl:variable name="UserRights" select="//page/@UserRights"/>
     <xsl:variable name="user" select="//page/@user"/>
+    <xsl:variable name="fullname" select="//page/@fullname"/>
     <xsl:variable name="columns" select="count(//topmenu/menugroup/menu)+1"/>
 
-        <!-- needed for preview of xmls -->
-    <!--xsl:variable name="showEmpty" select="1"/-->
-    <xsl:variable name="showTreeLink" select="0"/>
-    <!--xsl:variable name="adminTag" select="'admin'"/-->
-    <xsl:variable name="allType" select="'all'"/>
+
     <xsl:variable name="formatingDir" select="'formating'"/>
     <xsl:variable name="type" select="//context/EntityType"/>
-    <xsl:variable name="preview_lang" select="//context/PreviewLang"/>
-    <!--xsl:variable name="preview_systemRoot" select="//context/systemRoot"/-->
-    <!--xsl:variable name="annakom_icons_url" select="concat($systemRoot,$formatingDir,'/images/')"/-->
-    <!--xsl:variable name="annakom_icons_url" select="concat($preview_systemRoot,$formatingDir,'/images/')"/-->
+   
 
     <xsl:template name="vars">
     </xsl:template>

@@ -116,7 +116,7 @@ public class AdminListEntity extends ApplicationBasicServlet {
             if (status != null && status.equals(Messages.PENDING)) {
                 conf.ADMIN_LIST_ENTITY_XSL = conf.LIST_PENDING_XSL;
             } else if (status != null && status.equals(Messages.PUBLISHED)) {
-                conf.ADMIN_LIST_ENTITY_XSL = conf.LIST_PUBLISHED_XSL;
+                conf.ADMIN_LIST_ENTITY_XSL = conf.ADMIN_LIST_ENTITY_XSL;
             }
         }
 

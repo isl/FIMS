@@ -159,7 +159,6 @@ public class SearchSave extends BasicSearchServlet {
             try {
                 q.addOutput(outputs[i]);
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
             }
         }
 

@@ -31,95 +31,133 @@ This file is part of the FIMS webapp.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-    <xsl:template name="string-replace-all">
-        <xsl:param name="text" />
-        <xsl:param name="replace" />
-        <xsl:param name="by" />
-        <xsl:choose>
-            <xsl:when test="contains($text, $replace)">
-                <xsl:value-of select="substring-before($text,$replace)" />
-                <xsl:value-of select="$by" />
-                <xsl:call-template name="string-replace-all">
-                    <xsl:with-param name="text" select="substring-after($text,$replace)" />
-                    <xsl:with-param name="replace" select="$replace" />
-                    <xsl:with-param name="by" select="$by" />
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$text" />
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+
     <xsl:output method="html"/>
-    <xsl:template name="view_dependants">
+    <xsl:template name="view_dependants">          
         <xsl:variable name="result"  select="//context/query/results"/>
-        <xsl:variable name="tag" select=" 'ViewDependencies' "/>
-        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                       
+   
                       
         <xsl:if test=" $result != ''  ">
-            <xsl:variable name="URI_Reference_Path" select="//context/URI_Reference_Path"/>
-                           
-            <a href="#" onclick="javascript:toggleVisibility(document.getElementById('dependants'));">
-                <xsl:value-of select="$translated"/>
-            </a>
-                          
-            <br/>
-            <br/>
-            <script language="JavaScript" src="formating/javascript/utils/sortable.js"></script>        
+            <xsl:variable name="URI_Reference_Path" select="//context/URI_Reference_Path"/>                                                    
             <xsl:variable name="output" select="//context//query/outputs/path"/>
-            <div id="dependants" style="display:none;">
-                <table id="results" class="sortable" border="0" align="center" cellspacing="1">
-                    <thead>
-                        <tr align="center" valign="middle" class="contentHeadText">
-                                                  
-                            <xsl:for-each select="$output">
-                                <th>
-                                    <strong>
-                                        <xsl:variable name="tag" select=" ./text() "/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <xsl:value-of select="$translated"/>
-                                    </strong>
-                                </th>
-                            </xsl:for-each>
-                            <th>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <xsl:for-each select="//result">
-                            <tr id="resultRow" align="center" valign="middle" class="resultRow"  >
-                                                          <td>                                                
-                                    <xsl:value-of select="./name/text()"/>
-                                </td>
-                                <td title="{concat($URI_Reference_Path,./uri_id/text())}">                                                
-                                    <xsl:value-of select="./uri_id/text()"/>
-                                </td>
-                                <xsl:variable name="type" select="./type/text()"/>                               
-                                <xsl:variable name="id" select="./id/text()"/>                               
+            <xsl:variable name="VocFileName"  select="//context/VocFileName"/>
+            <xsl:variable name="TermName"  select="//context/termvalue"/>
+            <script type="text/javascript">
+
+                $(document).ready(function(){
+          
+                $('#results tbody').on('click', 'tr', function () {
+                var onclick = $(this).find('.invisible a').attr('id');
+                var a = $('.actionsMenu').find('a').attr('onclick', onclick);
+                } );
+                if( window.opener ){ //popup case
+                $('#closeButton').css('display','');;
+                }else{
+                $('#backButton').css('display','');;
+
+                }
+              
+                });
+            </script>
+            <div id="dependants" style="display:none;">            
+                <div class="row">
+                    <div class="col-sm-9 col-md-9 col-lg-9 actionsMenu">
+                        <ul class="nav nav-tabs">
+                            <li>
                                 <xsl:variable name="tag" select=" 'Proboli' "/>                               
                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <xsl:variable name="ServletView" select="//context//actions//menu[@id='View']/actionPerType[@id=$type]/userRights[./text()=$UserRights]/@id"/>
+                                <a title="{$translated}" href="javascript:void(0);" onclick="">
+                                    <img src="formating/images/view.png" onmouseover="this.src = './formating/images/viewHover.png';" onmouseout="this.src = './formating/images/view.png';"/>
+                                </a>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                </div> 
+                <div class="row context">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                
+                        <h4 class="title">
+                            <xsl:variable name="tag" select=" 'DependenciesTitle' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                       
+                            <xsl:value-of select="$translated"/>
+                            <xsl:if test="$VocFileName!=''">
+                                <xsl:text></xsl:text>
+                                -
+                                <xsl:text></xsl:text>
+                                <xsl:value-of select="$VocFileName"/>
+                            </xsl:if>
+                        </h4>                   
+                        <h5 class="subtitle">
+                            <b>
+                                <xsl:variable name="tag" select=" 'record' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>:
+                            </b>
+                            <xsl:text></xsl:text>    
+                            <xsl:value-of select="$TermName"/>
+                        </h5>  
+                        <table id="results">
+                            <thead>
+                                <tr  class="contentHeadText">                                                  
+                                    <xsl:for-each select="$output">
+                                        <th>
+                                            <strong>
+                                                <xsl:variable name="tag" select=" ./text() "/>
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                <xsl:value-of select="$translated"/>
+                                            </strong>
+                                        </th>
+                                    </xsl:for-each>
+                                    <th style="display:none"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <xsl:for-each select="//result">
+                                    <tr class="resultRow">
+                                        <td>                                                
+                                            <xsl:value-of select="./name/text()"/>
+                                        </td>
+                                        <td title="{concat($URI_Reference_Path,./uri_id/text())}">                                                
+                                            <xsl:value-of select="./uri_id/text()"/>
+                                        </td>
+                                        <xsl:variable name="type" select="./type/text()"/>                               
+                                        <xsl:variable name="id" select="./id/text()"/>                               
+                                        <xsl:variable name="tag" select=" 'Proboli' "/>                               
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:variable name="ServletView" select="//context//actions//menu[@id='View']/actionPerType[@id=$type]/userRights[./text()=$UserRights]/@id"/>
                       
-                                <xsl:variable name="ServletViewNoLang">
-                                    <xsl:call-template name="string-replace-all">
-                                        <xsl:with-param name="text" select="$ServletView" />
-                                        <xsl:with-param name="replace" select="'&amp;lang='" />
-                                        <xsl:with-param name="by" select="''" />
-                                    </xsl:call-template>
-                                </xsl:variable>
+                                        <xsl:variable name="ServletViewNoLang">
+                                            <xsl:call-template name="string-replace-all">
+                                                <xsl:with-param name="text" select="$ServletView" />
+                                                <xsl:with-param name="replace" select="'&amp;lang='" />
+                                                <xsl:with-param name="by" select="''" />
+                                            </xsl:call-template>
+                                        </xsl:variable>
                      
-                                <td>
-                                    <a class="action" href="javascript:void(0)" onClick="previewPopUp('{concat($ServletViewNoLang,$id,'&amp;lang=',$lang)}', '{$type}')">
-                                        <img border="0" src="formating/images/view.png"/>
-                                    </a>
-                                </td>
-                            </tr>
-                        </xsl:for-each>
-                    </tbody>
-                </table>
+                                        <td class="invisible">                                        
+                                            <a id="previewPopUp('{concat($ServletViewNoLang,$id,'&amp;lang=',$lang)}', '{$type}')"/>             
+                                        </td>
+                                       
+                                    </tr>
+                                </xsl:for-each>
+                            </tbody>
+                        </table>
+                        <xsl:variable name="tag" select=" 'Epistrofi' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <a id="backButton" style="display:none;" class="btn btn-default .btn-sm displayButton" href="javascript:window.history.go(-2);">
+                            <xsl:value-of select="$translated"/>
+                        </a>
+                        <xsl:variable name="tag" select=" 'Kleisimo' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <a id="closeButton" style="display:none;margin-bottom: 20px;" class="btn btn-default .btn-sm displayButton" href="javascript:window.close();" >
+                            <xsl:value-of select="$translated"/>
+                        </a>
+                        
+                    </div>
+                </div>
             </div>
-            <br/>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

@@ -47,18 +47,14 @@ This file is part of the FIMS webapp.
         <script type="text/JavaScript">
             var str = '<xsl:value-of select="$translated"/>';
         </script>           
-
-        <td colSpan="{$columns}" vAlign="top"  class="content">
-            <xsl:call-template name="actions"/>
-            <br/>
-            <br/>
-
-            <xsl:if test="count(//result)&gt;0">
-                <table border="0" align="center" id="results" class="sortable" cellspacing="1">
+        <xsl:call-template name="actions"/>
+        <div class="row context">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table id="results">
                     <xsl:choose>
                         <xsl:when test="$ListOf!='Org'"> 
                             <thead>
-                                <tr align="center" valign="middle" class="contentHeadText">
+                                <tr class="contentHeadText">
                                     <th style="display:none;">                                                         
                                     </th>
                                     <xsl:for-each select="$output">
@@ -75,7 +71,7 @@ This file is part of the FIMS webapp.
                             <tbody>
                                 <xsl:for-each select="//result">
                                     <xsl:variable name="ID" select="./Id/Id/text()"/>
-                                    <tr id="resultRow" align="center" valign="middle" class="resultRow">
+                                    <tr class="resultRow">
                                         <td class="invisible" >
                                             <xsl:value-of select="./hiddenResults/FileId/text()"/>
                                         </td>  
@@ -96,7 +92,7 @@ This file is part of the FIMS webapp.
                         </xsl:when>
                         <xsl:otherwise>
                             <thead>
-                                <tr align="center" valign="middle" class="contentHeadText">
+                                <tr class="contentHeadText">
                                     <th style="display:none;">                                                         
                                     </th>
                                     <xsl:for-each select="$output">
@@ -113,7 +109,7 @@ This file is part of the FIMS webapp.
                             <tbody>
                                 <xsl:for-each select="//result">
                                     <xsl:variable name="ID" select="./Id/text()"/>
-                                    <tr id="resultRow" align="center" valign="middle" class="resultRow">
+                                    <tr class="resultRow">
                                         <td class="invisible" >
                                             <xsl:value-of select="./hiddenResults/FileId/text()"/>
                                         </td>                                          
@@ -138,7 +134,8 @@ This file is part of the FIMS webapp.
                         </xsl:otherwise>
                     </xsl:choose>
                 </table>
-            </xsl:if>
-        </td>
+            </div>
+        </div>
+  
     </xsl:template>
 </xsl:stylesheet>

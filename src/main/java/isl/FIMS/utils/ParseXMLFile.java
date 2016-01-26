@@ -53,9 +53,7 @@ public class ParseXMLFile {
 //		get root node of xml tree structure
 		Node root = doc.getDocumentElement();
 //		write node and its child nodes into System.out
-		System.out.println("Statemend of XML document...");
 		writeDocumentToOutput(root,0);
-		System.out.println("... end of statement");
 //		write Document into XML file
 		//saveXMLDocument(targetFileName, doc);
 	}
@@ -65,9 +63,7 @@ public class ParseXMLFile {
 		Document doc = parseFile(systemroot+ xmlFileName);
 		Node root = doc.getDocumentElement();
 	
-//		System.out.println("Statemend of XML document...");
 //		writeDocumentToOutput(root,0);
-//		System.out.println("... end of statement");
 			try {
 				tag=writeDocumentToOutput(root,0,nodeValue);
 			} catch (RuntimeException e) {
@@ -137,7 +133,6 @@ public class ParseXMLFile {
 		String nodeValue = getElementValue(node);
 
 		NamedNodeMap attributes = node.getAttributes();
-		//System.out.println(getIndentSpaces(indent) + "NodeName: " + nodeName + ", NodeValue: " + nodeValue);
 		
 		if (nodeValue.contains(nodeVal)){
 			tag=nodeName;
@@ -165,7 +160,6 @@ public class ParseXMLFile {
 	 * @return <B>true</B> if method success <B>false</B> otherwise
 	 */    
 	public static boolean saveXMLDocument(String fileName, Document doc) {
-		System.out.println("Saving XML file... " + fileName);
 //		open output stream where XML Document will be saved
 		File xmlOutputFile = new File(fileName);
 		FileOutputStream fos;
@@ -174,8 +168,6 @@ public class ParseXMLFile {
 			fos = new FileOutputStream(xmlOutputFile);
 		}
 		catch (FileNotFoundException e) {
-                        System.out.println(" Save XML Document");
-			System.out.println("Error occured: " + e.getMessage());
 			return false;
 		}
 //		Use a Transformer for output
@@ -184,7 +176,6 @@ public class ParseXMLFile {
 			transformer = transformerFactory.newTransformer();
 		}
 		catch (TransformerConfigurationException e) {
-			System.out.println("Transformer configuration error: " + e.getMessage());
 			return false;
 		}
 		DOMSource source = new DOMSource(doc);
@@ -194,9 +185,7 @@ public class ParseXMLFile {
 			transformer.transform(source, result);
 		}
 		catch (TransformerException e) {
-			System.out.println("Error transform: " + e.getMessage());
 		}
-		System.out.println("XML file saved.");
 		return true;
 	}
 
@@ -205,7 +194,6 @@ public class ParseXMLFile {
 	 * @return XML document or <B>null</B> if error occured
 	 */
 	public static Document parseFile(String fileName) {
-		System.out.println("Parsing XML file... " + fileName);
 		DocumentBuilder docBuilder;
 		Document doc = null;
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -214,7 +202,6 @@ public class ParseXMLFile {
 			docBuilder = docBuilderFactory.newDocumentBuilder();
 		}
 		catch (ParserConfigurationException e) {
-			System.out.println("Wrong parser configuration: " + e.getMessage());
 			return null;
 		}
 		//File sourceFile = new File(fileName);
@@ -223,13 +210,10 @@ public class ParseXMLFile {
 			doc = docBuilder.parse(fileName);
 		}
 		catch (SAXException e) {
-			System.out.println("Wrong XML file structure: " + e.getMessage());
 			return null;
 		}
 		catch (IOException e) {
-			System.out.println("Could not read source file: " + e.getMessage());
 		}
-		System.out.println("XML file parsed");
 		return doc;
 	}
 

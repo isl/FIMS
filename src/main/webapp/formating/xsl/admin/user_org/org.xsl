@@ -40,7 +40,7 @@ This file is part of the FIMS webapp.
     <xsl:variable name="initials" select="//context/initials"/>
     <xsl:variable name="country" select="//context/country"/>
     <xsl:variable name="information" select="//context/information"/>
-     <xsl:variable name="LastName" select="//context/result/LastName/lastname"/>
+    <xsl:variable name="LastName" select="//context/result/LastName/lastname"/>
     <xsl:variable name="FirstName" select="//context/result/FirstName/firstname"/>
     <xsl:variable name="Address" select="//context/result/Address/address"/>
     <xsl:variable name="Email" select="//context/result/Email/email"/> 
@@ -52,208 +52,264 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <td colSpan="{$columns}" vAlign="top" align="center" class="content">
-            <form id="orgForm" method="post" action="AdminOrg?action={$AdminAction}&amp;mode=sys" style="margin-bottom:0px;" onsubmit="return validateAll();">
-		<br/>	
-                <table width="100%" class="contentText">
-                    <tr>
-                        <xsl:variable name="tag" select=" 'Επωνυμία' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td width="20%" >
-                            <xsl:value-of select="$translated"/>*
-                        </td>
-                        <td>
-                            <input class="mandatary" type="text" id="name" name="name" style="width:200px" value="{$Name}"></input>
-                            <input type="hidden" id="id" name="id" value="{$Id}"></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <xsl:variable name="tag" select=" 'Ακρώνυμο' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td width="20%" >
-                            <xsl:value-of select="$translated"/>*
-                        </td>
-                        <td>
-                            <input  class="mandatary" type="text" id="initials" name="initials" style="width:200px" value="{$initials}"></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <xsl:variable name="tag" select=" 'Έδρα' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td width="20%" >
-                            <xsl:value-of select="$translated"/>
-                        </td>
-                        <td>
-                            <input type="text" id="seat" name="seat" style="width:200px" value="{$seat}"></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <xsl:variable name="tag" select=" 'Κράτος' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td width="20%" >
-                            <xsl:value-of select="$translated"/>*
-                        </td>
-                        <td>
-                            <input  class="mandatary" type="text" id="country" name="country" style="width:200px" value="{$country}"></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <xsl:variable name="tag" select=" 'Πληροφορίες' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td width="20%" >
-                            <xsl:value-of select="$translated"/>
-                        </td>
-                        <td>
-                            <textarea name="information" id="information" rows="3" style="width:200px">
-                                <xsl:value-of select="$information"/>
-                            </textarea>
-                        </td>
-                    </tr>
-                    <xsl:if test= "$AdminAction = 'insert' ">
-                        <tr>
-                            <td colspan="2">
-                                <hr size="0"/>
-                            </td>
-                        </tr>
-                        <tr>                        
-                            <td>
-                                <xsl:variable name="tag" select=" 'createAdmin' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <p style="white-space:nowrap; font-weight:bold;font-size:12px;text-decoration:underline;">
-                                    <xsl:value-of select="$translated"/>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'username' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/> 
-                            <td width="25%">
-                                <xsl:value-of select="$translated"/>*
-                            </td>
-                            <td>
-                                <input  class="mandatary" type="text" id="username" name="username" style="width:200px" value="{$Name}"></input>
-                                <input type="hidden" id="id" name="id" value="{$Id}"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'password' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td>
-                                <xsl:value-of select="$translated"/>*
-                            </td>
-                            <td>
-                                <input  class="mandatary" type="password" name="password" style="width:200px"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'passwordV' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td>
-                                <xsl:value-of select="$translated"/>*
-                            </td>
-                            <td>
-                                <input  class="mandatary" type="password" name="passwordV" style="width:200px"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'lastname' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td >
-                                <xsl:value-of select="$translated"/>*
-                            </td>
-                            <td>
-                                <input  class="mandatary" type="text" id="lastname" name="lastname" style="width:200px" value="{$LastName}"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'firstname' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td >
-                                <xsl:value-of select="$translated"/>*
-                            </td>
-                            <td>
-                                <input  class="mandatary" type="text" id="firstname" name="firstname" style="width:200px" value="{$FirstName}"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'address' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td >
-                                <xsl:value-of select="$translated"/>
-                            </td>
-                            <td>
-                                <input type="text" id="address" name="address" style="width:200px" value="{$Address}"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <xsl:variable name="tag" select=" 'email' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td >
-                                <xsl:value-of select="$translated"/>*
-                            </td>
-                            <td>
-                                <input  class="mandatary" type="text" id="email" name="email" style="width:200px" value="{$Email}"></input>
-                            </td>
-                        </tr>
-                    </xsl:if>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <br/>
-                            <input type="hidden" name="lang" value="{$lang}"/>
-                            <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <input type="submit" class="button" id="finishButton" value="{$translated}"></input>	
-                            <xsl:variable name="tag" select=" 'Epistrofi' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <a id="backButton" href="javascript:window.history.go(-1);">
-                                <xsl:value-of select="$translated"/>
-                            </a>
-                        </td>
-                       
-                    </tr>
-                </table>
-            </form>
-            <br/>
-            <script language="javascript">document.getElementById('name').focus();</script>
-            <script language="javascript">
-                if('<xsl:value-of select="$AdminAction"/>'=="view"){
-                $finish=$("#finishButton").hide();
-                $input=  $("input:text, textarea, #country");
-                $input.attr("disabled",true);
-                }else{
-                $back=$("#backButton").hide();
-                }   
-                
-                   function validateAll(){
-                var value ="";
-            
-                $(".mandatary").each(function( index ) {
-                var msg = '<xsl:value-of select="$notEmptyFields"/>';
-                
-                if($( this ).val()==''){ 
-                    value ="false";
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:variable name="tag">
 
-                alert(msg);
-                return false;  
-                }
-                return true;                
-                });
+                        <xsl:choose>
+                            <xsl:when test="$AdminAction='insert'">
+                                <xsl:value-of select=" 'Eisagwgi' "/>
+                            </xsl:when>
+                            <xsl:when test="$AdminAction='edit'">
+                                <xsl:value-of select=" 'Epexergasia' "/>
+                            </xsl:when>
+                            <xsl:when test="$AdminAction='view'">
+                                <xsl:value-of select=" 'Proboli' "/>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h4>
+                <form action="AdminOrg?action={$AdminAction}&amp;mode=sys" method="post">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Επωνυμία'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>*
+                                    <xsl:text>  </xsl:text>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <input class="inputwidth" type="text" name="name" value="{$Name}" required="true"/>
+                                <input type="hidden" id="id" name="id" value="{$Id}"></input>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Ακρώνυμο'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>*
+                                    <xsl:text>  </xsl:text>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <input class="inputwidth" type="text" name="initials" value="{$initials}" required="true"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Έδρα'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <input class="inputwidth" type="text" name="seat" value="{$seat}"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Κράτος'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>*
+                                    <xsl:text>  </xsl:text>:  
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <input class="inputwidth" type="text" name="country" value="{$country}" required="true"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Πληροφορίες'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <textarea name="information">
+                                    <xsl:value-of select="$information"/>
+                                </textarea>
+                            </p>
+                        </div>
+                    </div>
+                    <xsl:if test= "$AdminAction = 'insert' ">
+                        <h4 class="title">
+                            <xsl:variable name="tag" select=" 'createAdmin' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:value-of select="$translated"/>
+                        </h4>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'username'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>: 
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="text" name="username" value="{$Name}" required="true"/>
+                                    <input type="hidden" id="id" name="id" value="{$Id}"></input>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'password'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>: 
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="password" name="password" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'passwordV'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>: 
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="password" name="passwordV" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'lastname'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>: 
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="text" name="lastname" value="{$LastName}" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'firstname'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>: 
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="text" name="firstname" value="{$FirstName}" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'address'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>:
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="text" name="address" value="{$Address}"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'email'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>: 
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                <p>
+                                    <input class="inputwidth" type="email" name="email" value="{$Email}" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                    </xsl:if>
                     
-                if(value=='false')
-                return false;
-                var email = $("#email").val();
-                var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;  
-                if(!email.match(mailformat))  
-                {
-                var msg = '<xsl:value-of select="$emailMsg"/>';
-                alert(msg);  
-                return false;
+                    <input type="hidden" name="lang" value="{$lang}"/>
+                    <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <button id="finishButton" class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                        <xsl:value-of select="$translated"/>
+                    </button> 
+                    <xsl:variable name="tag" select=" 'Epistrofi' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <a class="btn btn-default .btn-sm" id="backButton" href="javascript:window.history.go(-1);">
+                        <xsl:value-of select="$translated"/>
+                    </a>                               
+                </form>
+            </div>
+        </div>
+    
+        <script language="javascript">
+            if('<xsl:value-of select="$AdminAction"/>'=="view"){
+            $finish=$("#finishButton").hide();
+            $input=  $("input:text, textarea");
+            $input.attr("disabled",true);
+            }else{
+            $back=$("#backButton").hide();
+            }   
                 
-                }
-                return true;
-                }
-            </script>
-        </td>
+        </script>       
     </xsl:template>
 </xsl:stylesheet>

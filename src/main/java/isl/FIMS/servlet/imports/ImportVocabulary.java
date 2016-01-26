@@ -27,7 +27,6 @@
  */
 package isl.FIMS.servlet.imports;
 
-import isl.FIMS.utils.Messages;
 import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.Vocabulary;
 import isl.FIMS.utils.entity.Config;
@@ -61,9 +60,8 @@ import org.apache.commons.io.FileCleaningTracker;
 public class ImportVocabulary extends ApplicationBasicServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -80,15 +78,12 @@ public class ImportVocabulary extends ApplicationBasicServlet {
 
         Config conf = new Config("AdminVoc");
 
-        String displayMsg = "";
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         StringBuilder xml = new StringBuilder(this.xmlStart(this.topmenu, username, this.pageTitle, this.lang, "", request));
         String file = request.getParameter("file");
 
-        if (!ServletFileUpload.isMultipartContent(request)) {
-            displayMsg = "form";
-        } else {
+        if (ServletFileUpload.isMultipartContent(request)) {          
             // configures some settings
             String filePath = this.export_import_Folder;
             java.util.Date date = new java.util.Date();
@@ -136,16 +131,13 @@ public class ImportVocabulary extends ApplicationBasicServlet {
                     }
 
                 }
-                displayMsg = Messages.ACTION_SUCCESS;
                 Utils.deleteDir(currentDir);
-                System.out.println("Upload has been done successfully!");
+                response.sendRedirect("AdminVoc?action=list&file="+file+"&menuId=AdminVoc");
             } catch (Exception ex) {
-                System.out.println("message: There was an error: " + ex.getMessage());
             }
 
         }
 
-        xml.append("<Display>").append(displayMsg).append("</Display>\n");
         xml.append("<FileName>").append(file).append("</FileName>\n");
         xml.append("<EntityType>").append("AdminVoc").append("</EntityType>\n");
 
@@ -173,8 +165,7 @@ public class ImportVocabulary extends ApplicationBasicServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -188,8 +179,7 @@ public class ImportVocabulary extends ApplicationBasicServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

@@ -30,11 +30,9 @@ package isl.FIMS.utils;
 public class ApplicationConfig {
 	public static String SYSTEM_ROOT;
 	public static String LOGIN_XSL;
-	public static String FIRSTPAGE_XSL;
 
 	public static void init(String systemRoot){
 		SYSTEM_ROOT = systemRoot;
 		LOGIN_XSL	= systemRoot+"formating/xsl/ui/login.xsl";
-		FIRSTPAGE_XSL = systemRoot+"formating/xsl/ui/firstpage.xsl";
         }
 }

@@ -517,7 +517,6 @@ public class XMLEntity extends ApplicationBasicServlet {
         if (info != null) {
             this.removeAdminProperty("info", info);
         }
-        //  System.out.println("admin " + admin);
         toDbF.xRemove("//admin/refs_by");
 
         this.setAdminProperty("translationFrom", fromXmlE.id);
@@ -554,14 +553,11 @@ public class XMLEntity extends ApplicationBasicServlet {
 
         // this.translateEntities(fromLang, toLang, translationConf);
         Utils u = new Utils();
-        System.out.println("Starting .................");
         ArrayList<String> allPrevious = new ArrayList();
         allPrevious.add(fromXmlE.type + fromXmlE.id);
         ArrayList<DBFile> l = u.findDependats(fromXmlE.getDbFile(), fromXmlE.id, fromXmlE.type, this.db, this.dbUser, this.dbPassword, fromXmlE.id, fromXmlE.type, allPrevious);
-        System.out.println("Ends:-)");
         l.add(fromXmlE.getDbFile());
         /*  for (int i = 0; i < l.size(); i++) {
-         System.out.println("filename " + l.get(i).getName());
          }*/
         translateAllEntities(fromLang, toLang, translationConf, l);
 
@@ -639,7 +635,6 @@ public class XMLEntity extends ApplicationBasicServlet {
     public void translateAllEntities(String fromLang, String toLang, DMSConfig translationConf, ArrayList<DBFile> entitiesForTranslation) throws DMSException {
 
         //DBFile toDbF = this.getDbFile();
-        System.out.println("------------------------translateAllEntities----------------------------------");
         for (DBFile transl : entitiesForTranslation) {
             //-----Entities-----
 

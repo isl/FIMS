@@ -33,96 +33,53 @@ This file is part of the FIMS webapp.
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html"/>
     <xsl:include href="../ui/page.xsl"/>
+    <xsl:include href="../utils/utils.xsl"/>
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
         <xsl:variable name="FileName" select="//context/FileName"/>
         <xsl:variable name="Display" select="//context/Display"/>
-
-        <td colSpan="{$columns}" vAlign="top"  class="content">
-            <br/>
-            <xsl:choose>
-                <xsl:when test="$Display='form'">
-                    <p align="left" style="font-size:13;">
-                        <xsl:variable name="tag" select=" 'SelectTXTFile' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>               
-                        <xsl:value-of select="$translated"/>
-                    </p>
-                    <p>
-                        <form name="upload_form" id="upload_form" action="ImportVocabulary?menuId=AdminVoc&amp;file={$FileName}&amp;type=AdminVoc" method="post" enctype="multipart/form-data">
-                            <input type="file" size="30" id="file" name="file"/>                        
-                            <input type="submit" value="OK"/>
-                        </form>
-                    </p>
-                </xsl:when>
-                <xsl:otherwise>
-                      <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <p align="center" style="padding-left:20px; padding-right:20px ;font-size:12;">
-                        <xsl:variable name="tag" select="$Display"/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>               
-                        <xsl:value-of select="$translated"/>
-                    </p>
-                </xsl:otherwise>
-            </xsl:choose>           
-            <p align="center" style="padding-left:20px; padding-right:20px ;font-size:12;">
-                <xsl:variable name="tag" select=" 'Epistrofi' "/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <xsl:choose>
-                    <xsl:when test="$Display='ACTION_SUCCESS'">
-                        <a href="javascript:window.history.go(-2);">
-                            <xsl:value-of select="$translated"/>
-                        </a>&#160;&#160; 
-                    </xsl:when>   
-                    <xsl:otherwise>
-                        <a href="javascript:window.history.go(-1);">
-                            <xsl:value-of select="$translated"/>
-                        </a>&#160;&#160; 
-                    </xsl:otherwise>
-                </xsl:choose>                  
-            </p>
-        </td>
         <script type="text/javascript">
-            
-            function getExtension(filename) {
-            var parts = filename.split('.');
-            return parts[parts.length - 1];
-            }
-
-            function isTXT(filename) {
-            var ext = getExtension(filename);
-            ext = ext.toLowerCase(); 
-            if(ext=="txt"){
-            return true;
-            }
-            return false;
-            }
-            
-            $(function() {
-            $('#upload_form').submit(function() {
-            function failValidation(msg) {
-            alert(msg); 
-            return false;
-            }
-
-            var file = $('#file');
-            if (!isTXT(file.val())) {
-            <xsl:variable name="tag" select=" 'NotValidTXTFile' "/>
-            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-            var msg ="<xsl:value-of select="$translated"/>";
-            return failValidation(msg);
-            }
-            return true
-            });
-
+            $(document).ready(function(){
+            h = $('#content').height();
+            $('#displayRow').height(h);
             });
         </script>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
 
+                <h4 class="title">
+                    <xsl:variable name="tag" select=" 'ImportVoc' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h4>
+                <h5 class="subtitle">
+                    <xsl:variable name="tag" select=" 'SelectTXTFile' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h5>
+                <form action="ImportVocabulary?menuId=AdminVoc&amp;file={$FileName}&amp;type=AdminVoc" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                                
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <input type="file" accept=".txt" name="file" />                        
+                            </p>
+                        </div>
+                    </div>
+                    <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                        <xsl:value-of select="$translated"/>
+                    </button>  
+                    <xsl:variable name="tag" select=" 'Epistrofi' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <a class="btn btn-default .btn-sm" style="margin-top:10px; margin-left:10px;" href="javascript:window.history.go(-1);">
+                        <xsl:value-of select="$translated"/>
+                    </a>                     
+                </form>
+            </div>
+        </div>
     </xsl:template>
-
 </xsl:stylesheet>

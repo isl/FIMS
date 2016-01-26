@@ -33,24 +33,13 @@ This file is part of the FIMS webapp.
 <xsl:stylesheet xmlns:url="http://whatever/java/java.net.URLEncoder" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:include href="../ui/page.xsl"/>
-    <xsl:include href="../paging/SearchPaging.xsl"/>
     
     <xsl:variable name="IsGuestUser" select="//context/IsGuestUser"/>
     <xsl:variable name="DocStatus" select="//context/DocStatus"/>
     <xsl:variable name="EntityType" select="//context/EntityType"/>
     <xsl:variable name="ServletName" select="//context/ServletName"/>
     <xsl:variable name="output" select="//context/query/outputs/path[@selected='yes']"/>
-    <xsl:variable name="userOrg" select="//page/@userOrg"/>
-    <xsl:variable name="queryPages" select="//stats/@queryPages"/>
-    <xsl:variable name="end" select="//stats/@end"/>
-    <xsl:variable name="start" select="//stats/@start"/>
-    <xsl:variable name="count" select="//stats/@count"/>
-    <xsl:variable name="currentP" select="//stats/@currentP"/>
-    <xsl:variable name="pageLoop" select="//pageLoop/lista"/>
-    <xsl:variable name="showPages" select="//showPages/show"/>
-    <xsl:variable name="step">
-        <xsl:value-of select="//stats/@step"/>
-    </xsl:variable>	
+    <xsl:variable name="userOrg" select="//page/@userOrg"/>  	
     <xsl:variable name="photoType" select="//context/photoType"/>
     <xsl:variable name="URI_Reference_Path" select="//context/URI_Reference_Path"/>
 
@@ -64,17 +53,41 @@ This file is part of the FIMS webapp.
         <script type="text/JavaScript">
             var str = '<xsl:value-of select="$translated"/>';
         </script>
-		
-        <td colSpan="{$columns}" vAlign="top"  class="content">
-            <xsl:call-template name="actions"/>
-                        <br/>
-
-            <xsl:if test="count(//result)&gt;0">
-               
-                
-                <table border="0" align="center" class="sortable" cellspacing="1"  id="results">
+        
+        <xsl:call-template name="actions"/>
+        <div class="row context">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <xsl:if test="$DocStatus!=''">    
+                    <h5 class="subtitle">
+                        <b>
+                            <xsl:variable name="tag" select=" 'tableContent' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                            <xsl:value-of select="$translated"/>:
+                            <xsl:text></xsl:text>
+                            <xsl:choose>
+                                <xsl:when test="$DocStatus='published'">
+                                    <xsl:variable name="tag" select=" 'ProboliDimosieumenwn' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                    <xsl:value-of select="$translated"/>
+                                </xsl:when>
+                                <xsl:when test="$DocStatus='unpublished'">
+                                    <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                    <xsl:value-of select="$translated"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:variable name="tag" select=" $DocStatus "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                    <xsl:value-of select="$translated"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            
+                        </b>
+                    </h5>  
+                </xsl:if>
+                <table id="results">
                     <thead>
-                        <tr align="center" valign="middle" class="contentHeadText">
+                        <tr class="contentHeadText">
                             <th style="display:none;">                                                         
                             </th>
                             <xsl:for-each select="$output">
@@ -87,12 +100,11 @@ This file is part of the FIMS webapp.
                                 </th>
                             </xsl:for-each>
                             <th></th>  <!--for lock key,impotred doc -->
-
                         </tr>
                     </thead>
                     <tbody>
                         <xsl:for-each select="//result">
-                            <tr id="resultRow" align="center" valign="middle" class="resultRow">
+                            <tr class="resultRow">
                                 <td class="invisible" >
                                     <xsl:value-of select="./hiddenResults/FileId/text()"/>
                                 </td> 
@@ -107,12 +119,9 @@ This file is part of the FIMS webapp.
                                             <xsl:variable name="filename" select="./*[1]/text()"/>
                                             <td>
                                                 <xsl:choose>
-                                                    <!--xsl:when test=" preceding-sibling::*[1]/*[1]/text() = 'Φωτογραφία' or preceding-sibling::*[1]/*[1]/text() = 'Σχέδιο'  "-->
                                                     <xsl:when test="following-sibling::*[1]/*[1]/text() = 'Photos'">
-
                                                         <xsl:choose>
                                                             <xsl:when test=" ./*[1]/text() != '' ">
-
                                                                 <a href="FetchBinFile?mime={$mime}&amp;type={$photoType}&amp;depository=disk&amp;file={encode-for-uri(./*[1]/text())}"  target="blank_">
                                                                     <img src="FetchBinFile?mime={$mime}&amp;size=small&amp;type={$photoType}&amp;depository=disk&amp;file={encode-for-uri(./*[1]/text())}" border="1" alt="{$translated}" width="50"></img>
                                                                 </a>
@@ -127,7 +136,6 @@ This file is part of the FIMS webapp.
                                                             <a href="FetchBinFile?mime={$mime}&amp;type={$photoType}&amp;depository=disk&amp;file={encode-for-uri(./*[1]/text())}" alt="{$translated}" target="blank_">
                                                                 <xsl:value-of select="$translated"/>
                                                             </a>
-                                                            <!--a href="uploads/Archive/{./*[1]/text()}" alt="{$translated}" target="blank_"><xsl:value-of select="$translated"/></a-->
                                                         </xsl:if>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
@@ -138,8 +146,7 @@ This file is part of the FIMS webapp.
                                             <td title="{concat($URI_Reference_Path,$uriId)}" >
                                                 <xsl:value-of select="$uriId"/>
                                             </td>                                          
-                                        </xsl:when>
-                                   
+                                        </xsl:when>                                   
                                         <xsl:when test="name() ='ShortDescription'">    
                                             <xsl:variable name="description" select="./ShortDescription/text()"/>                                   
                                             <td title="{$description}" >
@@ -148,8 +155,7 @@ This file is part of the FIMS webapp.
                                                 <xsl:if test="$short_description!=''and $short_description!=$description" >
                                                     <xsl:value-of select="'...'"/>
                                                 </xsl:if> 
-                                            </td>
-                                                                   
+                                            </td>                                                                   
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <td>
@@ -167,18 +173,24 @@ This file is part of the FIMS webapp.
                                     <xsl:if test="$IsGuestUser = 'false' and $user!='sysadmin'">
                                         <xsl:choose>
                                             <xsl:when test="./hiddenResults/organization/text()!=$userOrg or ./hiddenResults/hasPublicDependants/text()!='false' ">
-                                                <!--td id="action" class="action" onmouseover="highlight(this, true)" onmouseout="highlight(this, false)"-->
-                                                <img border="0"  src="formating/images/lock.png"/>
-                                                <!--/td-->
+                                                <xsl:variable name="tag" select="'CANNOT_EDIT'"/>
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+
+                                                <img class="tooltipInfo" title="{$translated}" border="0"  src="formating/images/lock.png"/>
                                             </xsl:when>                                        
                                         </xsl:choose>                                    
+                                    </xsl:if>
+                                    <xsl:if test="./hiddenResults/versionId/text()&gt;1">
+                                        <xsl:variable name="tag" select="'VersionId'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <img class="tooltipInfo" title="{concat($translated, ': ' , ./hiddenResults/versionId/text())}" border="0"  src="./formating/images/version.png"/>                                    
                                     </xsl:if>
                                     <xsl:if test="$IsGuestUser = 'false' and $user!='sysadmin'">
                                         <xsl:choose>
                                             <xsl:when test="./hiddenResults/isImported/text()!='false' ">
-                                                <!--td id="action" class="action" onmouseover="highlight(this, true)" onmouseout="highlight(this, false)"-->
-                                                <img border="0"  src="formating/images/import.png"/>
-                                                <!--/td-->
+                                                <xsl:variable name="tag" select="'imported'"/>
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                <img class="tooltipInfo" title="{$translated}" border="0" src="formating/images/import.png"/>
                                             </xsl:when>                                        
                                         </xsl:choose>                                    
                                     </xsl:if>                           
@@ -186,9 +198,10 @@ This file is part of the FIMS webapp.
                             </tr>
                         </xsl:for-each>
                     </tbody>
-                </table>               
-            </xsl:if>
-         
-        </td>
+                </table>
+
+            </div>
+        </div>	
+        
     </xsl:template>
 </xsl:stylesheet>

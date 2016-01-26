@@ -31,81 +31,89 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:template name="head_html">
-        <xsl:param name="title"/>
-        <xsl:param name="javascript"/>
-        <xsl:param name="css"/>
         <head>
             <title>
                 <xsl:value-of select="//context/systemName/text()"/>
             </title>
-            <script type="text/JavaScript" src="{$formatingDir}/javascript/storage/storage.js"></script>
-            <script language="JavaScript">
-                <xsl:attribute name="src">
-                    <xsl:value-of select="$javascript"/>
-                </xsl:attribute>
-            </script>
-            <link rel="stylesheet" type="text/css">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="$css"/>
-                </xsl:attribute>
-            </link>
+            <meta name="author" content="ISL ICS Forth"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            
+            <!--Favicon line follows-->
+            <link rel="shortcut icon" href="formating/images/fav.png"/>
+            
+            <script type="text/JavaScript" src="{$formatingDir}/javascript/storage/storage.js"></script>      
+            <script language="JavaScript" src="formating/javascript/utils/scripts.js"/>
+   
+            <link rel="stylesheet" type="text/css" href="formating/css/page.css"/>
+            <link rel="stylesheet" type="text/css" href="formating/css/jquery.qtip.min.css"/>
+
             <!-- jQuery -->
-            <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
             <!-- DataTables CSS -->
             <link rel="stylesheet" type="text/css" href="{$formatingDir}/css/jquery.dataTables.css"></link>
             <!-- DataTables -->
             <script type="text/javascript" charset="utf8" src="{$formatingDir}/javascript/jquery/jquery.dataTables.js"></script>           
-			
+            <!-- Latest compiled and minified CSS of bootstrap-->                                
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+            <!-- Optional theme -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+            <!-- Qtip-->
+            <script type="text/javascript" charset="utf8" src="{$formatingDir}/javascript/jquery/jquery.qtip.min.js"></script>           
+
             <script language="JavaScript">
 
-                <xsl:variable name="tag" select=" 'EpileksteProta' "/>
-                var AlertEpileksteProta = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>' ; 
-                <xsl:variable name="tag" select=" 'EgirosAri8mosSelidas' "/>
-                var EgirosAri8mosSelidas = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>' ; 
-                <xsl:variable name="tag" select=" 'nofreespace' "/>
-                var nofreespace = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]" disable-output-escaping="yes"/>' ;
-                <xsl:variable name="tag" select=" 'backupMsg' "/>
-                var backupMsg = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>' ;    
+               
+                
+                <xsl:variable name = "tag" select = " 'nofreespace'" />
+                var nofreespace = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]" disable-output-escaping="yes"/>';
+                <xsl:variable name = "tag" select = " 'backupMsg'" />
+                var backupMsg = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
                 var lang = '<xsl:value-of select="$lang"/>';
                 $(document).ready(function(){
-                                   
+              
+
                 jQuery.browser = {};
                 (function () {
                 jQuery.browser.msie = false;
                 jQuery.browser.version = 0;
+                if ( $(".tooltipInfo").length > 0){
+                $(".tooltipInfo").tooltip();
+                }
                 if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
                 jQuery.browser.msie = true;
                 jQuery.browser.version = RegExp.$1;
                 }
                 })();
-                var wid = $(".content").width() +40;                
-                $("#topDrop").css("width",wid);
-                
-                if( $('#results').length>0){
-                <xsl:variable name="tag" select=" 'filterResults' "/>
+                //initialize dataTables
+                if ($('#results').length > 0){
+                <xsl:variable name = "tag" select = " 'filterResults'"/>
                 var searchString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'Next' "/>
+                <xsl:variable name = "tag" select = " 'Next'"/>
                 var nextString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'Prev' "/>
+                <xsl:variable name = "tag" select = " 'Prev'"/>
                 var prevString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'showing' "/>
+                <xsl:variable name = "tag" select = " 'showing'"/>
                 var showingString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'to' "/>
+                <xsl:variable name = "tag" select = " 'to'"/>
                 var toString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'of' "/>
+                <xsl:variable name = "tag" select = " 'of'"/>
                 var ofString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'entries' "/>
+                <xsl:variable name = "tag" select = " 'entries'"/>
                 var entriesString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'results' "/>
+                <xsl:variable name = "tag" select = " 'results'"/>
                 var resultsString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'filtered' "/>
+                <xsl:variable name = "tag" select = " 'filtered'"/>
                 var filteredString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                <xsl:variable name="tag" select=" 'DenBrethikanArxeia' "/>
+                <xsl:variable name = "tag" select = " 'DenBrethikanArxeia'"/>
                 var DenBrethikanArxeiadString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
-                //remove last column if empty
-     
+        
+                //remove last column if empty  
                 var $table = $('#results');
                 var thead = $table[0].tHead, tbody = $table[0].tBodies[0];
+                if(tbody.rows.length>0){                
                 var colsLen = tbody.rows[0].cells.length, rowsLen = tbody.rows.length;
                 var hideNode = function(node) { if (node) node.style.display = "none"; };
                 for (var j = 0; j &lt; colsLen; ++j) {
@@ -120,33 +128,33 @@ This file is part of the FIMS webapp.
                 hideNode(thead.rows[0].cells[j]);
                 }
                 }
-  
-                $('#results').dataTable( {
+                }
+                
+
+                $('#results').dataTable({
                 "oLanguage": {
                 "sSearch": searchString,
-                "sInfo": showingString + " _START_ " +toString +" _END_ " + ofString + " _TOTAL_ " + resultsString,
-                "sInfoEmpty": showingString + " 0 " + toString + " 0 " + ofString + " 0 " +resultsString,
-                "sLengthMenu": showingString +" _MENU_ "+ entriesString,
-                "sInfoFiltered": "(" + filteredString + " " + ofString + " _MAX_ "+ resultsString + ")",
+                "sInfo": showingString + " _START_ " + toString + " _END_ " + ofString + " _TOTAL_ " + resultsString,
+                "sInfoEmpty": showingString + " 0 " + toString + " 0 " + ofString + " 0 " + resultsString,
+                "sLengthMenu": showingString + " _MENU_ " + entriesString,
+                "sInfoFiltered": "(" + filteredString + " " + ofString + " _MAX_ " + resultsString + ")",
                 "sZeroRecords": DenBrethikanArxeiadString,
                 "oPaginate": {
                 "sPrevious": prevString,
                 "sNext": nextString,
                 }
+                },
+                responsive: true,
+                "sScrollX": "100%"
+                });              
                 }
                 
-            
-                } );
-                }
-                });
-                
-            </script> 
-            
         
+                });
 
-			
-            <script language="JavaScript" src="formating/javascript/utils/scripts.js"/>
-               
+
+
+            </script> 
 			
         </head>
     </xsl:template>

@@ -91,8 +91,6 @@ public class Utils extends ApplicationBasicServlet {
 
     //find recursively all dependants of a specific xml file
     public ArrayList<DBFile> findDependats(DBFile dbf, String fileId, String type, String database, String dbUser, String dbPass, String previous_Id, String previous_Type, ArrayList allPrevious) {
-        // System.out.println("findDependats " + dbf.getName());
-        // System.out.println("--------------------------------");
         ArrayList<DBFile> aList = new <DBFile> ArrayList();
         String[] res = dbf.queryString("//admin/refs/ref[@sps_id!=0 and (@sps_type!='" + type + "' or @sps_id!='" + fileId + "') and (@sps_type!='" + previous_Type + "' or @sps_id!='" + previous_Id + "')]");
         for (int i = 0; i < res.length; i++) {
@@ -105,8 +103,6 @@ public class Utils extends ApplicationBasicServlet {
                 String collectionPath = UtilsQueries.getPathforFile(col, id + ".xml", id.split(sps_type)[1]);
                 col = new DBCollection(database, collectionPath, dbUser, dbPass);
                 DBFile dependantFile = col.getFile(id + ".xml");
-                //      System.out.println("name of file: " + dependantFile.getName());
-                //System.out.println(dependantFile.getName());
                 allPrevious.add(id);
                 aList.add(dependantFile);
                 //findDependats(dependantFile);
@@ -114,7 +110,6 @@ public class Utils extends ApplicationBasicServlet {
             }
         }
 
-        //System.out.println("at end "+dbf.getName()+" "+aList.size());
         return aList;
     }
 
@@ -167,13 +162,11 @@ public class Utils extends ApplicationBasicServlet {
             long ava = getFreeSpace(path);
             long m = 1024 * 1024;
 
-            //System.out.println( "Available space in path " + path + " is " + ava / m + "Mb" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 //                        this.value = new Long( ava / m ).toString();
             if (new Long(ava / m).compareTo(new Long(threshold)) > 0) {
                 return true;
             }
         } catch (Exception ex) {
-            //	System.out.println( "Error occurred when checking the disk, the path :[" + path //$NON-NLS-1$
             //	+ "] may be incorrect for the current os" ); //$NON-NLS-1$
             ex.printStackTrace();
         }
@@ -271,7 +264,6 @@ public class Utils extends ApplicationBasicServlet {
         tokenizer.nextToken();
         tokenizer.nextToken();
         bytesFree = Long.parseLong(tokenizer.nextToken().replace('.', ',').replaceAll(",", "")); //$NON-NLS-1$//$NON-NLS-2$
-        System.out.println("Free Space= " + bytesFree);
         return bytesFree;
     }
 
@@ -316,7 +308,6 @@ public class Utils extends ApplicationBasicServlet {
             while ((len = inStream.read(buf)) != -1) {
                 outStream.write(buf, 0, len);
             }
-            // System.out.println("File "+destination.getName()+" copied");
         } catch (Exception e) {
             throw new Exception("Can't copy file " + source + " -> " + destination + ".", e);
         }
@@ -391,7 +382,6 @@ public class Utils extends ApplicationBasicServlet {
             //close the ZipOutputStream
             zout.close();
         } catch (IOException ioe) {
-            System.out.println("IOException :" + ioe);
         }
     }
 
@@ -427,7 +417,6 @@ public class Utils extends ApplicationBasicServlet {
                 //else you will hit FileNotFoundException for compressed folder
                 if (!ze.getName().contains("__MACOSX")) {
                     if (ze.isDirectory()) {
-//                        System.out.println("ROOTDIR=" + rootDirFound);
                         if (rootDirFound == false) {
                             rootFolderName = newFile.getName();
                             rootDirFound = true;
@@ -700,7 +689,6 @@ public class Utils extends ApplicationBasicServlet {
             afterEditingList.add(sps_type + "_" + sps_id);
 
         }
-        //  System.out.println("Subtract result");
         Collection notUsedReferences = Utils.Subtract(afterEditingList, beforeEditingList);
         Iterator<String> it = notUsedReferences.iterator();
         //removes references that are not used anymore
@@ -797,7 +785,6 @@ public class Utils extends ApplicationBasicServlet {
 
         file = file.substring(file.lastIndexOf(".") + 1);
         file = file.toLowerCase();
-        //System.out.println("//mime[type='"+file+"']/../name()");
 
         String[] mimes = uploads.queryString("//mime[type='" + file + "']/../name()");
         if (mimes.length == 0) {

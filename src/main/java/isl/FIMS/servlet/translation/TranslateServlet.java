@@ -51,9 +51,8 @@ import javax.servlet.http.HttpServletResponse;
 public class TranslateServlet extends ApplicationBasicServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -182,21 +181,20 @@ public class TranslateServlet extends ApplicationBasicServlet {
                         String lang = request.getParameter("lang");
                         String code = request.getParameter("code");
                         String name = request.getParameter("name");
-                        queryCond = createCondition(lang, code, name, userOrg, mode, type, "",username);
+                        queryCond = createCondition(lang, code, name, userOrg, mode, type, "", username);
                         xml.append("<hasCriteria>");
                         xml.append("<lang>").append(lang).append("</lang>");
                         xml.append("<code>").append(code).append("</code>");
                         xml.append("<name>").append(name).append("</name>");
                         xml.append("</hasCriteria>");
                     } else {
-                        queryCond = u.getQueryConditionForTranslate(type, "", mode, userOrg, lang,username);
+                        queryCond = u.getQueryConditionForTranslate(type, "", mode, userOrg, lang, username);
                     }
                     //========== paging code ==========
                     u.initListPaging(request);
                     //get all
                     String querySource = u.listAllEntityQuery(type, "", mode, userOrg, this.lang, username, outputsTag, queryCond);
                     DBCollection queryCol = new DBCollection(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword);
-                    System.out.println("q-->"+querySource);
                     String[] queryRes = queryCol.query(querySource);
                     for (int j = 0; j < queryRes.length; j++) {
                         resultsTag.append(queryRes[j]).append("\n");
@@ -240,7 +238,7 @@ public class TranslateServlet extends ApplicationBasicServlet {
                 xmlE.translateFrom(fromXmlE, translationConf);
 
                 xmlE.setAdminProperty("locked", "no");
-
+                xml.append("<backPages>").append('2').append("</backPages>\n");
                 displayMsg = Messages.ACTION_SUCCESS;
 
             } else {
@@ -284,7 +282,7 @@ public class TranslateServlet extends ApplicationBasicServlet {
             String xpath = "$i" + UtilsXPaths.getSearchXpathAtName(type);
             queryCond.append("and contains(" + xpath + ",'" + name + "') \n");
         }
-        if (GetEntityCategory.getEntityCategory(type).equals("primary") && status != null && status.equals("published") == false && mode.equals("sys") == false && userHasAction("sysadmin",username) == false) {
+        if (GetEntityCategory.getEntityCategory(type).equals("primary") && status != null && status.equals("published") == false && mode.equals("sys") == false && userHasAction("sysadmin", username) == false) {
             queryCond.append("and ($i//admin/organization='" + userOrg + "' or $i//admin/status='published') \n");
         }
         return queryCond.toString();
@@ -292,8 +290,7 @@ public class TranslateServlet extends ApplicationBasicServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -309,8 +306,7 @@ public class TranslateServlet extends ApplicationBasicServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

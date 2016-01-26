@@ -32,103 +32,70 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
-    <xsl:include href="loginPageTemplate.xsl"/>
+    <xsl:include href="page.xsl"/>
 
     <xsl:variable name="ErrorMsg" select="//context/ErrorMsg"/>
     <!--xsl:variable name="lang" select="//page/@language"/-->
 
 
     <xsl:template match="/">
-        <xsl:call-template name="loginPageTemplate"/>
+        <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <script type="text/javascript" src="formating/javascript/jquery/jquery.min.js"></script>
-
-        <td colSpan="3" vAlign="top" align="center" class="content">
-            <br/>
-            <br/>
-            <form id="loginForm" method="post" action="Login" style="margin-bottom:0px;">
-                <!--table width="400" style="border: 4px double #444488"-->
-                
-                <table style="padding-left:150px;">
-            
-                    <tr>
+        <div class="row"> 
+            <div class="col-md-8 col-lg-8 col-md-offset-4">                
+                <div class="row account-wall">
+                    <xsl:variable name="tag" select=" 'UserLogin' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <h4>                                    
+                        <xsl:value-of select="$translated"/>
+                    </h4>
+                    <form action="Login" method="post" class="form-signin">
+                        
                         <xsl:variable name="tag" select=" 'username' "/>
                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <!--td style="color: #003366;font-size: 12px;font-weight: bold;font-family:Verdana;" >
-                            <xsl:value-of select="$translated"/>
-                        </td-->
-                        <td>
-                            <input type="text" id="username" name="username" placeholder="{$translated}" style="width:210px"></input>
-                        </td>
-                        <td></td>
-                    </tr><!--3a2e1d-->
-                    <tr>
+                        <input type="text" class="form-control" placeholder="{$translated}" required="true"   name="username"/>
                         <xsl:variable name="tag" select=" 'password' "/>
                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <!--td style="color: #003366;font-size: 12px;font-weight: bold;font-family:Verdana;" >
-                            <xsl:value-of select="$translated"/>
-                        </td-->
-                        <td>
-                            <input type="password" name="password" placeholder="{$translated}" style="width:210px"></input>
-                        </td>
-                        <td> 
-                            <xsl:variable name="tag" select=" 'ForgetPass' "/>
+                        <input type="password" class="form-control" placeholder="{$translated}" required="true" name="password"/>
+                        <xsl:if test="$ErrorMsg!=''">
+                            <xsl:variable name="tag" select="$ErrorMsg"/>
                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <a style="padding-left:10px; font-size:9px;" href="ForgetPass?lang={$lang}">
-                                <xsl:value-of select="$translated"/>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="hidden" name="lang" value="{$lang}"/>
-                            <xsl:variable name="tag" select=" 'SignIn' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <input style="width:80px;font-size:11px;"  type="submit" class="button" value="{$translated}"></input>
-                        <xsl:if test="//context/signUp/text() = 'true'">
-                            <a style="padding-left:7px; font-size:10px;"  href="SignUp?lang={$lang}">
-                                <xsl:variable name="tag" select=" 'operator_or' "/> 
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/> 
-                                <xsl:value-of select="$translated"/>
-                                <xsl:text> </xsl:text>
-                                <xsl:variable name="tag" select=" 'SignUp' "/> 
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/> 
-                                <xsl:value-of select="$translated"/>
-                            </a>
+                            <p>
+                                <h7 style="color:red;"> 
+                                    <xsl:value-of select="$translated"/>
+                                </h7>
+                            </p>
+                            
                         </xsl:if>
-                        </td>
-                    </tr>
-                    <tr>                      
-                        <td></td>                                            
-                    </tr>
-                </table>
-                <table>
-                    <tr>
-                        <xsl:choose>
-                            <xsl:when test="$ErrorMsg != '' ">
-                                <xsl:variable name="tag" select="$ErrorMsg"/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <td class="contentText" style="color:#EE0000;">
-                                    <b>
+                        <xsl:variable name="tag" select=" 'SignIn' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <button class="btn btn-default .btn-sm" type="submit">                                    
+                            <xsl:value-of select="$translated"/>
+                        </button>
+                        <ul id="login-list">
+                            <xsl:if test="//context/signUp/text() = 'true'">
+                                
+                                <li>
+                                    <xsl:variable name="tag" select=" 'SignUp' "/> 
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/> 
+                                    <a href="SignUp?lang={$lang}"> 
                                         <xsl:value-of select="$translated"/>
-                                    </b>
-                                </td>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <td style="color:#EE0000;">
-                                    <br/>
-                                </td>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </tr>
-                </table>
-            </form>
-            <br/>
-            <script language="javascript">
-                document.getElementById('username').focus();
-               
-            </script>
-        </td>
+                                    </a>
+                                </li>
+                            </xsl:if>
+                            <li>
+                                <xsl:variable name="tag" select=" 'ForgetPass' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                <a href="ForgetPass?lang={$lang}">                            
+                                    <xsl:value-of select="$translated"/>
+                                </a>
+                            </li>
+                        </ul>
+                        <span class="clearfix"/>
+                    </form>
+                </div>
+            </div>
+        </div>        
     </xsl:template>
 </xsl:stylesheet>

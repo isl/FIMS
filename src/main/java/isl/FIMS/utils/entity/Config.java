@@ -62,10 +62,8 @@ public class Config {
 //    
     public String DISPLAY_XSL;
     public String POPUP_DISPLAY_XSL;
-    public String DISPLAY_WIN_XSL;
     public String TIMED_DISPLAY_WIN_XSL;
     public String WELCOME_XSL;
-    public String FIRSTE_PAGE_XSL;
     //change pass for editor
     public String EDITOR_CHANGE_PASS;
     public String IMPORT_XML;
@@ -107,11 +105,9 @@ public class Config {
         this.RESTORE_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/storage/restore.xsl";
         this.POPUP_DISPLAY_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/display.xsl";
         this.DISPLAY_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/WelcomePage.xsl";
-        this.DISPLAY_WIN_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/display_win.xsl";
         this.TIMED_DISPLAY_WIN_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/timed_display_win.xsl";
 
         this.WELCOME_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/WelcomePage.xsl";
-        this.FIRSTE_PAGE_XSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/firstpage.xsl";
         this.EDITOR_CHANGE_PASS = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/changePass.xsl";
         this.LIST_VERSIONS = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/version/list_versions.xsl";
         this.IMPORT_XML = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/import/ImportXML.xsl";

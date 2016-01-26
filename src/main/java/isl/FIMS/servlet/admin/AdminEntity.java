@@ -123,7 +123,6 @@ public class AdminEntity extends AdminBasicServlet {
             if (docOrgId == null) {
                 docOrgId = this.getUserGroup(username);
             }
-            System.out.println("docOrgId  " + docOrgId);
             if (docOrgId.equals("0")) {
                 this.displayMsg = Messages.EMPTY_FIELD_OrgName + Messages.NL;
             }
@@ -135,66 +134,71 @@ public class AdminEntity extends AdminBasicServlet {
             if (mainCurrentName.length() == 0) {
                 this.displayMsg += Messages.EMPTY_FIELD_MainCurrentName + Messages.NL;
             }
-            /* if (!this.dbSchemaFolder.equals("")) {
+            /*  if (!this.dbSchemaFolder.equals("")) {
              String[] target_schemama_id = request.getParameterValues("target_schema");
              if (target_schemama_id == null) {
              this.displayMsg += Messages.EMPTY_FIELD_TargetSchema + Messages.NL;
              }
 
-             }*/
-
+             }
+             */
             if (this.displayMsg.length() == 0) {
-                Utils u = new Utils();
-                fileId = this.initInsertFile(type, true)[0];
-                String id = fileId.split(type)[1];
-                xmlE = new XMLEntity(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, fileId);
+                try {
+                    Utils u = new Utils();
+                    fileId = this.initInsertFile(type, true)[0];
+                    String id = fileId.split(type)[1];
+                    xmlE = new XMLEntity(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, fileId);
 
-                this.initAdminPart(xmlE, id, username);
-                xmlE.setAdminProperty("organization", docOrgId);
-                xmlE.setAdminProperty("lang", docLang);
-                String primaryPath = UtilsXPaths.getPrimaryEntitiesInsertPath(type);
-                xmlE.xUpdate(primaryPath, mainCurrentName);
-                String uri_name = DMSTag.valueOf("uri_name", "target", type, this.conf)[0];
-                codeValue = uri_name + "/" + id;
-                if (!this.dbSchemaFolder.equals("")) {
+                    this.initAdminPart(xmlE, id, username);
+                    xmlE.setAdminProperty("organization", docOrgId);
+                    xmlE.setAdminProperty("lang", docLang);
+                    String primaryPath = UtilsXPaths.getPrimaryEntitiesInsertPath(type);
+                    xmlE.xUpdate(primaryPath, mainCurrentName);
+                    String uri_name = DMSTag.valueOf("uri_name", "target", type, this.conf)[0];
+                    codeValue = this.URI_Reference_Path + uri_name + "/" + id;
+                    if (!this.dbSchemaFolder.equals("")) {
 
-                    String[] target_schemama_id = request.getParameterValues("target_schema");
-                    if (target_schemama_id != null) {
-                        DBFile dbf = new DBFile(this.DBURI, this.dbSchemaFolder, "schemata_list.xml", this.DBuser, this.DBpassword);
-                        String q = "//target_info[";
-                        for (int i = 0; i < target_schemama_id.length; i++) {
-                            System.out.println("target_id-->" + target_schemama_id[i]);
-                            q += "./@id='" + target_schemama_id[i] + "'";
-                            if ((target_schemama_id.length - 1) != i) {
-                                q += " or ";
+                        String[] target_schemama_id = request.getParameterValues("target_schema");
+                        if (target_schemama_id != null) {
+                            DBFile dbf = new DBFile(this.DBURI, this.dbSchemaFolder, "schemata_list.xml", this.DBuser, this.DBpassword);
+                            String q = "//target_info[";
+                            for (int i = 0; i < target_schemama_id.length; i++) {
+                                q += "./@id='" + target_schemama_id[i] + "'";
+                                if ((target_schemama_id.length - 1) != i) {
+                                    q += " or ";
+                                }
                             }
+                            q += "]";
+                            String res[] = dbf.queryString(q);
+                            String target = "";
+                            String namespace = "";
+                            for (String r : res) {
+                                r = r.replaceAll(" id=\".*?\"", "");
+                                String target_schema = (r.split("</target_schema>")[0]).split("<target_info>")[1] + "</target_schema>";
+                                namespace += (r.split("</target_schema>")[1]).split("</target_info>")[0];
+                                target += "<target_info>" + target_schema + "\n<target_collection/>\n" + "</target_info>";
+                            }
+                            xmlE.xInsertAfter("//info/source_info", target);
+                            xmlE.xAppend("//namespaces", namespace);
+                        } else {
+                            String target = " <target_info>\n"
+                                    + "            <target_schema type=\"\" version=\"\"></target_schema>\n"
+                                    + "            <target_collection/>\n"
+                                    + "        </target_info>";
+                            String namespace = "<namespace prefix=\"\" uri=\"\"/>";
+                            xmlE.xInsertAfter("//info/source_info", target);
+                            xmlE.xAppend("//namespaces", namespace);
                         }
-                        q += "]";
-                        String res[] = dbf.queryString(q);
-                        String target = "";
-                        String namespace = "";
-                        for (String r : res) {
-                            r = r.replaceAll(" id=\".*?\"", "");
-                            String target_schema = (r.split("</target_schema>")[0]).split("<target_info>")[1] + "</target_schema>";
-                            namespace += (r.split("</target_schema>")[1]).split("</target_info>")[0];
-                            target += "<target_info>" + target_schema + "\n<target_collection/>\n" + "</target_info>";
-                        }
-                        xmlE.xInsertAfter("//info/source_info", target);
-                        xmlE.xAppend("//namespaces", namespace);
-                    } else {
-                        String target = " <target_info>\n"
-                                + "            <target_schema type=\"\" version=\"\"></target_schema>\n"
-                                + "            <target_collection/>\n"
-                                + "        </target_info>";
-                        String namespace = "<namespace prefix=\"\" uri=\"\"/>";
-                        xmlE.xInsertAfter("//info/source_info", target);
-                        xmlE.xAppend("//namespaces", namespace);
                     }
+                    this.displayMsg = Messages.ACTION_SUCCESS;
+                    this.displayMsg += Messages.NL + Messages.NL + Messages.URI_ID;
+                    xml.append("<codeValue>").append(codeValue).append("</codeValue>\n");
+                    xml.append("<backPages>").append('2').append("</backPages>\n");
+
+                    this.error = false;
+                } catch (Exception e) {
+                    this.displayMsg = Messages.wentWorng;
                 }
-                this.displayMsg = Messages.ACTION_SUCCESS;
-                this.displayMsg += Messages.NL + Messages.NL + Messages.URI_ID;
-                xml.append("<codeValue>").append(codeValue).append("</codeValue>\n");
-                this.error = false;
             }
 
         } else if (action.equals("reqpublish")) {
@@ -305,11 +309,8 @@ public class AdminEntity extends AdminBasicServlet {
             if (docOrg.equals(userOrg) && isWritable) {
                 String codeValue = "";
                 String mainCurrentName = "";
-                String uri_path = UtilsXPaths.getPathUriField(type);
                 String name_path = UtilsXPaths.getPrimaryEntitiesInsertPath(type);
-                if (!uri_path.equals("")) {
-                    codeValue = xmlE.queryString(uri_path)[0];
-                }
+                codeValue = xmlE.queryString("//admin/uri_id/text()")[0];
                 if (!name_path.equals("")) {
                     mainCurrentName = xmlE.queryString(name_path)[0];
                 }
@@ -370,13 +371,15 @@ public class AdminEntity extends AdminBasicServlet {
                     e.printStackTrace();
                 }
                 this.displayMsg = Messages.ACTION_SUCCESS;
+                xml.append("<backPages>").append('2').append("</backPages>\n");
+
             } else {
                 this.displayMsg = Messages.ACCESS_DENIED;
             }
 
         } else if (action.equals("info")) {
             this.displayMsg = xmlE.getAdminProperty("info");
-            conf.DISPLAY_XSL = conf.DISPLAY_WIN_XSL;
+            conf.DISPLAY_XSL = conf.POPUP_DISPLAY_XSL;
 
         } else {
             this.displayMsg = Messages.ACCESS_DENIED;
@@ -389,7 +392,6 @@ public class AdminEntity extends AdminBasicServlet {
         xml.append("<DisplayError>").append(this.error).append("</DisplayError>\n");
 
         xml.append(this.xmlEnd());
-        //System.out.println(xml);
         String xsl = conf.DISPLAY_XSL;
         try {
             XMLTransform xmlTrans = new XMLTransform(xml.toString());

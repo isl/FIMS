@@ -134,7 +134,7 @@ public class AdminVoc extends AdminBasicServlet {
             } else if (this.action.equals("toedit")) {
                 adminAction = "edit";
                 int id = Integer.parseInt(request.getParameter("id"));
-
+                String termName = voc.termValueOf(id);
                 //check term dependancies...
                 ArrayList<String> dependants = voc.findDependants(id, this.entityTypes);
                 if (!dependants.isEmpty()) {
@@ -167,6 +167,8 @@ public class AdminVoc extends AdminBasicServlet {
                     xml.append(outputsTag);
                     xml.append(resultsTag);
                     xml.append("</query>\n");
+                    xml.append("<termvalue>").append(termName.trim()).append("</termvalue>\n");
+                    
                     xml.append("<URI_Reference_Path>").append(this.URI_Reference_Path).append("</URI_Reference_Path>\n");
 
                 } else {
@@ -375,7 +377,6 @@ public class AdminVoc extends AdminBasicServlet {
         String str = xml.toString();
         str = str.replace("<Term", "<Όρος");
         str = str.replace("</Term", "</Όρος");
-
         String xsl = conf.DISPLAY_XSL;
         try {
             XMLTransform xmlTrans = new XMLTransform(str);

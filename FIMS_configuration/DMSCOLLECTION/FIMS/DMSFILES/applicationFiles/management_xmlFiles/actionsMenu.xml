@@ -80,7 +80,7 @@ This file is part of the FIMS webapp.
     </menugroup>
     <menugroup id="3" type="topcontent">
 		<!--Edit-->
-        <menu id="Edit" img_src="/formating/images/editdoc.gif">
+        <menu id="Edit" img_src="/formating/images/edit.png">
             <actionPerType id="Person">
                 <userRights href="javascript:void(0)" id="editor_url" onclick="">editor</userRights>
                 <userRights href="javascript:void(0)" id="editor_url" onclick="">admin</userRights>
@@ -103,36 +103,6 @@ This file is part of the FIMS webapp.
                 <label>AdminVocTrans</label>
             </actionPerType>
             <label>Epexergasia</label>
-        </menu>
-    </menugroup>
-    <menugroup id="5" type="topcontent">
-		<!--Delete-->
-        <menu id="Delete" img_src="/formating/images/deletedoc.gif">
-            <actionPerType id="Person">
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&amp;id=';" href="">editor</userRights>
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&amp;id=';" href="">admin</userRights>
-				<!--userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&id=';" href="">sysadmin</userRights-->
-            </actionPerType>
-            <actionPerType id="AdminUser">
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminUser?action=delete&amp;id=&amp;mode=';" href="">admin</userRights>
-				<!--userRights id="javascript:if ( confirmAction(str) ) location.href='AdminUser?action=delete&id=&mode=sys';" href="">sysadmin</userRights-->
-            </actionPerType>
-            <actionPerType id="AdminOrg">
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminOrg?action=delete&amp;id=&amp;mode=sys';" href="">sysadmin</userRights>
-            </actionPerType>
-            <actionPerType id="AdminVoc">
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete&amp;id=&amp;file=&amp;menuId=AdminVoc';" href="#">editor</userRights>
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete&amp;id=&amp;file=&amp;menuId=AdminVoc';" href="#">admin</userRights>
-            </actionPerType>
-            <actionPerType id="AdminVocTrans">
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans'" href="#">editor</userRights>
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans'" href="#">admin</userRights>
-                <label>AdminVocTrans</label>
-            </actionPerType>
-            <actionPerType id="Backup">
-                <userRights id="javascript:if ( confirmAction(str) ) location.href='Storage?action=delete&amp;menuId=Backup&amp;id='" href="#">sysadmin</userRights>
-            </actionPerType>
-            <label>Diagrafi</label>
         </menu>
     </menugroup>
     <menugroup id="6" type="topcontent">
@@ -201,6 +171,33 @@ This file is part of the FIMS webapp.
                 <label>View_Version</label>
             </submenu>
             <label>Versions</label>
+        </menu>				<!--Delete-->
+        <menu id="Delete" img_src="/formating/images/delet.png">
+            <actionPerType id="Person">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&amp;id=';" href="">editor</userRights>
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&amp;id=';" href="">admin</userRights>
+				<!--userRights id="javascript:if ( confirmAction(str) ) location.href='DeleteEntity?type=Person&id=';" href="">sysadmin</userRights-->
+            </actionPerType>
+            <actionPerType id="AdminUser">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminUser?action=delete&amp;id=&amp;mode=';" href="">admin</userRights>
+				<!--userRights id="javascript:if ( confirmAction(str) ) location.href='AdminUser?action=delete&id=&mode=sys';" href="">sysadmin</userRights-->
+            </actionPerType>
+            <actionPerType id="AdminOrg">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminOrg?action=delete&amp;id=&amp;mode=sys';" href="">sysadmin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVoc">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete&amp;id=&amp;file=&amp;menuId=AdminVoc';" href="#">editor</userRights>
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete&amp;id=&amp;file=&amp;menuId=AdminVoc';" href="#">admin</userRights>
+            </actionPerType>
+            <actionPerType id="AdminVocTrans">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans'" href="#">editor</userRights>
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='AdminVoc?action=delete_trans&amp;id=&amp;mode=&amp;file=&amp;menuId=AdminVocTrans'" href="#">admin</userRights>
+                <label>AdminVocTrans</label>
+            </actionPerType>
+            <actionPerType id="Backup">
+                <userRights id="javascript:if ( confirmAction(str) ) location.href='Storage?action=delete&amp;menuId=Backup&amp;id='" href="#">sysadmin</userRights>
+            </actionPerType>
+            <label>Diagrafi</label>
         </menu>
         <menu id="Metafrasi" img_src="/formating/images/translate.png">
             <submenu id="MetafrasiSub">
@@ -239,7 +236,7 @@ This file is part of the FIMS webapp.
                     <userRights href="ListEntity?type=Person&amp;status=imported">admin</userRights>
                     <userRights href="ListEntity?type=Person&amp;status=imported">sysadmin</userRights>
                 </actionPerType>
-                <label>Imported</label>
+                <label>imported</label>
             </submenu>
         </menu>
         <menu id="Ola">

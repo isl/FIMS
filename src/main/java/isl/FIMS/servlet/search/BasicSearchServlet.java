@@ -32,7 +32,6 @@ import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.dms.DMSConfig;
 import java.util.Arrays;
 
-
 import java.util.Hashtable;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -43,9 +42,9 @@ import javax.servlet.http.HttpServletRequest;
  * BasicServlet.<br> <br> Depending on the application this servlet must extends
  * the 'ApplicationServlet', which provides global access to info, such as
  * system info (systemRoot, adminCollection, etc) and user info (userId,
- * username).<br> <br> The variables that are needed by the
- * <code>Search</code> servlets (and should inherited by the
- * 'ApplicationServlet') are: <li>DBURI</li> <li>adminCollection</li>
+ * username).<br> <br> The variables that are needed by the <code>Search</code>
+ * servlets (and should inherited by the 'ApplicationServlet') are:
+ * <li>DBURI</li> <li>adminCollection</li>
  * <li>DBuser</li> <li>DBpassword</li> <li>systemRoot</li> <li>userId</li>
  * <li>username</li> <br><br> and the methods for building the XML for the page:
  * <li>xmlStart</li> <li>xmlEnd</li> <br><br>
@@ -74,7 +73,7 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
     }
 
     public Hashtable<String, Object> getParams(HttpServletRequest request) {
-                String username = getUsername(request);
+        String username = getUsername(request);
 
         String qId = request.getParameter("qid");
         if (qId == null) {
@@ -109,6 +108,7 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
             inputsIds = new String[0];
         }
         String[] inputsOpers = request.getParameterValues("inputoper");
+     
         if (inputsOpers == null) {
             inputsOpers = new String[0];
         }

@@ -60,9 +60,7 @@ public class FetchBinFile extends ApplicationBasicServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //    System.out.println("FetchBinFile");
         String mimeType = getServletContext().getMimeType(request.getParameter("file"));
-        //System.out.println("ELANTE:"+xm);
         request.setCharacterEncoding("UTF-8");
 
         response.setContentType(mimeType + ";charset=UTF-8");
@@ -80,7 +78,6 @@ public class FetchBinFile extends ApplicationBasicServlet {
             DBFile uploadsDBFile = new DBFile(this.DBURI, adminDbCollection, this.uploadsFile, this.DBuser, this.DBpassword);
 
             if (mime.equals("Photos")) {
-                // System.out.println("size="+size);
                 if (size == null) {
                     size = "original";
                 } else {

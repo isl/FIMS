@@ -43,52 +43,36 @@ This file is part of the FIMS webapp.
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
-    <xsl:template name="context">
-        <script>
-            function expandVocsList(ind){
-            getObj('expand_'+ind).style.display='none';
-            getObj('collapse_'+ind).style.display='block';
-            getObj('vocs_'+ind).style.display='block';
-            }
-			
-            function collapseVocsList(ind){
-            getObj('expand_'+ind).style.display='block';
-            getObj('collapse_'+ind).style.display='none';
-            getObj('vocs_'+ind).style.display='none';
-            }
-        </script>
-        <td colSpan="{$columns}" vAlign="top" align="center" class="content">
-            <br/>
-            <xsl:for-each select="$VocsList"> <!-- gia ka8e omada le3ilogiwn -->
-                <xsl:variable name="ind" select="position()"/>
-                <p >
-                    <table border="0" class="results" cellspacing="0" width="500">
-                        <tr  valign="middle" class="resultRow2">
-                            <td>
-                                <a id="expand_{$ind}" class="action"  href="javascript:expandVocsList('{$ind}')" style="display:block">[+] <xsl:value-of select="./displayname/*[name()=$lang]"/></a>
-                                <a id="collapse_{$ind}" class="action"  href="javascript:collapseVocsList('{$ind}')" style="display:none">[-] <xsl:value-of select="./displayname/*[name()=$lang]"/></a>
-                            </td>
-                        </tr>
-                        <tr class="resultRow" >
-                            <td>
-                                <table id="vocs_{$ind}" class="results" style="display:none" cellspacing="0">
+    
+    <xsl:template name="context">     
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="panel-group" id="accordion">        
+                    <xsl:for-each select="$VocsList"> <!-- gia ka8e omada le3ilogiwn -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading vocPanel">
+                                <h4 class="panel-title">                                    
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                       href="#collapse{position()}">
+                                        <xsl:value-of select="./displayname/*[name()=$lang]"/>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse{position()}" class="panel-collapse collapse">
+                                <div class="panel-body">
                                     <xsl:for-each select="./*[name() != 'displayname']"> <!-- gia ka8e le3ilogio ths omadas -->
-                                        <tr class="resultRow" align="left" valign="middle">
-                                            <td style="padding-left:15px" width="500">
-                                                <a href="AdminVoc?action={$AdminAction}&amp;mode={$AdminMode}&amp;file={./file}&amp;menuId={$EntityType}">
-                                                    <xsl:value-of select="./displayname/*[name()=$lang]"/>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <p class="vocLink">
+                                            <a  href="AdminVoc?action={$AdminAction}&amp;mode={$AdminMode}&amp;file={./file}&amp;menuId={$EntityType}">
+                                                <xsl:value-of select="./displayname/*[name()=$lang]"/>
+                                            </a>
+                                        </p>
                                     </xsl:for-each>
-                                </table>
-                            </td>
-                        </tr>
-                                                
-                    </table>
-                </p>
-            </xsl:for-each>
-            <br/>
-        </td>
+                                </div>
+                            </div>
+                        </div>
+                    </xsl:for-each> 
+                </div>              
+            </div>
+        </div>
     </xsl:template>
 </xsl:stylesheet>

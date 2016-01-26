@@ -96,10 +96,7 @@ public class SearchResults extends BasicSearchServlet {
 
             XMLTransform xmlTrans = new XMLTransform(xml.toString());
             String xsl = Config.SEARCH_RESULTS_XSL;
-            //mallon auto to if de xreiazetai
-          /*  if (status.equals("all")) {
-             xsl = Config.ADMIN_SEARCH_RESULTS_XSL;
-             }*/
+  
             xmlTrans.transform(out, xsl);
             out.close();
             return;
@@ -126,8 +123,6 @@ public class SearchResults extends BasicSearchServlet {
             querySource = QueryTools.getSource(params, this.conf, this.dataCol);
             queryXML = QueryTools.getXML(params, this.conf, this.dataCol);
         }
-        //System.out.println("SOURCE=" + querySource);
-        // System.out.println("PARAMS=" + params);
         long start = System.currentTimeMillis();
         StringBuffer resultsTag = new StringBuffer("<results>\n");
         // If many targets then
@@ -175,7 +170,7 @@ public class SearchResults extends BasicSearchServlet {
         xml.append("<success return=\"1\"></success>\n");
         xml.append(dataTypes.toString());
         xml.append(xmlEnd);
-        System.out.println(xml.toString());
+        System.out.println("xml--> "+xml);
         XMLTransform xmlTrans = new XMLTransform(xml.toString());
         String xsl = Config.SEARCH_RESULTS_XSL;
         xmlTrans.transform(out, xsl);
@@ -193,7 +188,7 @@ public class SearchResults extends BasicSearchServlet {
         int last = showlast;
 
         StringBuffer inQuerySource = new StringBuffer();
-        inQuerySource.append("return $i,\n").append("$count := count($results),\n").append("$k := 0,\n").append("$l := 0,\n").append("$start := " + firstPage + ",\n").append("$max := " + lastPage + ",\n").append("$first := " + first + ",\n").append("$last := " + last + ",\n").append("$end := if($count >= $max) then $max else $count,\n").append("$currentP := " + currentP + ",\n").append("$queryPages := if ($count mod " + step + " > 0) then ($count idiv " + step + ")+1 else $count idiv " + step + ",\n").append("$showfirst := if ($first = 0) then 1 else if ($first < 0) then 1 else $first,\n").append("$showlast := if ($last > $queryPages) then $queryPages else $last\n").append("return\n").append("<stats count=\"{$count}\" currentP=\"{$currentP}\" showfirst=\"{$showfirst}\" showlast=\"{$showlast}\" end=\"{$end}\" queryPages=\"{$queryPages}\" start=\"{$start}\" step=\"" + step + "\">\n").append("<pageLoop>\n").append("{for $k in 1 to $queryPages\n").append("return <lista>{$k}</lista>}\n").append("</pageLoop>\n").append("<showPages>\n").append("{for $l in $showfirst to $showlast\n").append("return <show>{$l}</show>}\n").append("</showPages>\n").append("{for $j in $start to $end\n").append("let $current := $results[$j]\n");
+        inQuerySource.append("return $i,\n").append("$count := count($results),\n").append("$k := 0,\n").append("$l := 0,\n").append("$start := " + firstPage + ",\n").append("$max := " + lastPage + ",\n").append("$first := " + first + ",\n").append("$last := " + last + ",\n").append("$end := if($count >= $max) then $max else $count,\n").append("$currentP := " + currentP + ",\n").append("$queryPages := if ($count mod " + step + " > 0) then ($count idiv " + step + ")+1 else $count idiv " + step + ",\n").append("$showfirst := if ($first = 0) then 1 else if ($first < 0) then 1 else $first,\n").append("$showlast := if ($last > $queryPages) then $queryPages else $last\n").append("return\n").append("<stats count=\"{$count}\" currentP=\"{$currentP}\" showfirst=\"{$showfirst}\" showlast=\"{$showlast}\" end=\"{$end}\" queryPages=\"{$queryPages}\" start=\"{$start}\" step=\"" + step + "\">\n").append("<pageLoop>\n").append("{for $k in 1 to $queryPages\n").append("return <lista>{$k}</lista>}\n").append("</pageLoop>\n").append("<showPages>\n").append("{for $l in $showfirst to $showlast\n").append("return <show>{$l}</show>}\n").append("</showPages>\n").append("{for $j in $start to $end\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
 
         return inQuerySource;
     }

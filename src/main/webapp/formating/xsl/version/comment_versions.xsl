@@ -41,35 +41,39 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <td colSpan="{$columns}" vAlign="top" align="center" class="content">
-            <br/>
-            <br/>
-            <form id="userForm" method="post" action="CreateVersion?type={$EntityType}&amp;action=create&amp;id={$FileId}" style="margin-bottom:0px;">
-                <table width="100%" class="contentText">
-                    <tr>
-                        <xsl:variable name="tag" select=" 'Sxolio' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td width="20%" align="right">
-                            <xsl:value-of select="$translated"/>
-                        </td>
-                        <td>
-                            <textarea rows="3" id="comment" name="comment" style="width:400px"><xsl:value-of select="$comment"/></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <br/>
-                            <input type="hidden" name="lang" value="{$lang}"/>
-                            <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <input type="submit" class="button" value="{$translated}"></input>	
-                        </td>
-                    </tr>
-                </table>               
-            </form>
-            <br/>
-            <script language="javascript">document.getElementById('comment').focus();</script>
-        </td>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:variable name="tag" select=" 'Create_Version' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h4>
+                <form action="CreateVersion?type={$EntityType}&amp;action=create&amp;id={$FileId}"  method="post">
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Sxolio'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-10 col-md-10 col-lg-10">
+                            <p>
+                                <textarea rows="3" name="comment">
+                                    <xsl:value-of select="$comment"/>
+                                </textarea>                            
+                            </p>
+                        </div>
+                    </div>
+                    <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                        <xsl:value-of select="$translated"/>
+                    </button>         
+                </form>
+            </div>
+        </div>      
     </xsl:template>
 </xsl:stylesheet>

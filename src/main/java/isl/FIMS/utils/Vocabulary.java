@@ -217,7 +217,6 @@ public class Vocabulary {
         try {
             this.transVocFile.setIntoEntity(id, lang, String.valueOf(termId));
         } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
         }
     }
 
@@ -269,7 +268,6 @@ public class Vocabulary {
             q.append("<" + lang + " id=\"{$" + lang + "Id}\">{$" + lang + "}</" + lang + ">\n");
         }
         q.append("</translation>\n");
-        System.out.println(q.toString());
         return this.transVocFile.queryString(q.toString());
     }
 
@@ -434,7 +432,6 @@ public class Vocabulary {
                 + "where $b//@sps_id='" + termId + "' and  $b//@sps_vocabulary='" + this.vocName + "'  and $c//admin/lang/text()='" + this.vocLang + "' "
                 + "return "
                 + "util:document-name($b) ";
-        System.out.println("q-->" +query);
         String[] dbFs = dbc.query(query);
         for (int k = 0; k < dbFs.length; k++) {
             String name = dbFs[k].toString();

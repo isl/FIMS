@@ -1,29 +1,29 @@
 /*
-Copyright 2015 Institute of Computer Science,
-Foundation for Research and Technology - Hellas
-
-Licensed under the EUPL, Version 1.1 or - as soon they will be approved
-by the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
-
-http://ec.europa.eu/idabc/eupl
-
-Unless required by applicable law or agreed to in writing, software distributed
-under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and limitations
-under the Licence.
-
-Contact:  POBox 1385, Heraklio Crete, GR-700 13 GREECE
-Tel:+30-2810-391632
-Fax: +30-2810-391638
-E-mail: isl@ics.forth.gr
-http://www.ics.forth.gr/isl
-
-Authors : Konstantina Konsolaki, Georgios Samaritakis
-
-This file is part of the FIMS webapp.
+ Copyright 2015 Institute of Computer Science,
+ Foundation for Research and Technology - Hellas
+ 
+ Licensed under the EUPL, Version 1.1 or - as soon they will be approved
+ by the European Commission - subsequent versions of the EUPL (the "Licence");
+ You may not use this work except in compliance with the Licence.
+ You may obtain a copy of the Licence at:
+ 
+ http://ec.europa.eu/idabc/eupl
+ 
+ Unless required by applicable law or agreed to in writing, software distributed
+ under the Licence is distributed on an "AS IS" basis,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the Licence for the specific language governing permissions and limitations
+ under the Licence.
+ 
+ Contact:  POBox 1385, Heraklio Crete, GR-700 13 GREECE
+ Tel:+30-2810-391632
+ Fax: +30-2810-391638
+ E-mail: isl@ics.forth.gr
+ http://www.ics.forth.gr/isl
+ 
+ Authors : Konstantina Konsolaki, Georgios Samaritakis
+ 
+ This file is part of the FIMS webapp.
  */
 
 function getObj(objId) {
@@ -34,28 +34,7 @@ function trim(str) {
     return str.replace(/^\s*|\s*$/g, "");
 }
 
-function goToPage(selectedInput, pages) {
-    var selection = document.getElementById(selectedInput).value;
-    if (!isNaN(selection) && selection != '') {
 
-        var number = selection * 1; ////gia na ginei to string -> Integer to pollaplasiazoume epi 1 (*1)
-        var pageNumbers = pages * 1; ////gia na ginei to string -> Integer to pollaplasiazoume epi 1 (*1)
-
-        if (number > pageNumbers) {
-            alert(EgirosAri8mosSelidas);
-            return;
-        } else if (number < 1) {
-            alert(EgirosAri8mosSelidas);
-            return;
-        } else {
-            var frm = document.forms["searchPagingForm"];
-            frm.newP.value = selection;
-            frm.submit();
-        }
-    }
-    else
-        alert(EgirosAri8mosSelidas);
-}
 
 function submitSearchPagingForm(param, valueof) {
 
@@ -69,36 +48,7 @@ function submitSearchPagingForm(param, valueof) {
     frm.submit();
 }
 
-function goToSearchPage(selection, pages) {
-    if ((event.which && event.which == 13) ||
-            (event.keyCode && event.keyCode == 13)) {
-        if (!isNaN(selection) && selection != '') {
 
-            var number = selection * 1; ////gia na ginei to string -> Integer to pollaplasiazoume epi 1 (*1)
-            var pageNumbers = pages * 1; ////gia na ginei to string -> Integer to pollaplasiazoume epi 1 (*1)
-
-            if (number > pageNumbers) {
-                alert(EgirosAri8mosSelidas);
-                return;
-            }
-
-            else if (number < 1) {
-                alert(EgirosAri8mosSelidas);
-                return;
-            }
-
-
-            else {
-                var frm = document.forms["searchPagingForm"];
-                frm.newP.value = selection;
-                frm.submit();
-            }
-        }
-        else
-            alert(EgirosAri8mosSelidas);
-    }
-
-}
 
 function addNewVocTerm(term, url, noTermMsg, termExistsMsg) {
     term = trim(term);
@@ -115,7 +65,7 @@ function addNewVocTerm(term, url, noTermMsg, termExistsMsg) {
         }
     }
 
-    submitFormTo('newTermFrm', url);
+    submitFormTo('newTermForm', url);
     return true;
 }
 
@@ -134,7 +84,73 @@ function addCriterion(tableBodyId, rowId) {
     //second cell: input field select. Two childrens: select and select (hidden)
 
     //third cell: input field text value. Two childrens: text and button
-    newRow.cells[2].childNodes[0].value = '';
+    newRow.cells[2].childNodes[1].value = '';
+    newRow.cells[4].childNodes[1].style.display = '';
+
+
+    $("#" + rowId + " select.chosen").removeClass("chzn-done").removeAttr('id').css("display", "block").next().remove();
+    $("#" + rowId + " select.chosen").chosen();
+
+    //run through each row
+    $('#criteriaBody tr').each(function () {
+        // reference all the stuff you need first
+        var dataType = $(this).find('#dataTypes').val();
+
+        if (dataType === "string") {
+            //$(this).find('.string_inputoper').prop('disabled', false);
+          //  $(this).find('.string_inputoper').next().prop('disabled', false).trigger("liszt:updated");
+          //  $(this).find('.time_inputoper').prop('disabled', true);
+         //   $(this).find('.time_inputoper').next().prop('disabled', true).trigger("liszt:updated");
+
+            $(this).find('.string_inputoper').hide();
+            $(this).find('.string_inputoper').next().show();
+            $(this).find('.time_inputoper').hide();
+            $(this).find('.time_inputoper').next().hide();
+        } else if (dataType === "time") {
+        //    $(this).find('.string_inputoper').prop('disabled', true);
+         //   $(this).find('.string_inputoper').next().prop('disabled', true).trigger("liszt:updated");
+          //  $(this).find('.time_inputoper').prop('disabled', false);
+         //  // $(this).find('.time_inputoper').next().prop('disabled', false).trigger("liszt:updated");
+
+            $(this).find('.string_inputoper').hide();
+            $(this).find('.string_inputoper').next().hide();
+            $(this).find('.time_inputoper').hide();
+            $(this).find('.time_inputoper').next().show();
+
+        }
+    });
+
+
+    $('.searchValues').change(function (i) {
+        var index = $(this).prop('selectedIndex');
+        $oper = $(this).parent().children().eq(2);
+        $oper.prop('selectedIndex', index);
+        var dataType = $oper.val();
+        $stingInput = $(this).parent().parent().children().eq(2).children().eq(0);
+        $timeInput = $(this).parent().parent().children().eq(2).children().eq(2);
+
+        if (dataType == "string") {
+           // $timeInput.prop('disabled', true);
+          //  $timeInput.next().prop('disabled', true).trigger("liszt:updated");
+            $timeInput.hide();
+            $timeInput.next().hide();
+          //  $stingInput.prop('disabled', false);
+         //   $stingInput.next().prop('disabled', false).trigger("liszt:updated");
+            $stingInput.hide();
+            $stingInput.next().show();
+        } else if (dataType == "time") {
+         //   $timeInput.prop('disabled', false);
+          //  $timeInput.next().prop('disabled', false).trigger("liszt:updated");
+            $timeInput.hide();
+            $timeInput.next().show();
+           // $stingInput.prop('disabled', true);
+         //   $stingInput.next().prop('disabled', true).trigger("liszt:updated");
+
+            $stingInput.hide();
+            $stingInput.next().hide();
+        }
+    });
+
 }
 
 function addOutput(tableBodyId, rowId) {
@@ -146,7 +162,7 @@ function addOutput(tableBodyId, rowId) {
 
 function removeRow(rowObj) {
     var parent = rowObj.parentNode;
-    if (parent.rows.length > 2)
+    if (parent.rows.length > 1)
         rowObj.parentNode.removeChild(rowObj);
 }
 
@@ -258,38 +274,6 @@ function closeCardAndMakeItAvailable(filename) {
         popUp("SystemMessages?file=" + filename + "&time=3000", "lala", "300", "150", " ")
     }
 
-}
-
-
-function onChangeField(sel, id, oper) {
-    oper.selectedIndex = id;
-}
-
-function onChangeField2(sel, id, oper) {
-
-    oper.selectedIndex = id;
-    document.getElementById("dataTypes").selectedIndex = id;
-    var dataType = document.getElementById("dataTypes").value;
-    if (dataType == "string") {
-        sel.parentNode.parentNode.cells[2].childNodes[1].disabled = true;
-        sel.parentNode.parentNode.cells[2].childNodes[0].disabled = false;
-        sel.parentNode.parentNode.cells[2].childNodes[0].style.display = 'block';
-        sel.parentNode.parentNode.cells[2].childNodes[1].style.display = 'none';
-        sel.parentNode.parentNode.cells[3].getElementsByTagName("div")[0].childNodes[1].disabled = true;
-        sel.parentNode.parentNode.cells[3].getElementsByTagName("div")[0].style.display = 'none';
-        sel.parentNode.parentNode.cells[3].childNodes[0].disabled = false;
-        sel.parentNode.parentNode.cells[3].childNodes[0].style.display = 'block';
-    } else if (dataType == "time") {
-        sel.parentNode.parentNode.cells[2].childNodes[0].disabled = true;
-        sel.parentNode.parentNode.cells[2].childNodes[1].disabled = false;
-        sel.parentNode.parentNode.cells[2].childNodes[1].style.display = 'block';
-        sel.parentNode.parentNode.cells[2].childNodes[0].style.display = 'none';
-        sel.parentNode.parentNode.cells[3].childNodes[0].disabled = true;
-        sel.parentNode.parentNode.cells[3].childNodes[0].style.display = 'none';
-        sel.parentNode.parentNode.cells[3].getElementsByTagName("div")[0].style.display = 'block';
-        sel.parentNode.parentNode.cells[3].getElementsByTagName("div")[0].childNodes[1].disabled = false;
-        sel.parentNode.parentNode.cells[3].getElementsByTagName("div")[0].disabled = false;
-    }
 }
 
 function timeCheck(timeValue) {
@@ -740,4 +724,4 @@ function toggle_visibility_Class(className, display) {
     }
 }
 
-
+ 

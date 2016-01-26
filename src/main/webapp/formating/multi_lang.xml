@@ -70,7 +70,7 @@ This file is part of the FIMS webapp.
             <ar>إعدادات الحساب</ar>
             <sv>Kontoinställningar</sv>
             <nl>Accountinstellingen</nl>
-        </changePass>
+        </changePass>    
         <Ontotites>
             <gr>Οντότητες</gr>
             <en>Entities</en>
@@ -88,7 +88,7 @@ This file is part of the FIMS webapp.
             <ar>مساعدة</ar>
             <sv>Hjälp</sv>
             <nl>Help</nl>
-        </Help>
+        </Help>     
         <User_Manual>
             <gr>Εγχειρίδιο Χρήστη</gr>
             <en>User Manual</en>
@@ -163,7 +163,7 @@ This file is part of the FIMS webapp.
             <ar>عقد</ar>
             <sv>Kontrakt</sv>
             <nl>Contract</nl>	
-        </Contract>     
+        </Contract>   
         <DigitalRepresentation>
             <gr>Ψηφιακή Αναπαράσταση</gr>                      
             <en>Digital Representation</en>
@@ -662,6 +662,52 @@ This file is part of the FIMS webapp.
         <mappings>
             <en>Mappings</en>
         </mappings>
+        
+        <documentation_entities>
+            <gr>Τεκμηρίωση</gr>
+            <en>Documentation</en>
+            <fr>Documentation</fr>
+            <it>Documentazione</it>
+            <ar>الكيانات وثائق</ar>
+            <sv>Dokumentation</sv>
+            <nl>Dokumentation</nl>
+        </documentation_entities>
+        <presentation_entities>
+            <gr>Παρουσίαση</gr>
+            <en>Presentation</en>
+            <fr>Présentation</fr>
+            <it>Presentazione</it>
+            <ar>الكيانات العرض</ar>
+            <sv>Presentation</sv>
+            <nl>Præsentation</nl>
+        </presentation_entities>
+        <admin_tools>
+            <gr>Διαχείριση</gr>
+            <en>Adminstration</en>
+            <fr>Administration</fr>
+            <it>Amministrazione</it>
+            <ar>إدارة</ar>
+            <sv>Administrering</sv>
+            <nl>Administratie</nl>
+        </admin_tools>
+        <main_menu>
+            <en>Main Menu</en>
+        </main_menu>
+               <Help>
+            <gr>Βοήθεια</gr>
+            <en>Help</en>
+            <fr>Aide</fr>
+            <it>Aiuto</it>
+            <ar>مساعدة</ar>
+            <sv>Hjälp</sv>
+            <nl>Help</nl>
+        </Help>
+        <short_ins>
+            <en>Quick Start Guide</en>
+        </short_ins>
+        <manual>
+            <en>Manual</en>
+        </manual>
     </leftmenu>
     <context>
         <AudienceLevel>
@@ -691,7 +737,7 @@ This file is part of the FIMS webapp.
             <sv>Lyssna</sv>
             <nl>Luisteren</nl> 
         </Listen>
-        <Imported>
+        <imported>
             <gr>Εισαχθέντα</gr>
             <en>Imported</en>
             <fr>Importé</fr>
@@ -699,8 +745,8 @@ This file is part of the FIMS webapp.
             <ar>مستورد</ar>
             <sv>Importerad</sv>
             <nl>Geïmporteerde</nl> 
-        </Imported>
-        <Locked>
+        </imported>
+        <locked>
             <gr>Κλείδωμένα</gr>
             <en>Locked</en>
             <fr>Fermé</fr>
@@ -708,7 +754,7 @@ This file is part of the FIMS webapp.
             <ar>مغلق</ar>
             <sv>Låst</sv>
             <nl>Afgesloten</nl> 
-        </Locked>
+        </locked>
         <Unlock>
             <gr>Ξεκλείδωμα Αρχείου</gr>
             <en>Unlock File</en>
@@ -773,7 +819,7 @@ This file is part of the FIMS webapp.
             <nl>Beoogd gebruik</nl> 
         </IntendedUse>
         <SelectFile>
-            <gr>Επιλέξτε το ZIP αρχείο που θέλετε να εισάγετε. Το αρχείο πρέπει να περιέχει τα XML που θέλετε να εισάγετε και τα αρχεία που αυτά ανεφέρουν)</gr>
+            <gr>Επιλέξτε το ZIP αρχείο που θέλετε να εισάγετε. Το αρχείο πρέπει να περιέχει τα XML που θέλετε να εισάγετε και τα αρχεία που αυτά ανεφέρουν.</gr>
             <en>Select the ZIP file you want to import. The file must contain the XML files you want to import and also the referenced files.</en>
             <fr>Sélectionnez le ZIP fichier que vous souhaitez importer:</fr>
             <it>Selezionare il ZIP file che si desidera importare:</it>
@@ -880,6 +926,15 @@ This file is part of the FIMS webapp.
             <sv>Visa Versioner</sv>
             <nl>Bekijk versies</nl>
         </View_Version>
+        <record>
+            <gr>Εγγραφή</gr>
+            <en>Record</en>
+            <fr>Enregistrement</fr>
+            <it>Record</it>
+            <ar> السجل</ar>
+            <sv>Psot</sv>
+            <nl>Record</nl>
+        </record>
         <ExtraSearchKrithria>
             <gr>Επιπλέον Κριτήρια Αναζήτησης</gr>
             <en>Additional Search Criteria</en>
@@ -943,7 +998,7 @@ This file is part of the FIMS webapp.
             <sv>Återställ backup</sv>
             <nl>Back-up terugzetten</nl>
         </restore_backup>
-        <taDikaMu>
+        <allunpublished>
             <gr>Τα δικά μου</gr>
             <en>My Cards</en>
             <fr>mes Cartes</fr>
@@ -951,8 +1006,8 @@ This file is part of the FIMS webapp.
             <ar>بلدي بطاقات</ar>
             <sv>Mina Kort</sv>
             <nl>Mijn kaarten</nl>
-        </taDikaMu>
-        <Allwn>
+        </allunpublished>
+        <org>
             <gr>Άλλων</gr>
             <en>Others</en>
             <fr>Autres</fr>
@@ -960,7 +1015,7 @@ This file is part of the FIMS webapp.
             <ar>آخرون</ar>
             <sv>Andra</sv>
             <nl>Anderen</nl>
-        </Allwn>
+        </org>
         <Anazitisi>
             <gr>Αναζήτηση</gr>
             <en>Search</en>
@@ -1043,8 +1098,8 @@ This file is part of the FIMS webapp.
             <nl>U kunt de geselecteerde instelling niet verwijderen. Het is in gebruik door andere kaarten.</nl>
         </CAN_NOT_REMOVE_INSTITUTION>
         <id>
-            <gr>Κωδικός</gr>
-            <en>Id</en>
+            <gr>Κωδικός Δελτίου</gr>
+            <en>Card Id</en>
             <fr>Id</fr>
             <it>Codice utente</it>
             <ar>كود</ar>
@@ -1189,7 +1244,7 @@ This file is part of the FIMS webapp.
         </Dikaiwmata>
         <DiaxeirisiDikaiwmatwn>
             <gr>Διαχείριση δικαιωμάτων</gr>
-            <en>Admin rights</en>
+            <en>Sharing Rights</en>
             <fr>Administration des droits</fr>
             <it>Gestione diritti</it>
             <ar>إدارة الحقوق</ar>
@@ -1206,7 +1261,7 @@ This file is part of the FIMS webapp.
             <nl>Systeembeheerder organisatie</nl>
         </admin>
         <createAdmin>
-            <gr>Δημιουργήστε τον Διαχειριστή του Φορέα</gr>
+            <gr>Δημιουργία Διαχειριστή Φορέα</gr>
             <en>Create the Organization Administrator</en>
             <fr>Créer l'administrateur de l'organisation</fr>
             <it>Creare il Organization Administrator</it>
@@ -1463,16 +1518,7 @@ This file is part of the FIMS webapp.
             <ar>إنشاء  جديد</ar>
             <sv>Skapa ny</sv>
             <nl>Maak nieuwe</nl>
-        </DimiourgiaNeas>
-        <DimiourgiaNeas>
-            <gr>Δημιουργία Νέας</gr>
-            <en>Create New</en>
-            <fr>Créer nouveau</fr>
-            <it>Crea nuova</it>
-            <ar>إنشاء  جديد</ar>
-            <sv>Skapa ny</sv>
-            <nl>Maak nieuwe</nl>
-        </DimiourgiaNeas>
+        </DimiourgiaNeas>        
         <Δημιουγός>
             <gr>Δημιουργός</gr>
             <en>Creator</en>
@@ -1526,16 +1572,7 @@ This file is part of the FIMS webapp.
             <ar>شطب</ar>
             <sv>Ta bort</sv>
             <nl>Verwijder</nl>
-        </Diagrafi>
-        <Diagrafi>
-            <gr>Διαγραφή</gr>
-            <en>Delete</en>
-            <fr>Suppression</fr>
-            <it>Cancella</it>
-            <ar>شطب</ar>
-            <sv>Ta bort</sv>
-            <nl>Verwijder</nl>
-        </Diagrafi>
+        </Diagrafi>     
         <DiagrafiKritiriou>
             <gr>Διαγραφή κριτηρίου</gr>
             <en>Delete Criterion</en>
@@ -2411,13 +2448,13 @@ This file is part of the FIMS webapp.
             <nl>Publiceren</nl>
         </Dimosieusi>
         <DimosieusiLabel>
-            <gr>ΔΗΜΟΣΙΕΥΣΗ</gr>
-            <en>PUBLISH</en>
-            <fr>PUBLICATION</fr>
-            <it>PUUBBLICAZIONE</it>
+            <gr>Δημοσίευση</gr>
+            <en>Publish</en>
+            <fr>Publication</fr>
+            <it>Pubblicazione</it>
             <ar>نشر</ar>
-            <sv>PUBLICERA</sv>
-            <nl>PUBLICEREN</nl>
+            <sv>Publicera</sv>
+            <nl>Publiceren</nl>
         </DimosieusiLabel>
         <Dimosieusi>
             <gr>Δημοσίευση</gr>
@@ -2429,13 +2466,13 @@ This file is part of the FIMS webapp.
             <nl>Publiceren</nl>
         </Dimosieusi>
         <Eisagwgh_Eksagwgh>
-            <gr>ΕΙΣΑΓΩΓΗ/ΕΞΑΓΩΓΗ</gr>
-            <en>IMPORT/EXPORT</en>
-            <fr>IMPORT/EXPORT</fr>
-            <it>IMPORT/EXPORT</it>
-            <ar>IMPORT/EXPORT</ar>
-            <sv>IMPORT/EXPORT</sv>
-            <nl>IMPORT/EXPORT</nl>
+            <gr>Εισαγωγή/Εξαγωγή</gr>
+            <en>Import/Export</en>
+            <fr>Import/Export</fr>
+            <it>Import/Export</it>
+            <ar>Import/Export</ar>
+            <sv>Import/Export</sv>
+            <nl>Import/Export</nl>
         </Eisagwgh_Eksagwgh>
         <EksagwghXML>
             <gr>Εξαγωγή σε XML</gr>
@@ -2591,6 +2628,15 @@ This file is part of the FIMS webapp.
             <sv>Begäran om publicering</sv>
             <nl>Verzoek om te publiceren</nl>
         </AitisiDimosieusis>
+        <RequestNewAccount>
+            <gr>Αίτηση για νέο λογαριασμό</gr>
+            <en>Request new account</en>
+            <fr>Demander un nouveau compte</fr>
+            <it>Richiedi nuovo account</it>
+            <ar>طلب حساب جديد</ar>
+            <sv>Begär nytt konto</sv>
+            <nl>Verzoek nieuwe account</nl>
+        </RequestNewAccount>       
         <ApotelesmaEperotisis>
             <gr>Αποτελέσματα Επερώτησης</gr>
             <en>Result of Query</en>
@@ -3299,17 +3345,17 @@ This file is part of the FIMS webapp.
         </Proboli_new>
 
         <Lexilogio>
-            <gr>ΛΕΞΙΛΟΓΙΟ</gr>
-            <en>VOCABULARY</en>
-            <fr>VOCABULAIRE</fr>
-            <it>LESSICO</it>
+            <gr>Λεξιλόγιο</gr>
+            <en>VOocabulary</en>
+            <fr>Vocabulaire</fr>
+            <it>Lessico</it>
             <ar>مفردات </ar>
-            <sv>ORDLISTA</sv>
+            <sv>Ordlista</sv>
             <nl>Woordenlijst</nl>
         </Lexilogio>
         <MeKritiriaAnazitisis>
-            <gr>με κριτήρια αναζήτησης</gr>
-            <en>with the searching criteria</en>
+            <gr>Κριτήρια αναζήτησης</gr>
+            <en>Searching criteria</en>
             <fr>avec les critères de recherche</fr>
             <it>con criteri di ricerca</it>
             <ar>بمعايير بحث</ar>
@@ -3778,13 +3824,12 @@ This file is part of the FIMS webapp.
             <ar>تبعيات</ar>
             <sv>Beroenden</sv>
             <nl>Afhankelijkheden</nl>
-        </DependenciesTitle>
-        
+        </DependenciesTitle>        
         <ForgetPass>
-            <gr>Ξεχάσατε τον κωδικό πρόσβασης;</gr>
-            <en>Forgot your Password?</en>
-            <fr>Vous avez oublié votre mot de passe?</fr>
-            <it>Hai dimenticato la tua password?</it>
+            <gr>Αίτηση για νέο κωδικό πρόσβασης</gr>
+            <en>Request New Password</en>
+            <fr>Demander un nouveau mot</fr>
+            <it>Richiedi nuova password</it>
             <ar>نسيت كلمة المرور</ar>
             <sv>Har du glömt ditt lösenord?</sv>
             <nl>Wachtwoord vergeten?</nl>
@@ -3861,6 +3906,15 @@ This file is part of the FIMS webapp.
             <sv>Återgå till Login sida</sv>
             <nl>Retun naar Inlogpagina</nl>
         </ReturnLogin>
+        <UserLogin>
+            <gr>Είσοδος χρήστη</gr>
+            <en>User Login</en>        
+            <fr>Utilisateur en Ligne</fr>
+            <it>Login utente</it>
+            <ar>دخول المستخدم</ar>
+            <sv>Användarinloggning</sv>
+            <nl>Gebruiker Login</nl>
+        </UserLogin>
         <NewPassSend>
             <gr>Ο νέος κωδικός πρόσβασης έχει σταλεί στο email σας.</gr>
             <en>The new password is sent to your email.</en>
@@ -3880,7 +3934,7 @@ This file is part of the FIMS webapp.
             <nl>Leeg veld: Email</nl>
         </EMPTY_FIELD_Email>
         <Email_EXIST>
-            <gr>Υπάρχει ήδη χρήστης με το συγκεκριμένο όνομα εμαιλ</gr>
+            <gr>Υπάρχει ήδη χρήστης με το συγκεκριμένο εμαιλ</gr>
             <en>There is already a user with this email</en>
             <fr>Il existe déjà un utilisateur avec ce courriel</fr>
             <it>Esiste già un utente con questa email</it>
@@ -3906,6 +3960,10 @@ This file is part of the FIMS webapp.
         <instance_generator_alpha>            
             <en>Instance Generator (New alpha)</en>            
         </instance_generator_alpha>
+        <contactEmail>
+            <gr>Email Επικοινωνίας</gr>
+            <en>Contact Email</en>
+        </contactEmail>
         <PrimaryInsertFieldMapping>
             <gr>Τίτλος</gr>
             <en>Title</en>
@@ -4194,10 +4252,80 @@ This file is part of the FIMS webapp.
             <nl>Select two files to compare</nl>
         </SelectCompareFiles>
         
-	<Graph_Representation>
-		<en>Analysis</en>
-	</Graph_Representation>
-        
+        <Graph_Representation>
+            <en>Analysis</en>
+        </Graph_Representation>
+        <createQuery>
+            <gr>Δημιουργία αποθηκευμένης επερώτησης</gr>
+            <en>Create a saved query</en>
+        </createQuery>
+        <saveQuery>
+            <gr>Επιλογή αποθηκευμένης επερώτησης</gr>
+            <en>Select a saved query</en>
+        </saveQuery>
+        <defaultOutput>
+            <gr>Προεπιλεγμένα πεδία εξόδου</gr>
+            <en>Default output fields</en>
+            <fr>Champs de sortie par défaut</fr>
+            <it>Campi di output predefinito</it>
+            <ar>حقول الإخراج الافتراضي</ar>
+            <sv>Standard output fält</sv>
+            <nl>Standaard uitgang velden</nl>
+        </defaultOutput>
+        <changeOutput>
+            <gr>Αλλαγή πεδίων εξόδου</gr>
+            <en>Change output fields</en>
+            <fr>Changer les champs de sortie</fr>
+            <it>Cambia campi di output</it>
+            <ar>تغيير حقول الإخراج</ar>
+            <sv>Ändra output fält</sv>
+            <nl>Uitgang velden veranderen</nl>
+        </changeOutput>
+        <execTime>
+            <gr>Χρόνος εκτέλεσης</gr>
+            <en>Execution Time</en>
+            <fr>Temps d'exécution</fr>
+            <it>Tempo di esecuzione</it>
+            <ar>وقت التنفيذ</ar>
+            <sv>Exekveringstid</sv>
+            <nl>Uitvoeringstermijn</nl>
+        </execTime>
+        <tableContent>
+            <gr>Προβολή</gr>
+            <en>Showing</en>
+            <fr>Contenu de la table</fr>
+            <it>Contenuto della tabella</it>
+            <ar>محتوى الجدول</ar>
+            <sv>Tabellinnehållet</sv>
+            <nl>Table inhoud</nl>
+        </tableContent>
+        <notPublished>
+            <gr>Μη Δημοσιευμένα - Υπό δημοσίευση</gr>
+            <en>Unpublished - Pending for publishing</en>
+            <fr>Non publiés - Sous publication</fr>
+            <it>Non pubblicati - In via di pubblicazione</it>
+            <ar>غير منشورة - تحت النشر</ar>
+            <sv>Opublicerat - Redo för publicering</sv>
+            <nl>Niet gepubliceerd - In afwachting voor publicatie</nl>   
+        </notPublished>
+        <notPending>
+            <gr>Μη Δημοσιευμένα - Δημοσιευμένα</gr>
+            <en>Unpublished - Published</en>
+            <fr>Non publiés - Publiés</fr>
+            <it>Non pubblicati - Pubblicate</it>
+            <ar>غير منشورة - منشورات</ar>
+            <sv>Opublicerat - Publicerad</sv>
+            <nl>Niet gepubliceerd - Gepubliceerd</nl>
+        </notPending>
+        <notUnpublished>
+             <gr>Υπό δημοσίευση - Δημοσιευμένα</gr>
+            <en>Pending for publishing - Published</en>
+            <fr>Sous publication - Publiés</fr>
+            <it>In via di pubblicazione - Pubblicate</it>
+            <ar>تحت النشر- منشورات</ar>
+            <sv>Redo för publicering - Publicerad</sv>
+            <nl>In afwachting voor publicatie - Gepubliceerd</nl>
+        </notUnpublished>
     </context>
     <footer>
         <text1>
@@ -4213,13 +4341,13 @@ This file is part of the FIMS webapp.
             <nl>&lt;i&gt;FIMS&lt;/i&gt; </nl>
         </text1>
         <text2>
-            <gr>- Copyright © </gr>
-            <en>- Copyright © </en>
-            <fr>- Copyright © </fr>
-            <it>- Copyright © </it>
-            <ar>- Copyright © </ar>
-            <sv>- Copyright © </sv>
-            <nl>- Copyright © </nl>
+            <gr>Copyright </gr>
+            <en>Copyright </en>
+            <fr>Copyright </fr>
+            <it>Copyright </it>
+            <ar>Copyright </ar>
+            <sv>Copyright </sv>
+            <nl>Copyright </nl>
         </text2>
         <text3>
             <gr>FORTH-ICS</gr>
@@ -4239,5 +4367,14 @@ This file is part of the FIMS webapp.
             <sv>. All rights reserved.</sv>
             <nl>. All rights reserved.</nl>
         </text4>
+          <text5>
+            <gr>EUPL Version 1.1</gr>
+            <en>EUPL Version 1.1</en>
+            <fr>EUPL Version 1.1</fr>
+            <it>EUPL Version 1.1</it>
+            <ar>EUPL Version 1.1</ar>
+            <sv>EUPL Version 1.1</sv>
+            <nl>EUPL Version 1.1</nl>
+          </text5>
     </footer>
 </locale>

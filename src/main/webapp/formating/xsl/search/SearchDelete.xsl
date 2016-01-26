@@ -40,78 +40,72 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <td colSpan="{$columns}" vAlign="top" align="center" class="content">
-        
-            <xsl:variable name="tag" select=" 'DiagrafiEperotisis' "/>
-            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-            <span class="contentTitleText">
-                <xsl:value-of select="$translated"/>
-            </span>
-            <form method="post" action="Search">
-                <table width="80%" align="center">
-                    <tr class="contentText">
-                        <td align="center">
-                            <b>
-                                <xsl:choose>
-                                    <xsl:when test="//success/@return='1'">
+        <script type="text/javascript">
+            $(document).ready(function(){
+            h = $('content').height();
+            $('#displayRow').height(h);
+            });
+        </script>
+        <div class="my-row special" id="displayRow">
+            <div class="v-m text-center">
+                <form method="post" action="Search">
+
+                    <p class="displayParagraph">
+                        <b>
+                            <xsl:choose>
+                                <xsl:when test="//success/@return='1'">
                                     
-                                        <xsl:variable name="tag" select=" 'EperotisiDiagrafiEpitixos' "/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <xsl:value-of select="$translated"/> 
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                    
-                                        <xsl:variable name="tag" select=" 'EperotisiDiagrafiAnepitixos' "/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <xsl:value-of select="$translated"/> 
-                                        <br/>
-                                        <br/>
-                                        <xsl:variable name="tag" select="//success/text()"/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <xsl:value-of select="$translated"/> 
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </b>
-                        </td>
-                    </tr>
-                </table>
-                <p align="center">
-                    <xsl:if test="//success/@return='0'">
-                        <xsl:variable name="tag" select=" 'FormaEperotisis' "/>
+                                    <xsl:variable name="tag" select=" 'EperotisiDiagrafiEpitixos' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>                             
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:variable name="tag" select=" 'EperotisiDiagrafiAnepitixos' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/> 
+                                    <br></br>
+                                    <xsl:variable name="tag" select="//success/text()"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/> 
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </b>
+                    </p>
+                    <div class="displayButtons">
+                        <xsl:if test="//success/@return='0'">
+                            <xsl:variable name="tag" select=" 'Epistrofi' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <input type="submit" class="btn btn-default .btn-sm displayButton" name="submit" value="{$translated}"/>
+                        </xsl:if>                    
+                        <xsl:variable name="tag" select=" 'DimiourgiaNeas' "/>
                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <input type="submit" class="button" name="submit" value="{$translated}"/>
-                    </xsl:if>
-					
-                    <xsl:variable name="tag" select=" 'DimiourgiaNeas' "/>
-                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <input type="button" class="button" name="new" value="{$translated}" onclick="location.href='Search?category={//context/query/info/category}'"/>
-                </p>
-
-                <input type="hidden" name="qid" value="{//context/query/@id}"/>
-                <input type="hidden" name="mnemonicName" value="{//context/query/info/name/text()}"/>
-                <input type="hidden" name="category" value="{//context/query/info/category}"/>
-                <input type="hidden" name="operator" value="{//context/query/info/operator}"/>
-                <input type="hidden" name="source" value="{//context/query/info/source}"/>
-
-                <input type="hidden" name="status" value="{//context/query/info/status}"/>
-
-                <xsl:for-each select="//context/query/targets/path[@selected='yes']">
-                    <input type="hidden" name="target" value="{./@xpath}"/>
-                </xsl:for-each>
-                <xsl:for-each select="//context/query/inputs/input">
-                    <input type="hidden" name="inputid" value="{./@id}"/>
-                    <xsl:if test="./@parameter='yes'">
-                        <input type="hidden" name="inputparameter" value="{./@id}"/>
-                    </xsl:if>
-                    <input type="hidden" name="input" value="{./path[@selected='yes']/@xpath}"/>
-                    <input type="hidden" name="inputoper" value="{./path[@selected='yes']/@oper}"/>
-                    <input type="hidden" name="inputvalue" value="{./value}"/>
-                </xsl:for-each>
-                <xsl:for-each select="$output">
-                    <input type="hidden" name="output" value="{./@xpath}"/>
-                </xsl:for-each>
-                <input type="hidden" name="mode" value="fromDelete"/>
-            </form>
-        </td>
+                        <input type="button" class="btn btn-default .btn-sm displayButton" name="new" value="{$translated}" onclick="location.href='Search?category={//context/query/info/category}'"/>
+                    </div>
+                           
+                    <input type="hidden" name="qid" value="{//context/query/@id}"/>
+                    <input type="hidden" name="mnemonicName" value="{//context/query/info/name/text()}"/>
+                    <input type="hidden" name="category" value="{//context/query/info/category}"/>
+                    <input type="hidden" name="operator" value="{//context/query/info/operator}"/>
+                    <input type="hidden" name="source" value="{//context/query/info/source}"/>
+                    <input type="hidden" name="status" value="{//context/query/info/status}"/>
+                    <xsl:for-each select="//context/query/targets/path[@selected='yes']">
+                        <input type="hidden" name="target" value="{./@xpath}"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="//context/query/inputs/input">
+                        <input type="hidden" name="inputid" value="{./@id}"/>
+                        <xsl:if test="./@parameter='yes'">
+                            <input type="hidden" name="inputparameter" value="{./@id}"/>
+                        </xsl:if>
+                        <input type="hidden" name="input" value="{./path[@selected='yes']/@xpath}"/>
+                        <input type="hidden" name="inputoper" value="{./path[@selected='yes']/@oper}"/>
+                        <input type="hidden" name="inputvalue" value="{./value}"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="$output">
+                        <input type="hidden" name="output" value="{./@xpath}"/>
+                    </xsl:for-each>
+                    <input type="hidden" name="mode" value="fromDelete"/>           
+                </form>
+            </div>
+        </div>
     </xsl:template>
 </xsl:stylesheet>

@@ -86,7 +86,7 @@ public class SystemMessages extends ApplicationBasicServlet {
         xml.append("<Display>").append(displayMsg).append("</Display>\n");
         xml.append("<Time>").append(time).append("</Time>\n");
 
-        String xsl = conf.DISPLAY_WIN_XSL;
+        String xsl = conf.POPUP_DISPLAY_XSL;
         if (feXMLEditor.equals("yes")) {
             if (displayMsg.equals("HAS_DEPENDANTS")) {
                 String EntityType = request.getParameter("type");
@@ -123,6 +123,8 @@ public class SystemMessages extends ApplicationBasicServlet {
                 xml.append(resultsTag);
                 xml.append("</query>\n");
                 xml.append("<URI_Reference_Path>").append(this.URI_Reference_Path).append("</URI_Reference_Path>\n");
+                String nameValue = xmlE.queryString("//admin/uri_id/text()")[0];
+                xml.append("<termvalue>").append(nameValue).append("</termvalue>\n");
 
             }
             String link = request.getParameter("link");

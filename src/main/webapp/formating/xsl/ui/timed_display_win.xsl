@@ -44,34 +44,38 @@ This file is part of the FIMS webapp.
             <head>
                 <xsl:variable name="tag" select=" 'info' "/>
                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <title><xsl:value-of select="$translated"/></title>
+                <title>
+                    <xsl:value-of select="$translated"/>
+                </title>
                 <script language="JavaScript" src="formating/javascript/utils/scripts.js"></script>
                 <link rel="stylesheet" type="text/css" href="formating/css/page.css"></link>
-                
-                
             </head>
             <body onLoad="setTimeout('self.close()','{$Time}')">
-                <table width="100%">
-                    <tr>
-                        <td valign="top" class="content">
-                            <br/>
-                            <p align="center" class="contentText" style="border:1px solid #777799">
-                                <xsl:choose>
-                                    <xsl:when test=" $Display='DOC_UNLOCKING' ">
-                                        <xsl:variable name="tag" select=" $Display "/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <b><xsl:value-of select="$translated"/></b>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <b><xsl:value-of select="$Display"/></b>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                                <br/><br/>
-                            </p>                    
-                            <br/><br/><br/><br/><br/>
-                        </td>
-                    </tr>
-                </table>
+                <div class="container">                         
+                    <div class="row " id="content">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="my-row special" id="displayRow">
+                                <div class="v-m text-center">   
+                                    <p class="displayParagraph"> 
+                                        <xsl:choose>
+                                            <xsl:when test=" $Display='DOC_UNLOCKING' ">
+                                                <xsl:variable name="tag" select=" $Display "/>
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                <b>
+                                                    <xsl:value-of select="$translated"/>
+                                                </b>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <b>
+                                                    <xsl:value-of select="$Display"/>
+                                                </b>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </body>
         </html>
     </xsl:template>

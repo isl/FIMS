@@ -85,6 +85,7 @@ This file is part of the FIMS webapp.
 	<context-param>
 		<description>exist schema folder</description>
 		<param-name>dbSchemaFolder</param-name>
+
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -98,6 +99,7 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>editorWebapp</param-name>
+
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -122,11 +124,13 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>entityListPhoto</param-name>
+
 		<param-value/>
 	</context-param>
 	<!-- ===== Various for System ===== -->
 	<context-param>
 		<param-name>ListStep</param-name>
+
 		<!-- Results to each page -->
 		<param-value>20</param-value>
 	</context-param>
@@ -137,6 +141,7 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>maxCollsize</param-name>
+
 		<!-- eXist collection size -->
 		<param-value>999</param-value>
 	</context-param>
@@ -157,14 +162,17 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>EntityTypes</param-name>
+
 		<param-value>Person</param-value>
 	</context-param>
 	<context-param>
 		<param-name>Primary_EntityTypes</param-name>
+
 		<param-value/>
 	</context-param>
 	<context-param>
 		<param-name>Secondary_EntityTypes</param-name>
+
 		<param-value>Person</param-value>
 	</context-param>
 	<context-param>
@@ -173,16 +181,20 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<description>
+
             gmail password
 		</description>
 		<param-name>emailPass</param-name>
+
 		<param-value/>
 	</context-param>
 	<context-param>
 		<description>
+
             gmail address
 		</description>
 		<param-name>emailAdress</param-name>
+
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -210,18 +222,21 @@ This file is part of the FIMS webapp.
 		<param-value>FIMS</param-value>
 	</context-param>
 	<context-param>
-		<!--Version of the system-->
-		<param-name>systemVersion</param-name>
-		<param-value>1.0</param-value>
+		<!--Espa logo neeeded-->
+
+		<param-name>espaLogo</param-name>
+		<param-value>false</param-value>
 	</context-param>
 	<context-param>
-		<!--Acronym's Description of the system-->
-		<param-name>systemAcronymDescription</param-name>
-		<param-value>Forth Information Management System</param-value>
+		<!--Contact Email-->
+
+		<param-name>contactEmail</param-name>
+		<param-value/>
 	</context-param>
 	<context-param>
 		<!--Acronym's Description of the system-->
 		<param-name>uploadAttributes</param-name>
+
 		<param-value/>
 	</context-param>
 	<context-param>

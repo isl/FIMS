@@ -33,13 +33,19 @@ import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.entity.Config;
 import static isl.FIMS.utils.ParseXMLFile.parseFile;
 import isl.FIMS.utils.Utils;
+import isl.dbms.DBMSException;
 import isl.dms.DMSException;
 import isl.dms.file.DMSFile;
+import isl.dms.file.DMSGroup;
 import isl.dms.file.DMSUser;
 import isl.dms.file.EntryExistException;
 import isl.dms.xml.XMLTransform;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,8 +92,18 @@ public class SignUp extends ApplicationBasicServlet {
             String firstname = request.getParameter("firstname");
             String address = request.getParameter("address");
             String email = request.getParameter("email");
+            String orgId = request.getParameter("orgId");
+            if (orgId == null) {
+                try {
+                    Hashtable groups = DMSGroup.getGroupToIdMapping(this.conf);
+                    if (groups.size() == 1) {
+                        orgId = (String) groups.keys().nextElement();
+                    }
+                } catch (DMSException ex) {
+                }
+            }
             String role = "editor";
-            String orgId = "1";
+
             if (username.length() == 0) {
                 displayMsg = Messages.EMPTY_FIELD_UserName + Messages.NL;
             }
@@ -100,7 +116,7 @@ public class SignUp extends ApplicationBasicServlet {
                 displayMsg += Messages.FIELD_Password_NOT_VERIFIED + Messages.NL;
             }
 
-            if (orgId.equals("0")) {
+            if (orgId.equals(null) || orgId.equals("")) {
                 displayMsg += Messages.EMPTY_FIELD_OrgName + Messages.NL;
             }
 
@@ -129,6 +145,7 @@ public class SignUp extends ApplicationBasicServlet {
                         user.setInfo("firstname", firstname);
                         user.setInfo("address", address);
                         user.setInfo("email", email);
+                        user.setInfo("comment", "firstLogin");
 
                         //pros8hkh se organization [group]
                         user.addToGroup(orgId);
@@ -149,12 +166,14 @@ public class SignUp extends ApplicationBasicServlet {
                         context = context.replaceFirst(":", ": " + username);
                         context = context.replace("*", " " + ApplicationConfig.SYSTEM_ROOT);
                         context = context.replaceAll("\\?", "<br>");
-                          if (context.contains("systemName")) {
+                        if (context.contains("systemName")) {
                             context = context.replace("systemName", this.systemName);
                         }
                         boolean isSend = Utils.sendEmail(email, subject, context);
 
                         isSuccess = "true";
+                        response.sendRedirect("Login");
+
                     }
                 } catch (EntryExistException ex) {
                     displayMsg += Messages.USER_EXIST;
@@ -162,6 +181,24 @@ public class SignUp extends ApplicationBasicServlet {
                 }
             }
         }
+        try {
+            StringBuffer groupsXML = new StringBuffer("<groups>\n");
+            Hashtable groups = DMSGroup.getGroupToIdMapping(this.conf);
+            for (Enumeration e = groups.keys(); e.hasMoreElements();) {
+                String id = (String) e.nextElement();
+                String groupname = (String) groups.get(id);
+
+                groupsXML.append("<group>\n")
+                        .append("<id>").append(id).append("</id>\n")
+                        .append("<name>").append(groupname).append("</name>\n")
+                        .append("</group>\n");
+            }
+            groupsXML.append("</groups>");
+            xml.append(groupsXML);
+
+        } catch (DMSException ex) {
+        }
+
         xml.append("<isSuccess>").append(isSuccess).append("</isSuccess>\n");
 
         xml.append("<Display>").append(displayMsg).append("</Display>\n");
@@ -179,7 +216,7 @@ public class SignUp extends ApplicationBasicServlet {
     public String xmlStart(String lang) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<page  language=\"" + lang + "\">\n"
-              /*  + "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n"*/
+                /*  + "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n"*/
                 + "<header>\n"
                 + "</header>\n"
                 + "<topmenu>\n"
@@ -188,8 +225,7 @@ public class SignUp extends ApplicationBasicServlet {
                 + "</leftmenu>\n" + "<context>\n";
     }
 
-   // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

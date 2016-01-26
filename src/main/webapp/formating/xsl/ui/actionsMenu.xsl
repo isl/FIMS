@@ -42,210 +42,139 @@ This file is part of the FIMS webapp.
         <xsl:variable name="DocStatus" select="//context/DocStatus"/>
         <xsl:variable name="TargetCol" select="//context/TargetCol"/>
         <xsl:variable name="root" select="//context/query/Root"/>
-
-        <table border="0" style="float:left;">
-            <tr>   
-                <xsl:for-each select="//actions/menugroup[menu//actionPerType[@id=$EntityType]/userRights=$user and @id!='Anazitisi' ]">
-                    <td class="colMenu">   
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9 actionsMenu">
+                <ul class="nav nav-tabs">
+                    <xsl:for-each select="//actions/menugroup[menu//actionPerType[@id=$EntityType]/userRights=$user and @id!='Anazitisi']">
                         <xsl:choose>
                             <xsl:when test="count(./menu/submenu)=0">
+                            
                                 <xsl:for-each select="./menu[actionPerType[@id=$EntityType]/userRights=$user]">
+                                    <li>
+                                        <xsl:call-template name="enableLinks">
+                                            <xsl:with-param name="id" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@id"/>
+                                            <xsl:with-param name="href" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@href"/>
+                                            <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
+                                            <xsl:with-param name="image" select="string(./@img_src)"/>
+                                            <xsl:with-param name="help" select="string(./@help)"/>
+                                            <xsl:with-param name="hasText" select="'no'"/>
 
-                                    <xsl:call-template name="enableLinks">
-                                        <xsl:with-param name="id" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@id"/>
-                                        <xsl:with-param name="href" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@href"/>
-                                        <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
-                                        <xsl:with-param name="image" select="string(./@img_src)"/>
-                                        <xsl:with-param name="help" select="string(./@help)"/>
-                                    </xsl:call-template>               
+                                        </xsl:call-template> 
+                                    </li>              
                                 </xsl:for-each>
                             </xsl:when>
-                            <xsl:otherwise>  
-                                <ul id="sddm">
-                                    <li>
-                                        <a  href="#" onmouseover="mopen('m{position()}')" onmouseout="mclosetime()">
+                            <xsl:otherwise>
+                                <li class="moreDropDown">
+                                    <div class="dropdown">                
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle"> 
                                             <xsl:variable name="tag" select="./label"/>
                                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                             <xsl:value-of select="$translated"/>
-                                             <xsl:variable name="image" select="string(./@img_src)"/>    
-                                    <img src="{$image}"/>                     
+                                            <span class="caret moreCaret"></span> 
                                         </a>
                                         <xsl:variable name="menusNum" select="count(./menu[submenu/actionPerType[@id=$EntityType]/userRights=$user])"/>
-                                        <div id="m{position()}"  onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu{position()}">
                                             <xsl:for-each select="./menu[submenu/actionPerType[@id=$EntityType]/userRights=$user]">
                                                 <xsl:variable name="tag" select="./label"/>                                        
                                                 <xsl:if test="$tag!=''">
-                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                    <a class="newMenu" style="color:grey; font-style:italic;"  href="#">
-                                                        <xsl:value-of select="$translated"/> 
-                                                    </a>
+                                                    <li class="nav-header">
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                        <xsl:value-of select="$translated"/>
+                                                    </li>                                                  
                                                 </xsl:if>
-                                                <xsl:variable name="image_menu" select="string(./@img_src)"/>                                         
                                                 <xsl:for-each select="./submenu[actionPerType[@id=$EntityType]/userRights=$user]">
                                                     <xsl:variable name="image_submenu" select="string(./@img_src)"/>                                         
                                                     <xsl:variable name="help_submenu" select="string(./@help)"/>                                         
                                                     <xsl:variable name="image">
                                                         <xsl:choose>
-                                                            <xsl:when test="$image_menu!=''">
-                                                                <xsl:value-of select="$image_menu" />
-                                                            </xsl:when>
+                                                         
                                                             <xsl:when test="$image_submenu!=''">                                                       
                                                                 <xsl:value-of select="$image_submenu"/>
                                                             </xsl:when>                                                     
                                                         </xsl:choose>
                                                     </xsl:variable>
-                                                    <xsl:call-template name="enableLinks">
-                                                        <xsl:with-param name="id" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@id"/>
-                                                        <xsl:with-param name="href" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@href"/>
-                                                        <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
-                                                        <xsl:with-param name="image" select="$image"/>
-                                                        <xsl:with-param name="help" select="$help_submenu"/>
+                                                    <li role="presentation">
 
-                                                    </xsl:call-template>       
+                                                        <xsl:call-template name="enableLinks">
+                                                            <xsl:with-param name="id" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@id"/>
+                                                            <xsl:with-param name="href" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@href"/>
+                                                            <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
+                                                            <xsl:with-param name="help" select="$help_submenu"/>
+                                                            <xsl:with-param name="hasText" select="'yes'"/>
+                                                        </xsl:call-template>  
+                                                    </li>     
                                                 </xsl:for-each>
                                                 <xsl:if test="position() &lt; $menusNum">
-                                                    <hr/>
+                                                    <li class="nav-divider"></li>
                                                 </xsl:if>
                                             </xsl:for-each>
-                                        </div>
-                                    </li>
-                                </ul>                                         
-                            </xsl:otherwise>                               
-                        </xsl:choose>
-                    </td>
-                </xsl:for-each>  
-            </tr>
-        </table>
-        <table border="0" style="float:right;">
-            <tr>
-                <td id="firstSearchTd" class="searchDiv newMenu" >
-                    <xsl:choose>
-                        <xsl:when test="$EntityType='AdminVoc'">
-                            <form id="searchForm" method="post" action="AdminVoc?action=search&amp;file={$VocFile}&amp;menuId=AdminVoc">
-                                <xsl:variable name="tag" select=" 'Anazitisi' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <xsl:value-of select="$translated"/>
-                                <input type="image" src="formating/images/searchdoc.png"/>
-                                <input class="text" type="text" width='10' height='1' name="inputvalue"/>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </xsl:otherwise>
+                        </xsl:choose>                           
+                    </xsl:for-each>        
+                </ul>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3 actionsMenu">                
+                <xsl:variable name="tag" select=" 'Anazitisi' "/>
+                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                <ul class="nav nav-tabs">
+                    <li>                    
+                        <xsl:if test="$EntityType!='AdminOrg' and $EntityType!='AdminUser' and $EntityType!='Backup' and $EntityType!='AdminVocTrans' and $EntityType!='AdminVoc'">    
+                            <form action="SearchResults?style=simpleSearch" id="form" method="post" class="search">
+                                <i class="glyphicon glyphicon-search"></i>
+                                <input placeholder="{$translated}" type="text" name="inputvalue" class="keyword"/>                
+                                <input type="hidden" name="category" value="{$EntityType}"/>
+                                <input type="hidden" name="status" value="all"/>
+                                <input type="hidden" name="target" value="{$TargetCol}"/>
+                                <input type="hidden" name="input" value="{$root}"/>
+                                <input type="hidden" name="inputoper" value="contains"/>
+                                <input type="hidden" name="inputparameter" value="1"/>
+                                <input type="hidden" id="inputid" name="inputid" value="1"/>
                             </form>
-                        </xsl:when>
-                        <xsl:when test="$EntityType='AdminVocTrans'">
-                            <form id="searchForm" method="post" action="AdminVoc?action=search_trans&amp;file={$VocFile}&amp;menuId=AdminVocTrans">
-                                <xsl:variable name="tag" select=" 'Anazitisi' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <xsl:value-of select="$translated"/>
-                                <input type="image" src="formating/images/searchdoc.png"/>
-                                <input class="text" type="text" width='10' height='1' name="inputvalue"/>
-                            </form>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:if test="$EntityType!='AdminOrg' and $EntityType!='AdminUser' and $EntityType!='Backup'">    
-                                <form id="searchForm" method="post" action="SearchResults?style=simpleSearch">
-                                    <xsl:variable name="tag" select=" 'Anazitisi' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <xsl:value-of select="$translated"/>
-                                    <input type="image" src="formating/images/searchdoc.png"/>
-                                    <input class="text" type="text" width='10' height='1' name="inputvalue"/>
-                                    <input type="hidden" name="category" value="{$EntityType}"/>
-                                    <input type="hidden" name="status" value="all"/>
-                                    <input type="hidden" name="target" value="{$TargetCol}"/>
-                                    <input type="hidden" name="input" value="{$root}"/>
-                                    <input type="hidden" name="inputoper" value="contains"/>
-                                    <input type="hidden" name="inputparameter" value="1"/>
-                                    <input type="hidden" id="inputid" name="inputid" value="1"/>
-                                </form>
-                            </xsl:if>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </td>
-                <xsl:for-each select="//actions/menugroup[menu//actionPerType[@id=$EntityType]/userRights=$user and @id='Anazitisi' ]">
-                    <td  class="searchDiv newMenu" >
-                        <ul id="sddm">
-                            <li>
-                                <a href="#" onmouseover="mopen('search')" onmouseout="mclosetime()">
-                                      <!--xsl:variable name="tag" select="./label"/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <xsl:value-of select="$translated"/-->
-                                    <xsl:variable name="image" select="string(./@img_src)"/>    
-                                    <img src="{$image}"/>                            
+                        </xsl:if>                           
+                    </li>
+                    <li>
+                        <xsl:for-each select="//actions/menugroup[menu//actionPerType[@id=$EntityType]/userRights=$user and @id='Anazitisi' ]">
+                            <div class="dropdown">                
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle"> 
+                                    <span class="caret searchCaret"></span> 
                                 </a>
-                                <div id="search" style="margin-left:-110px;" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+
+                                <ul id="searchDropDown" class="dropdown-menu" role="menu" aria-labelledby="menu{position()}">
                                     <xsl:for-each select="./menu[submenu/actionPerType[@id=$EntityType]/userRights=$user]">
-                                        <xsl:variable name="tag" select="./label"/>
-                                        <xsl:if test="$tag!=''">
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <xsl:value-of select="$translated"/> 
-                                        </xsl:if>                                
-                                        <xsl:variable name="image" select="string(./@img_src)"/>
-                                        <xsl:variable name="help" select="string(./@help)"/>                           
-                                        <xsl:for-each select="./submenu[actionPerType[@id=$EntityType]/userRights=$user]">
-                                            <xsl:call-template name="enableLinks">
-                                                <xsl:with-param name="id" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@id"/>
-                                                <xsl:with-param name="href" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@href"/>
-                                                <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
-                                                <xsl:with-param name="image" select="$image"/>
-                                                <xsl:with-param name="help" select="$help"/>
 
-                                            </xsl:call-template>                                                     
-                                        </xsl:for-each>                               
+                                        <li role="presentation">
+                                            <xsl:variable name="tag" select="./label"/>
+                                            <xsl:if test="$tag!=''">
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                <xsl:value-of select="$translated"/> 
+                                            </xsl:if>                                
+                                            <xsl:variable name="image" select="string(./@img_src)"/>
+                                            <xsl:variable name="help" select="string(./@help)"/>                           
+                                            <xsl:for-each select="./submenu[actionPerType[@id=$EntityType]/userRights=$user]">
+                                                <xsl:call-template name="enableLinks">
+                                                    <xsl:with-param name="id" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@id"/>
+                                                    <xsl:with-param name="href" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@href"/>
+                                                    <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
+                                                    <xsl:with-param name="image" select="$image"/>
+                                                    <xsl:with-param name="help" select="$help"/>
+                                                    <xsl:with-param name="hasText" select="'yes'"/>
+                                                </xsl:call-template>
+                                            </xsl:for-each>
+                                        </li>
                                     </xsl:for-each>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                </xsl:for-each>     
-                                
-                <script type="text/javascript">                
-                    
-                    function enableLink($current,$item,id,file){
-                    var lang = '<xsl:value-of select="$lang"/>';
-                    var onclick= $item.getAttribute("onclick");
-                    var hasID=$item.getAttribute('id');
-                    var hasLang = (hasID.indexOf("lang=")>-1);
-                    if(onclick!=null){
-                    onclick=hasID;
-                    if(hasID.indexOf("id=")!=-1){                                
-                    onclick=hasID.replace("id=","id="+id);                                  
-                    }
-                        
-                    if(hasLang){
-                    onclick=onclick.replace("lang=","lang="+lang); 
-                    }                                   
-                    if(file!=""){
-                    onclick=onclick.replace("file=","file="+file)
-                    }
-                    $current.attr('href',"javascript:void(0)");
-                    $item.onclick=function(){
-                    popUp(onclick, id, 900, 700);
-                    }
-                    }
+                                </ul>
+                            </div>
+        
+                        </xsl:for-each>   
+                    </li>  
+                </ul>
+            </div>
+        </div>        
 
-                    var href= $item.getAttribute('href'); 
-                    if(href!=null &amp;&amp; onclick==null){
-                    if(hasID!=""){
-                    href=hasID;
-                    var hasLang = (href.indexOf("lang=")>-1);
-                    if(href.indexOf("id=")!=-1){                                
-                    href=href.replace("id=","id="+id);                                   
-                    }
-                                
-                    if(hasLang){
-                    href=href.replace("lang=","lang="+lang); 
-                    } 
-                    if(file!=""){
-                    href=href.replace("file=","file="+file);                                       
-                    }
-                    }
-                    $current.attr('href',href);
-                    }
-                    }
-
-                           
-                </script>
-            </tr>
-        </table>
-        <br/>
-        <br/>
     </xsl:template>
     <xsl:template name="enableLinks" match="/">
         <xsl:param name="href" />
@@ -253,10 +182,13 @@ This file is part of the FIMS webapp.
         <xsl:param name="image" />
         <xsl:param name="id" />
         <xsl:param name="help" />
-      
+        <xsl:param name="hasText"/>
         <xsl:variable name="EntityType" select="//context/EntityType"/>        
-        <xsl:variable name="translated" select="$locale/context/*[name()=$help]/*[name()=$lang]"/>
-        <a class="newMenu" title="{$translated}">
+
+        <xsl:variable name="tag" select="./label"/>
+        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+       
+        <a title="{$translated}">
             <xsl:if test="count($id)>0">
                 <xsl:attribute name="id">
                     <xsl:value-of select="string($id)"/>                  
@@ -271,14 +203,18 @@ This file is part of the FIMS webapp.
                 <xsl:attribute name="onclick">
                     <xsl:value-of select="string($onclick)"/>
                 </xsl:attribute>
-            </xsl:if>                                
-            <xsl:variable name="tag" select="./label"/>
-            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-            <xsl:value-of select="$translated"/>
+            </xsl:if>  
             <xsl:if test="$image!=''">
                 <xsl:text> </xsl:text>
-                <img src=".{$image}"/>
+                <xsl:variable name="imageName" select="substring-before($image,'.')"/>
+                <xsl:variable name="ext" select="substring-after($image,'.')"/>
+
+
+                <img class="img-responsive" src=".{$image}" onmouseover="this.src = '.{$imageName}Hover.{$ext}';" onmouseout="this.src = '.{$image}';"/>
             </xsl:if>
+            <xsl:if test="$hasText='yes'">
+                <xsl:value-of select="$translated"/>
+            </xsl:if>                
         </a>
     </xsl:template>
 </xsl:stylesheet>

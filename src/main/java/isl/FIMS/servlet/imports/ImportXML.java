@@ -223,7 +223,6 @@ public class ImportXML extends ApplicationBasicServlet {
                                 q = "//";
                                 if (!dbSchemaPath[0].equals("")) {
                                     for (String attrSet : this.dbSchemaPath) {
-                                        //      System.out.println("attrSet-->" + attrSet);
                                         String[] temp = attrSet.split("#");
                                         String func = temp[0];
                                         String path = temp[1];
@@ -331,6 +330,7 @@ public class ImportXML extends ApplicationBasicServlet {
                     displayMsg += Messages.NL + Messages.NL + Messages.URI_ID;
                     String uriValue = "";
                     xml.append("<Display>").append(displayMsg).append("</Display>\n");
+                    xml.append("<backPages>").append('2').append("</backPages>\n");
 
                     for (String saveId : savedIDs) {
                         uriValue = this.URI_Reference_Path + uri_name + "/" + saveId + Messages.NL;
@@ -388,7 +388,6 @@ public class ImportXML extends ApplicationBasicServlet {
             } catch (Exception ex) {
                 ex.printStackTrace();
                 displayMsg += Messages.NOT_VALID_IMPORT;
-                //System.out.println("message: There was an error: " + ex.getMessage());
             }
 
         }

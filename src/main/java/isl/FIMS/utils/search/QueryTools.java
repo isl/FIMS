@@ -99,7 +99,8 @@ public class QueryTools {
             }
             Arrays.sort(temp);
             for (int i = 0; i < temp.length; i++) {
-                if (temp[i] != null) {
+                if (temp[i] != null && temp[i] != "") {
+
                     String tmp = listing.get(temp[i]).split("/")[1];
                     if (tmp.equals(category)) {
                         queryEnd.append("<" + temp[i] + ">\n").append("{$current").append(listing.get(temp[i])).append("}\n").append("</" + temp[i] + ">\n");
@@ -122,7 +123,7 @@ public class QueryTools {
         StringBuffer queryTargets = new StringBuffer();
         StringBuffer queryWhere = new StringBuffer();
         UtilsQueries u = new UtilsQueries();
-        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode,username);
+        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username);
         for (int i = 0; i < targets.length; i++) {
             queryTargets.append(targets[i]).append(",");
         }
@@ -209,6 +210,7 @@ public class QueryTools {
         queryEnd.append("<hasPublicDependants>{exists($current/" + rootXPath + "/admin/refs_by/ref_by[./@isUnpublished='false'])}\n</hasPublicDependants>");
         queryEnd.append("<userHasWrite>{$current/" + rootXPath + "/admin/write/text()='" + username + "'}\n</userHasWrite>");
         queryEnd.append("<isImported>{exists($current/" + rootXPath + "/admin/imported)}\n</isImported>");
+        queryEnd.append("<versionId>{$current/" + rootXPath + "/admin/versions/versionId/text()}\n</versionId>");
         queryEnd.append("<type>{$current/" + rootXPath + "/admin/type}</type>\n");
         queryEnd.append("</hiddenResults>");
         //diplo 'filename' gia na akolou8oume th symbash me ta outputs
@@ -479,7 +481,6 @@ public class QueryTools {
         tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "input", category, conf);
         String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
 
-//        System.out.println(category);
         String[] tagType = DMSTag.valueOf("dataType", "input", category, conf);
 
         StringBuffer xmlTmp = new StringBuffer();
@@ -494,16 +495,13 @@ public class QueryTools {
 
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
 
-        //Samarita
-//        System.out.println(xmlTmp);
 //        inputsTag.append(xmlTmp);
 //        inputsTag.append("<input id=\"1\" parameter=\"no\">\n").append("<value/>\n</input>\n");
 //        inputsTag.append("<input id=\"2\" parameter=\"no\">\n").append("<value/>\n</input>\n");
         inputsTag.append("<input id=\"1\" parameter=\"no\">\n").append(xmlTmp).append("<value/>\n</input>\n");
-        //Konstantina To Get only one criteria at the begining
+        //To Get only one criteria at the begining
         //  inputsTag.append("<input id=\"2\" parameter=\"no\">\n").append(xmlTmp).append("<value/>\n</input>\n");
         inputsTag.append("</inputs>\n");
-//        System.out.println(inputsTag);
 
         StringBuffer outputsTag = new StringBuffer("<outputs>\n");
         for (int i = 0; i < tagXPaths.length; i++) {
@@ -527,7 +525,6 @@ public class QueryTools {
     private static String getPredicate(String input, String oper, String value) {
 
         String libPathProperty = System.getProperty("java.library.path");
-        System.out.println(libPathProperty);
         // gmessarit: perform a case-insensitive match
         if (oper.equals("matches")) {
             return " matches($i" + input + ", \'" + value + "\', \'i\') ";
@@ -576,12 +573,9 @@ public class QueryTools {
                 newOper = " ($i" + input + "/@x/number() <" + from + " and $i" + input + "/@y/number() >=" + from + " and $i" + input + "/@y/number() <=" + to + ") ";
             }
             return newOper;
-//            System.out.println("FROM="+from);
-//            System.out.println("TO="+to);
 
         } else {
 
-            // gmessarit: assume operators like: like, contains, not, etc.
             return " " + oper + "($i" + input + ", \'" + value + "\') ";
         }
     }

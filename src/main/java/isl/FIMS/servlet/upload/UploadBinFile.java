@@ -54,7 +54,6 @@ public class UploadBinFile extends ApplicationBasicServlet {
             response.setContentType("text/html;charset=UTF-8");
             request.setCharacterEncoding("UTF-8");
             String file = request.getParameter("file");
-            // System.out.println("PARAM="+file);
 
             String depository = request.getParameter("depository");
             String type = request.getParameter("type");
@@ -70,8 +69,6 @@ public class UploadBinFile extends ApplicationBasicServlet {
             // write data to ByteArrayInputStream
             this.write(bytesOut);
 
-//            System.out.println(xmlFile);
-//            System.out.println(file);
             DBFile uploadsDBFile = new DBFile(this.DBURI, adminDbCollection, this.uploadsFile, this.DBuser, this.DBpassword);
             String mime = findMime(uploadsDBFile, file);
         
@@ -105,7 +102,6 @@ public class UploadBinFile extends ApplicationBasicServlet {
 
         file = file.substring(file.lastIndexOf(".") + 1);
         file = file.toLowerCase();
-        //System.out.println("//mime[type='"+file+"']/../name()");
 
         String[] mimes = uploads.queryString("//mime[type='" + file + "']/../name()");
         if (mimes.length == 0) {

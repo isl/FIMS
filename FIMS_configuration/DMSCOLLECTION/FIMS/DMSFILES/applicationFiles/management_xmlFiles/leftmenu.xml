@@ -29,45 +29,47 @@ This file is part of the FIMS webapp.
 -->
 
 <leftmenu>
-    <menugroup type="left" id="1">
-        <menu id="Person">
-            <userRights href="ListEntity?type=Person">editor</userRights>
-            <userRights href="ListEntity?type=Person">guest</userRights>
-            <userRights href="ListEntity?type=Person">admin</userRights>
-            <userRights href="ListEntity?type=Person">sysadmin</userRights>
-            <label>Proswpa</label>
-        </menu>
-    </menugroup>
-    <menugroup type="left" id="3">
-        <menu id="AdminOrg">
-            <userRights href="AdminOrg?action=list">admin</userRights>
-            <userRights href="AdminOrg?action=list&amp;mode=sys">sysadmin</userRights>
-            <label>AdminOrgs</label>
-        </menu>
-        <menu id="AdminUser">
-            <userRights href="AdminUser?action=list">admin</userRights>
-            <userRights href="AdminUser?action=list&amp;mode=sys">sysadmin</userRights>
-            <label>AdminUsers</label>
-        </menu>
-        <menu id="SysAdminVocs" submenu="yes">
-            <userRights>editor</userRights>
-            <userRights>admin</userRights>
-            <label>AdminVocs</label>
-            <submenu id="AdminVoc">
-                <userRights href="AdminVoc?action=list_vocs&amp;menuId=AdminVoc">editor</userRights>
-                <userRights href="AdminVoc?action=list_vocs&amp;menuId=AdminVoc">admin</userRights>
-                <label>AdminVoc</label>
-            </submenu>
-            <submenu id="AdminVocTrans">
-                <userRights href="AdminVoc?action=list_vocs_trans&amp;menuId=AdminVocTrans">editor</userRights>
-                <userRights href="AdminVoc?action=list_vocs_trans&amp;menuId=AdminVocTrans">admin</userRights>
-                <label>AdminVocTrans</label>
-            </submenu>
-        </menu>
-        <menu id="Backup">
-            <userRights href="Storage?action=list&amp;menu=admin&amp;menuId=Backup">admin</userRights>
-            <userRights href="Storage?action=list&amp;menu=sysadmin&amp;menuId=Backup">sysadmin</userRights>
-            <label>Backup</label>
-        </menu>
-    </menugroup>
+	<menugroup type="left" id="1">
+		<menu id="Person">
+			<userRights href="ListEntity?type=Person">editor</userRights>
+			<userRights href="ListEntity?type=Person">guest</userRights>
+			<userRights href="ListEntity?type=Person">admin</userRights>
+			<userRights href="ListEntity?type=Person">sysadmin</userRights>
+			<label>Proswpa</label>
+		</menu>
+		<label>presentation_entities</label>
+	</menugroup>
+	<menugroup type="left" id="3">
+		<menu id="AdminOrg">
+			<userRights href="AdminOrg?action=list">admin</userRights>
+			<userRights href="AdminOrg?action=list&amp;mode=sys">sysadmin</userRights>
+			<label>AdminOrgs</label>
+		</menu>
+		<menu id="AdminUser">
+			<userRights href="AdminUser?action=list">admin</userRights>
+			<userRights href="AdminUser?action=list&amp;mode=sys">sysadmin</userRights>
+			<label>AdminUsers</label>
+		</menu>
+		<menu id="SysAdminVocs" submenu="yes">
+			<userRights>editor</userRights>
+			<userRights>admin</userRights>
+			<label>AdminVocs</label>
+			<submenu id="AdminVoc">
+				<userRights href="AdminVoc?action=list_vocs&amp;menuId=AdminVoc">editor</userRights>
+				<userRights href="AdminVoc?action=list_vocs&amp;menuId=AdminVoc">admin</userRights>
+				<label>AdminVoc</label>
+			</submenu>
+			<submenu id="AdminVocTrans">
+				<userRights href="AdminVoc?action=list_vocs_trans&amp;menuId=AdminVocTrans">editor</userRights>
+				<userRights href="AdminVoc?action=list_vocs_trans&amp;menuId=AdminVocTrans">admin</userRights>
+				<label>AdminVocTrans</label>
+			</submenu>
+		</menu>
+		<menu id="Backup">
+			<userRights href="Storage?action=list&amp;menu=admin&amp;menuId=Backup">admin</userRights>
+			<userRights href="Storage?action=list&amp;menu=sysadmin&amp;menuId=Backup">sysadmin</userRights>
+			<label>Backup</label>
+		</menu>
+		<label>admin_tools</label>
+	</menugroup>
 </leftmenu>

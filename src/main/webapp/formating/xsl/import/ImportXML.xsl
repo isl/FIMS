@@ -39,57 +39,81 @@ This file is part of the FIMS webapp.
     <xsl:template name="context">
         <xsl:variable name="EntityType" select="//context/EntityType"/>
         <xsl:variable name="Display" select="//context/Display"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            h = $('#content').height();
+            $('#displayRow').height(h);
+            });
+        </script>
+        <xsl:choose>           
+            <xsl:when test="$Display='form'">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
 
-        <td colSpan="{$columns}" vAlign="top"  class="content">
-            <br/>
-            <xsl:choose>
-                <xsl:when test="$Display='form'">
-                    <p align="left" style="font-size:13;">
-                        <xsl:variable name="tag" select=" 'SelectFile' "/>
-                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>               
-                        <xsl:value-of select="$translated"/>
-                    </p>
-                    <p>
-                        <form name="upload_form" id="upload_form" action="ImportXML?type={$EntityType}" method="post" enctype="multipart/form-data">
-                            <input type="file" accept=".zip" size="30" id="file" name="file" />                        
-                            <input type="submit" value="OK"/>
+                        <h4 class="title">
+                            <xsl:variable name="tag" select=" 'EisagwghXML' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:value-of select="$translated"/>
+                        </h4>
+                        <h5 class="subtitle">
+                            <xsl:variable name="tag" select=" 'SelectFile' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:value-of select="$translated"/>
+                        </h5>
+                        <form action="ImportXML?type={$EntityType}" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <p>
+                                        <input type="file" accept=".zip" name="file" />                        
+                                    </p>
+                                </div>
+                            </div>
+                            <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                                <xsl:value-of select="$translated"/>
+                            </button>  
+                            <xsl:variable name="tag" select=" 'Epistrofi' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <a class="btn btn-default .btn-sm" style="margin-top:10px; margin-left:10px;" href="javascript:window.history.go(-1);">
+                                <xsl:value-of select="$translated"/>
+                            </a>                     
                         </form>
-                    </p>
-                </xsl:when>
-                <xsl:otherwise>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <p align="center" style="font-size:12;  margin: 0 auto;text-align: justify; width: 45em;">        
-                        <xsl:for-each select="$Display/line">
-                            <xsl:value-of select="text()"/>
-                            <br></br>
-                        </xsl:for-each>        
-                    </p>
-                </xsl:otherwise>
-            </xsl:choose>           
-            <p align="center" style="padding-left:20px; padding-right:20px ;font-size:12;">
-                <xsl:variable name="tag" select=" 'Epistrofi' "/>
-                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                <xsl:choose>
-                    <xsl:when test="$Display='ACTION_SUCCESS'">
-                        <a href="javascript:window.history.go(-2);">
-                            <xsl:value-of select="$translated"/>
-                        </a>&#160;&#160; 
-                    </xsl:when>   
-                    <xsl:otherwise>
-                        <a href="javascript:window.history.go(-1);">
-                            <xsl:value-of select="$translated"/>
-                        </a>&#160;&#160; 
-                    </xsl:otherwise>
-                </xsl:choose>                  
-            </p>
-        </td>
-
-
+                    </div>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <div class="my-row special" id="displayRow">
+                    <div class="v-m text-center">
+                        <p class="displayParagraph">
+                            <xsl:for-each select="$Display/line">
+                                <b>
+                                    <xsl:value-of select="text()"/>
+                                </b>
+                                <br></br>
+                            </xsl:for-each>    
+                        </p>
+                        <p class="displayButtons">
+                            <xsl:variable name="tag" select=" 'Epistrofi' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:choose>
+                                <xsl:when test="$Display='ACTION_SUCCESS'">
+                                    <a class="btn btn-default .btn-sm displayButton" href="javascript:window.history.go(-2);">
+                                        <xsl:value-of select="$translated"/>
+                                    </a>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <a class="btn btn-default .btn-sm displayButton" href="javascript:window.history.go(-1);">
+                                        <xsl:value-of select="$translated"/>
+                                    </a>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </p>
+      
+                    </div>
+                </div>
+            </xsl:otherwise>
+        </xsl:choose>      
     </xsl:template>
-
 </xsl:stylesheet>

@@ -32,93 +32,51 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
-    <xsl:include href="loginPageTemplate.xsl"/>
+    <xsl:include href="page.xsl"/>
     <xsl:variable name="emailMsg" select="$locale/context/NotValidEmail/*[name()=$lang]"/>
+    <xsl:include href="../utils/utils.xsl"/>
 
     <xsl:template match="/">
-        <xsl:call-template name="loginPageTemplate"/>
-        
+        <xsl:call-template name="page"/>        
     </xsl:template>    
     <xsl:template name="context">
-        <script type="text/javascript" src="formating/javascript/jquery/jquery.min.js"></script>
-        <xsl:choose>
-            <xsl:when test="//context/Display=''">
-                <td colSpan="3" vAlign="top" align="center" class="content">
-                    <br/>
-                    <br/>
-                    <form id="loginForm" method="post" action="ForgetPass" style="margin-bottom:0px;" onsubmit="return validateEmail();">
-                        <!--table width="400" style="border: 4px double #444488"-->
-                        <table>
-                      
-                            <tr>
-                                <xsl:variable name="tag" select=" 'EmailPrompt' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <td style="color: #003366;font-size: 12px;font-weight: bold;font-family:Verdana;" >
-                                    <xsl:value-of select="$translated"/>
-                                </td>
-                                <td>
-                                    <input type="email" id="email" name="email" style="width:210px"></input>
-                                </td>
-                            </tr><!--3a2e1d-->
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <input type="hidden" name="lang" value="{$lang}"/>
-                                    <xsl:variable name="tag" select=" 'Eisodos' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <input style="width: 70px; margin-left:139px;"  type="submit" class="button" value="{$translated}"></input>	
-                                </td>
-                            </tr>               
-                        </table>
+        <div class="row"> 
+            <div class="col-md-8 col-lg-8 col-md-offset-4">
                
-                    </form>
-                    <br/>
-                    <script language="javascript">
-                        document.getElementById('email').focus();
-                        function validateEmail(){
-                        var email = $("#email").val();
-                        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;  
-                        if(!email.match(mailformat))  
-                        {
-                        var msg = '<xsl:value-of select="$emailMsg"/>';
-                        alert(msg);  
-                        event.preventDefault();                
-                        }
-                        return true;
-                        }
-              
-                    </script>
-                </td>
-            </xsl:when>
-            <xsl:otherwise>
-               
-                <td colSpan="3" vAlign="top" align="center" class="content">
-                     <br/>
-                    <br/>
-                    <table>
-                        <xsl:variable name="tag" select="//context/Display"/>
+                <div class="row account-wall">
+                    <xsl:variable name="tag" select=" 'ForgetPass'"/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <h4>                                    
+                        <xsl:value-of select="$translated"/>
+                    </h4>   
+                    <h8>
+                        <xsl:variable name="tag" select=" 'EmailPrompt' "/>
                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                        <td style="color: #003366;font-size: 12px;font-weight: bold;font-family:Verdana;" >
-                            <p>                                    
-                                <xsl:value-of select="$translated"/>
-                            </p>
-                        </td>  
-                        <tr></tr>  
-                        <tr>
-                            <xsl:variable name="tag" select="'ReturnLogin'"/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <td style="color: #003366;font-size: 12px;font-weight: bold;font-family:Verdana;" >
-                                <p align="right" style="padding-left:20px; padding-right:20px ;font-size:12;">
-                                    <a href="Login">
-                                        <xsl:value-of select="$translated"/>
-                                    </a> 
-                                </p>                           
-                            </td>                           
-                        </tr>
-                    </table>                  
-                </td>            
-            </xsl:otherwise>
-        </xsl:choose>
-        
+                        <xsl:value-of select="$translated"/>
+                    </h8>                  
+                    <form action="ForgetPass" method="post" class="form-signin">
+                        <xsl:variable name="tag" select=" 'email' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <input type="email" class="form-control" placeholder="{$translated}*" required="true"   name="email"/>
+                        <xsl:variable name="tag" select=" 'Oloklirwsi' "/> 
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/> 
+                        <input type="hidden" name="lang" value="{$lang}"/>
+                        <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                            <xsl:value-of select="$translated"/>
+                        </button>                                
+                        <span class="clearfix"/>
+                    </form>
+                    <xsl:if test="//context/Display!=''">
+                        <p>
+                            <h7 style="color:red;"> 
+                                <xsl:call-template name="replaceNL_Translate">
+                                    <xsl:with-param name="string" select="//context/Display"/>
+                                </xsl:call-template>                                       
+                            </h7>
+                        </p>                     
+                    </xsl:if>        
+                </div>
+            </div>
+        </div>
     </xsl:template>
 </xsl:stylesheet>

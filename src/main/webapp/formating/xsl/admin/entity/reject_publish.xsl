@@ -32,57 +32,50 @@ This file is part of the FIMS webapp.
 
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
-	<xsl:include href="../../ui/page.xsl"/>
+    <xsl:include href="../../ui/page.xsl"/>
 
-	<xsl:variable name="ErrorMsg" select="//context/ErrorMsg"/>
+    <xsl:variable name="ErrorMsg" select="//context/ErrorMsg"/>
 	
-	<xsl:variable name="FileId" select="//context/FileId"/>
-	<xsl:variable name="EntityType" select="//context/EntityType"/>
-	<xsl:variable name="AdminAction" select="//context/AdminAction"/>
+    <xsl:variable name="FileId" select="//context/FileId"/>
+    <xsl:variable name="EntityType" select="//context/EntityType"/>
+    <xsl:variable name="AdminAction" select="//context/AdminAction"/>
 
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-		<td colSpan="{$columns}" vAlign="top" align="center" class="content">
-			<br/>
-			<br/>
-			<form id="userForm" method="post" action="AdminEntity?type={$EntityType}&amp;action=rejectpublish&amp;id={$FileId}" style="margin-bottom:0px;">
-				<table width="100%" class="contentText">
-					<tr>
-						<xsl:variable name="tag" select=" 'Sxolio' "/>
-						<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-						<td width="20%" align="right"><xsl:value-of select="$translated"/></td>
-						<td><textarea rows="3" id="comment" name="comment" style="width:400px"></textarea></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-							<br/>
-							<input type="hidden" name="lang" value="{$lang}"/>
-							<xsl:variable name="tag" select=" 'Oloklirwsi' "/>
-							<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-							<input type="submit" class="button" value="{$translated}"></input>	
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<xsl:choose>
-							<xsl:when test="$ErrorMsg != '' ">
-								<xsl:variable name="tag" select="$ErrorMsg"/>
-								<xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-								 <td class="contentText" style="color:#EE0000;"><b><xsl:value-of select="$translated"/></b></td>
-							</xsl:when>
-							<xsl:otherwise>
-								<td style="color:#EE0000;"><br/></td>
-							</xsl:otherwise>
-						</xsl:choose>
-					</tr>
-				</table>
-			</form>
-			<br/>
-			<script language="javascript">document.getElementById('comment').focus();</script>
-		</td>
-	</xsl:template>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:variable name="tag" select=" 'AporipsiDimosieusis' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h4>
+                <form action="AdminEntity?type={$EntityType}&amp;action=rejectpublish&amp;id={$FileId}" method="post">
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <p>
+                                <b>
+                                    <xsl:variable name="tag" select="'Sxolio'"/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <xsl:value-of select="$translated"/>:
+                                </b>
+                            </p>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9">
+                            <p>
+                                <textarea rows="3" name="comment"></textarea>
+                            </p>
+                        </div>
+                    </div>
+                    <input type="hidden" name="lang" value="{$lang}"/>
+                    <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                        <xsl:value-of select="$translated"/>
+                    </button>         
+                </form>
+            </div>
+        </div>
+    </xsl:template>
 </xsl:stylesheet>

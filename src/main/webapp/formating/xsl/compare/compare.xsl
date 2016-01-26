@@ -33,28 +33,16 @@ This file is part of the FIMS webapp.
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:include href="../ui/page.xsl"/>
-    <xsl:include href="../paging/SearchPaging.xsl"/>
     <xsl:variable name="EntityType" select="//context/EntityType"/>
     <xsl:variable name="IsGuestUser" select="//context/IsGuestUser"/>
     <xsl:variable name="DocStatus" select="//context/DocStatus"/>
     <xsl:variable name="ServletName" select="//context/ServletName"/>
     <xsl:variable name="output" select="//context/query/outputs/path[@selected='yes']"/>
-    <xsl:variable name="queryPages" select="//stats/@queryPages"/>
-    <xsl:variable name="end" select="//stats/@end"/>
-    <xsl:variable name="start" select="//stats/@start"/>
-    <xsl:variable name="count" select="//stats/@count"/>
-    <xsl:variable name="currentP" select="//stats/@currentP"/>
-    <xsl:variable name="pageLoop" select="//pageLoop/lista"/>
-    <xsl:variable name="showPages" select="//showPages/show"/>
     <xsl:variable name="userOrg" select="//page/@userOrg"/>
     <xsl:variable name="URI_Reference_Path" select="//context/URI_Reference_Path"/>
     <xsl:variable name="EntityCategory" select="//context/EntityCategory"/>
 
-
-    <xsl:variable name="step">
-
-        <xsl:value-of select="//stats/@step"/>
-    </xsl:variable>	
+	
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
@@ -65,28 +53,25 @@ This file is part of the FIMS webapp.
         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
 
         <script type="text/JavaScript">
-            var str = '<xsl:value-of select="$translated"/>';
-        
+            var str = '<xsl:value-of select="$translated"/>';        
         </script>
-		
-        <td colSpan="{$columns}" vAlign="top"  class="content">
-            <xsl:if test="count(//result)&gt;0">                          
-                 
-                <br/>  
-                <p align="center" class="contentText">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:variable name="tag" select=" 'compare' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                   
+                    <xsl:value-of select="$translated"/>
+                </h4>
+                <h5 class="subtitle">
                     <xsl:variable name="tag" select=" 'SelectCompareFiles' "/>
-                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <font size="4">
-                        <strong>
-                            <xsl:value-of select="$translated"/>
-                        </strong>
-                    </font>
-                </p>
-                <form  method="post" id="criterionForm" onsubmit="javascript:createCompareUrl();return false;">
-       
-                    <table id="resultsMultiple"  border="0" align="center" cellspacing="1">
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                   
+                    <xsl:value-of select="$translated"/>
+                </h5>
+                <form id="compareForm" onsubmit="javascript:createCompareUrl();return false;" method="post">
+                     
+                    <table id="resultsMultiple">
                         <thead>
-                            <tr align="center" valign="middle" class="contentHeadText">
+                            <tr class="contentHeadText">
                                 <th style="display:none;">                                                         
                                 </th>
                         
@@ -98,19 +83,18 @@ This file is part of the FIMS webapp.
                                             <xsl:value-of select="$translated"/>
                                         </strong>
                                     </th>
-                                </xsl:for-each>
-                        
+                                </xsl:for-each>                        
                        
                             </tr>
                         </thead>
-                        <tbody>
+                           <tbody>
 
                             <xsl:for-each select="//result">
 					
                                 <xsl:variable name="pos">
                                     <xsl:value-of select="./@pos"/>
                                 </xsl:variable>
-				 <xsl:variable name="id" select=" ./hiddenResults/FileId/text() "/>
+                                <xsl:variable name="id" select=" ./hiddenResults/FileId/text() "/>
 	
                                 <tr id="resultRow" align="center" valign="middle" class="resultRow {$id} "  >
                                     <td class="invisible" >
@@ -164,15 +148,31 @@ This file is part of the FIMS webapp.
                                                 </td>
                                             </xsl:otherwise>
                                         </xsl:choose>
-                                    </xsl:for-each>
-		  	
-   
-                                                                             
+                                    </xsl:for-each>                          
                                 </tr>
                             </xsl:for-each>
                         </tbody>
                     </table>
-                    <xsl:variable name="tag" select=" 'compare' "/>
+                    
+                </form>
+            </div>
+        </div>
+        <!--td colSpan="{$columns}" vAlign="top"  class="content">
+            <xsl:if test="count(//result)&gt;0">                          
+                 
+                <br/>  
+                <p align="center" class="contentText">
+                    <xsl:variable name="tag" select=" 'SelectCompareFiles' "/>
+                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                    <font size="4">
+                        <strong>
+                            <xsl:value-of select="$translated"/>
+                        </strong>
+                    </font>
+                </p>
+                <form  method="post" id="criterionForm" onsubmit="javascript:createCompareUrl();return false;">
+       
+                                        <xsl:variable name="tag" select=" 'compare' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                     <div style="float:right">
                         <input style="margin-top:20px;margin-bottom:20px;" type="submit" class="button" value="{$translated}"></input>
@@ -189,11 +189,49 @@ This file is part of the FIMS webapp.
                 </form>
             </xsl:if>
             
-        </td>
+        </td-->
         <script>
             $(document).ready(function() {
             
-            var table = $('#resultsMultiple').DataTable();
+            <xsl:variable name="tag" select=" 'compare' "/>
+            var compare = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            
+            <xsl:variable name="tag" select=" 'filterResults' "/>
+            var searchString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'Next' "/>
+            var nextString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'Prev' "/>
+            var prevString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'showing' "/>
+            var showingString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'to' "/>
+            var toString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'of' "/>
+            var ofString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'entries' "/>
+            var entriesString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'results' "/>
+            var resultsString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'filtered' "/>
+            var filteredString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            <xsl:variable name="tag" select=" 'DenBrethikanArxeia' "/>
+            var DenBrethikanArxeiadString = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
+            var table = $('#resultsMultiple').DataTable( {
+            "oLanguage": {
+            "sSearch": searchString,
+            "sInfo": showingString + " _START_ " +toString +" _END_ " + ofString + " _TOTAL_ " + resultsString,
+            "sInfoEmpty": showingString + " 0 " + toString + " 0 " + ofString + " 0 " +resultsString,
+            "sLengthMenu": showingString +" _MENU_ "+ entriesString,
+            "sInfoFiltered": "(" + filteredString + " " + ofString + " _MAX_ "+ resultsString + ")",
+            "sZeroRecords": DenBrethikanArxeiadString,
+            "oPaginate": {
+            "sPrevious": prevString,
+            "sNext": nextString,
+            }
+            }
+                
+            
+            } );
             
             $('#resultsMultiple tbody').on( 'click', 'tr', function () {
             if(  table.rows('.selected').data().length &lt; 2){                      
@@ -203,95 +241,134 @@ This file is part of the FIMS webapp.
             $(this).toggleClass('selected');
             }
             
-             if(  $('.deleteButton').length>0){               
-                   $('.deleteButton').remove();
-                }
+            if(  $('.deleteButton').length>0){               
+            $('.compareRow').remove();
+
+            }
                 
            
                  
-               if(table.rows('.selected').data().length == 2 || table.rows('.selected').data().length == 1){
+            if(table.rows('.selected').data().length == 2 || table.rows('.selected').data().length == 1){
                 
-                var ids= $.map(table.rows('.selected').data(), function (item) {
-                       return item[0];
-                 });
+            var ids= $.map(table.rows('.selected').data(), function (item) {
+            return item[0];
+            });
                  
-                $div = $('<div style="font-size:10pt;color:#620705;float:left;"  id="compareFiles">'+'</div>'); 
-                $delete1 = $('<input style=" margin-bottom: 12px;background-image: url(./formating/images/deletedoc.gif); background-color: transparent; ;    background-repeat: no-repeat; ;    background-position: 0px 0px;      border: none; cursor: pointer;      height: 16px;            padding-left: 16px;    vertical-align: middle;" type="button"  class="deleteButton"><!--img height="15px" width="15px" src='{ concat($systemRoot, "/formating/images/trash.png") }'/--></input>');
-                $delete2 = $('<input style=" margin-bottom: 12px;background-image: url(./formating/images/deletedoc.gif); background-color: transparent; ;    background-repeat: no-repeat; ;    background-position: 0px 0px;      border: none; cursor: pointer;      height: 16px;            padding-left: 16px;    vertical-align: middle;" type="button"  class="deleteButton"><!--img height="15px" width="15px" src='{ concat($systemRoot, "/formating/images/trash.png") }'/--></input>');
-                
-                if(ids.length==1){
-                    $delete1.attr('id', ids[0]);  
-                    $delete1.attr('value', ids[0]);  
-                    $delete1.text(ids[0]);
-                    $delete1.insertBefore( "#criterionForm" );   
-   
-                }else if(ids.length==2){
-                    $delete1.attr('id', ids[0]);  
-                    $delete1.attr('value', ids[0]);  
-                    $delete1.text(ids[0]);
-                    $delete1.insertBefore( "#criterionForm" ); 
-                    
-                    $delete2.attr('id', ids[1]);  
-                    $delete2.attr('value', ids[1]);  
-                    $delete2.text(ids[1]);
-                    $delete2.insertBefore( "#criterionForm" );     
-                }
-        
-       
+            <!--            $div = $('<div style="font-size:10pt;color:#620705;float:left;"  id="compareFiles">'+'</div>'); -->
+            $row = $('<div class="row compareRow"></div>');
+            $col1 = $('<div class="col-sm-6 col-md-6 col-lg-6 panelCol"></div>');
+            $col2 = $('<div class="col-sm-6 col-md-6 col-lg-6 compareCol"></div>');
 
-                 $delete1.click(function(){
-                         var cId= $(this).attr('id');
-                         $delete1.remove();
-                         table.$('tr.'+cId).removeClass('selected');
-                   });    
+            $panel = $('<div class="panel panel-default text-center comparePanel">
+                <div class="panel-body comparePanelBody"></div>
+            </div>');
+
+            $delete1 = $('<button type="button" class="btn btn-default btn-sm deleteButton"></button>');
+            $span1 =$('<span class="glyphicon glyphicon-remove deleteIcon"/>');
+            $delete2 = $('<button type="button" class="btn btn-default btn-sm deleteButton"></button>');
+            $span2 =$('<span class="glyphicon glyphicon-remove deleteIcon"/>');
+            $compareButton = $('<button class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">'+compare+'</button> ');
+                
+            if(ids.length==1){
+            $delete1.attr('id', ids[0]);  
+            $delete1.attr('value', ids[0]);  
+            $delete1.text(ids[0]);
+            $row.append($col1);
+            $col1.append($panel);
+            $row.insertBefore( "#resultsMultiple_wrapper" );
+            $delete1.append($span1);  
+            $('.comparePanelBody').append($delete1); 
+   
+            }else if(ids.length==2){  
+            $delete1.attr('id', ids[0]);  
+            $delete1.attr('value', ids[0]);  
+            $delete1.text(ids[0]);
+            $row.append($col1);
+            $col1.append($panel);
+            $row.insertBefore("#resultsMultiple_wrapper" );
+            $delete1.append($span1);  
+            $('.comparePanelBody').append($delete1); 
+          
+            $delete2.attr('id', ids[1]);  
+            $delete2.attr('value', ids[1]);  
+            $delete2.text(ids[1]);
+            $delete2.append($span2); 
+            $('.comparePanelBody').append($delete2);
+            $row.append($col2);
+            $col2.append($compareButton);
+             
+             
+            }
+     
+            $delete1.click(function(){
+            var cId= $(this).attr('id');
+            $delete1.remove();            
+            table.$('tr.'+cId).removeClass('selected');
+            var tmpIds= $.map(table.rows('.selected').data(), function (item) {
+            return item[0];
+            });
+            
+            if(tmpIds.length==0){
+            $row.remove();
+            }else if(tmpIds.length==1){
+                if($compareButton.length>0){
+                $compareButton.remove();
+            }
+            }
+            });    
               
               
-                 $delete2.click(function(){
-                            var cId= $(this).attr('id');
-                            $delete2.remove();
-                        table.$('tr.'+cId).removeClass('selected');
-                   });    
+            $delete2.click(function(){
+            var cId= $(this).attr('id');
+            $delete2.remove();
+            table.$('tr.'+cId).removeClass('selected');
+            var tmpIds= $.map(table.rows('.selected').data(), function (item) {
+            return item[0];
+            });
+            if(tmpIds.length==0){
+            $row.remove();
+            }else if(tmpIds.length==1){
+                if($compareButton.length>0){
+                $compareButton.remove();
+            }
+            }
+            });
+                
               
 
             }
             
             } );
-            
          
-        
-
-            //  $('#resultRow').click( function () {
-            // alert( table.rows('.selected').data().length +' row(s) selected' );
-            // } );
             } );
             
             function createCompareUrl(){
             
 
                
-                  var table = $('#resultsMultiple').DataTable();
+            var table = $('#resultsMultiple').DataTable();
 
-                 if( table.rows('.selected').data().length == 2){
-                 var id1;
-                 var id2;
-                 var i=1;
-                $.map(table.rows('.selected').data(), function (item) {
-                        if(i==1){
-                            id1 =item[0];
-                            i++;
-                         }else{
-                         id2 = item[0];
-                         }        
-                 });
-                 
-                    $('#resultsMultiple .selected .invisible').each(function()
-                    {
-                      
-                    });
-                    var url = '/Maze/multmappings.html?id1='+id1+'&amp;id2='+id2;
-                      centeredPopup(url,'win_new','800','600','yes');      
+            if( table.rows('.selected').data().length == 2){
+            var id1;
+            var id2;
+            var i=1;
+            $.map(table.rows('.selected').data(), function (item) {
+            if(i==1){
+            id1 =item[0];
+            i++;
             }else{
-                  return false;
+            id2 = item[0];
+            }        
+            });
+                 
+            $('#resultsMultiple .selected .invisible').each(function()
+            {
+                      
+            });
+            var url = '/Maze/multmappings.html?id1='+id1+'&amp;id2='+id2;
+            centeredPopup(url,'win_new','800','600','yes');      
+            }else{
+            return false;
             }
             }
         </script>

@@ -183,7 +183,6 @@ public class AdminUser extends AdminBasicServlet {
 
         } else if (this.action.equals("insert") || this.action.equals("edit")) {
             String orgId = request.getParameter("orgId");
-           // System.out.println("--->" + ((!orgId.equals("0") && !orgId.equals(userOrg)) && !mode.equals("sys")));
             //an den einai 'sys admin' kai 'balei' org diaforetiko tou org ston opoio anhkei
             if (!orgId.equals("0") && !orgId.equals(userOrg) && !mode.equals("sys")) {
                 this.displayMsg = Messages.ACCESS_DENIED;
@@ -260,7 +259,6 @@ public class AdminUser extends AdminBasicServlet {
                                 if (password.length() != 0) {
                                     user.setPassword(password);
                                 }
-                               // System.out.println("First---?" + firstname);
                                 user.setInfo("lastname", lastname);
                                 user.setInfo("firstname", firstname);
                                 user.setInfo("address", address);
@@ -282,8 +280,8 @@ public class AdminUser extends AdminBasicServlet {
                                 }
                             }
                         }
-
                         this.displayMsg = Messages.ACTION_SUCCESS;
+                        response.sendRedirect("AdminUser?action=list");
                     } catch (EntryExistException e) {
                         if (!this.displayMsg.equals("Email_EXIST")) {
                             this.displayMsg += Messages.USER_EXIST;
