@@ -48,17 +48,17 @@ This file is part of the FIMS webapp.
                 </p>
             
             </div>
-               
-            <div class="col-md-2 col-lg-2 footerCopy">               
-                <img style="float:left;" class="img-responsive" src="formating/images/creativeCommons.png"></img>
-                <p class="footerText">
-                    <xsl:variable name="tag" select=" 'text5' "/>
-                    <xsl:variable name="translated" select="$locale/footer/*[name()=$tag]/*[name()=$lang]"/>
-                    <xsl:value-of select="$translated"/> 
-                </p>
-            </div>
+            <xsl:if test="$locale/footer/*[name()='text5']/*[name()=$lang]!=''">  
+                <div class="col-md-2 col-lg-2 footerCopy">               
+                    <img style="float:left;" class="img-responsive" src="formating/images/creativeCommons.png"></img>
+                    <p class="footerText">
+                        <xsl:variable name="tag" select=" 'text5' "/>
+                        <xsl:variable name="translated" select="$locale/footer/*[name()=$tag]/*[name()=$lang]"/>
+                        <xsl:value-of select="$translated"/> 
+                    </p>
+                </div>
           
-             
+            </xsl:if>
         </div>
         <div class="row">
             <xsl:choose>
@@ -73,7 +73,7 @@ This file is part of the FIMS webapp.
                             </xsl:otherwise>
                         </xsl:choose>                         
                     </div> 
-                    <div class="col-md-2 col-lg-3 col-md-offset-3 col-lg-offset-3" id="forth_img_col">
+                    <div class="col-md-2 col-lg-3 col-md-offset-1 col-lg-offset-1" id="forth_img_col">
                         <xsl:choose>
                             <xsl:when test="$lang!='en' and $lang!='gr'">
                                 <a href="http://www.ics.forth.gr/"  target="_blank">
@@ -89,7 +89,7 @@ This file is part of the FIMS webapp.
                     </div>
                 </xsl:when>
                 <xsl:otherwise>                    
-                    <div class="col-md-2 col-lg-3 col-md-offset-7 col-lg-offset-7">
+                    <div class="col-md-2 col-lg-3 col-md-offset-5 col-lg-offset-5">
                         <xsl:choose>
                             <xsl:when test="$lang!='en' and $lang!='gr'">
                                 <a href="http://www.ics.forth.gr/" target="_blank">
@@ -118,6 +118,20 @@ This file is part of the FIMS webapp.
                     <xsl:otherwise>
                         <a href="http://www.ics.forth.gr/isl" target="_blank">
                             <img class="img-responsive" src="{ concat('formating/images/isl_', $lang, '.png') }"></img>
+                        </a>
+                    </xsl:otherwise>
+                </xsl:choose>                         
+            </div>
+             <div class="col-md-2 col-lg-2">
+                <xsl:choose>
+                    <xsl:when test="$lang!='en' and $lang!='gr'">
+                        <a href="https://www.ics.forth.gr/isl/index_main.php?l=e&amp;c=252" target="_blank">
+                            <img class="img-responsive" src="formating/images/cci_en.png"></img>
+                        </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="https://www.ics.forth.gr/isl/index_main.php?c=252" target="_blank">
+                            <img class="img-responsive" src="{ concat('formating/images/cci_', $lang, '.png') }"></img>
                         </a>
                     </xsl:otherwise>
                 </xsl:choose>                         

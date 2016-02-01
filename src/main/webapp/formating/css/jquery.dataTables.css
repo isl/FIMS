@@ -5,7 +5,6 @@
 
 table.dataTable td, tr {
     border: 1px solid;
-    border-bottom: 3px solid;
     border-spacing: 2px;
     border-color: #ebebeb;
 }
@@ -30,8 +29,8 @@ table.dataTable tfoot th {
 }
 table.dataTable thead th,
 table.dataTable thead td {
-    padding: 5px 18px;
-    /*    border-bottom: 1px solid #111111;*/
+   padding: 7px 18px;
+    /*border-bottom: 1px solid #111111;*/
 }
 table.dataTable thead th:active,
 table.dataTable thead td:active {

@@ -111,7 +111,7 @@ This file is part of the FIMS webapp.
                                     </xsl:for-each>
                                     <th style="display:none"></th>
 
-                                </tr>
+                                </tr>                             
                             </thead>
                             <tbody>
                                 <xsl:for-each select="//result">

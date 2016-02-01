@@ -52,7 +52,6 @@ This file is part of the FIMS webapp.
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                     var strRestore = '<xsl:value-of select="$translated"/>';              
                 </script>
-                <xsl:if test="count(//result)&gt;0">
                     <table id="results">
                         <thead>
                             <tr class="contentHeadText">
@@ -98,7 +97,6 @@ This file is part of the FIMS webapp.
                             </xsl:for-each>
                         </tbody>
                     </table>
-                </xsl:if>
             </div>
         </div>        
     </xsl:template>

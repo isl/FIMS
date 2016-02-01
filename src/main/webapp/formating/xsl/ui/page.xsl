@@ -48,7 +48,7 @@ This file is part of the FIMS webapp.
             </xsl:if>
             <xsl:call-template name="head_html"/>               
             <body>                    
-                <div class="container">
+                <div class="container" style="height:100%;">
                     
                          
                     <xsl:choose>
