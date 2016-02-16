@@ -34,5 +34,6 @@ This file is part of the FIMS webapp.
         <!--menu id="Help" href="javascript:void(0)" onmouseover="toggle_visibility_Class('help','')">Help</menu-->
         <menu id="Help" href="./Manuals/">Help</menu>
         <menu id="changePass" href="ChangePass?action=toedit">changePass</menu>
+		<menu id="About" href="About">About</menu>
     </menugroup>
 </topmenu>

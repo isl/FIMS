@@ -61,10 +61,8 @@ public class SearchResults extends BasicSearchServlet {
         PrintWriter out = response.getWriter();
         UtilsQueries u = new UtilsQueries();
         this.initVars(request);
-        u.initListPaging(request);
         String username = getUsername(request);
 
-        StringBuffer paginSource = getPaging();
 
         StringBuffer xml = new StringBuffer();
         String xmlStart = this.xmlStart(this.topmenu, username, "Search Results", this.lang, "", request);
@@ -128,7 +126,6 @@ public class SearchResults extends BasicSearchServlet {
         // If many targets then
         //for (int i = 0; i < targets.length; i++) { test uncomment if something not works
         DBCollection queryCol = new DBCollection(this.DBURI, this.systemDbCollection, this.DBuser, this.DBpassword);
-
         String[] queryRes = queryCol.query(querySource);
         for (int j = 0; j < queryRes.length; j++) {
             String res = queryRes[j].replaceAll("&lt;", "<");
@@ -170,28 +167,12 @@ public class SearchResults extends BasicSearchServlet {
         xml.append("<success return=\"1\"></success>\n");
         xml.append(dataTypes.toString());
         xml.append(xmlEnd);
-        System.out.println("xml--> "+xml);
         XMLTransform xmlTrans = new XMLTransform(xml.toString());
         String xsl = Config.SEARCH_RESULTS_XSL;
         xmlTrans.transform(out, xsl);
         out.close();
     }
 
-    public static StringBuffer getPaging() {
-        //PAGING CODE
-        int firstPage = listStartPage;
-        int lastPage = listLastPage;
-        String step = listStep;
-        String pagingM = pagingMax;
-        int currentP = currentPage;
-        int first = showfirst;
-        int last = showlast;
-
-        StringBuffer inQuerySource = new StringBuffer();
-        inQuerySource.append("return $i,\n").append("$count := count($results),\n").append("$k := 0,\n").append("$l := 0,\n").append("$start := " + firstPage + ",\n").append("$max := " + lastPage + ",\n").append("$first := " + first + ",\n").append("$last := " + last + ",\n").append("$end := if($count >= $max) then $max else $count,\n").append("$currentP := " + currentP + ",\n").append("$queryPages := if ($count mod " + step + " > 0) then ($count idiv " + step + ")+1 else $count idiv " + step + ",\n").append("$showfirst := if ($first = 0) then 1 else if ($first < 0) then 1 else $first,\n").append("$showlast := if ($last > $queryPages) then $queryPages else $last\n").append("return\n").append("<stats count=\"{$count}\" currentP=\"{$currentP}\" showfirst=\"{$showfirst}\" showlast=\"{$showlast}\" end=\"{$end}\" queryPages=\"{$queryPages}\" start=\"{$start}\" step=\"" + step + "\">\n").append("<pageLoop>\n").append("{for $k in 1 to $queryPages\n").append("return <lista>{$k}</lista>}\n").append("</pageLoop>\n").append("<showPages>\n").append("{for $l in $showfirst to $showlast\n").append("return <show>{$l}</show>}\n").append("</showPages>\n").append("{for $j in $start to $end\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
-
-        return inQuerySource;
-    }
 
     /**
      * Handles the HTTP <code>GET</code> method.

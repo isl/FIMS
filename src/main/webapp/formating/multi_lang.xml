@@ -153,6 +153,15 @@ This file is part of the FIMS webapp.
             <sv>Användare</sv>
             <nl>Gebruiker</nl>
         </user>
+        <About>
+            <gr>Σχετικά</gr>
+            <en>About</en>
+            <fr>About</fr>
+            <it>About</it>
+            <ar>About</ar>
+            <sv>About</sv>
+            <nl>About</nl>
+        </About>
     </topmenu>
     <leftmenu>
         <Contract>
@@ -693,7 +702,7 @@ This file is part of the FIMS webapp.
         <main_menu>
             <en>Main Menu</en>
         </main_menu>
-               <Help>
+        <Help>
             <gr>Βοήθεια</gr>
             <en>Help</en>
             <fr>Aide</fr>
@@ -3461,11 +3470,11 @@ This file is part of the FIMS webapp.
         <SinexeiaEpexergasiasMsg>
             <gr>Μπορείτε να συνεχίσετε στην επεξεργασία του δελτίου,
                 αλλά τυχόν αλλαγές από την προηγούμενη επεξεργασία
-                μπορεί να χαθούν αν δεν τις είχατε αποθηκεύσει.
+                μπορεί να χαθούν.
             </gr>
             <en>You may continue editing this card,
                 but changes made during last editing
-                may be lost if you had not saved.
+                may be lost.
             </en>
             <fr>Vous pouvez continuer à travailler sur cette fiche
                 mais vous risquez de perdre les modifications précédemment 
@@ -4318,7 +4327,7 @@ This file is part of the FIMS webapp.
             <nl>Niet gepubliceerd - Gepubliceerd</nl>
         </notPending>
         <notUnpublished>
-             <gr>Υπό δημοσίευση - Δημοσιευμένα</gr>
+            <gr>Υπό δημοσίευση - Δημοσιευμένα</gr>
             <en>Pending for publishing - Published</en>
             <fr>Sous publication - Publiés</fr>
             <it>In via di pubblicazione - Pubblicate</it>
@@ -4326,6 +4335,73 @@ This file is part of the FIMS webapp.
             <sv>Redo för publicering - Publicerad</sv>
             <nl>In afwachting voor publicatie - Gepubliceerd</nl>
         </notUnpublished>
+        <systemVersion>
+            <gr>Αριθμός Έκδοσης Συστήματος</gr>
+            <en>System Version Number</en>
+            <fr>System Version Number</fr>
+            <it>System Version Number</it>
+            <ar>System Version Number</ar>
+            <sv>System Version Number</sv>
+            <nl>System Version Number</nl>
+        </systemVersion>
+        <schemaVersion>
+            <gr>Αριθμός Έκδοσης Σχήματος</gr>
+            <en>Schema Version Number</en>
+            <fr>Schema Version Number</fr>
+            <it>Schema Version Number</it>
+            <ar>Schema Version Number</ar>
+            <sv>Schema Version Number</sv>
+            <nl>Schema Version Number</nl>
+        </schemaVersion>
+        <forthAddress>
+            <gr>Ίδρυμα Τεχνολογίας και Έρευνας&#10;
+                Ινστιτούτο Πληροφορικής&#10;
+                Εργαστήριο Πληροφοριακών Συστημάτων / Κέντρο Πολιτισμικής Πληροφορικής&#10;
+                Ν. Πλαστήρα 100&#10;
+                Βασιλικά Βουτών, 700 13 Ηράκλειο, Κρήτη</gr>
+            <en>Foundation for Research and Technology - Hellas (FORTH)&#10;
+                Institute of Computer Science&#10;
+                N. Plastira 100&#10;
+                Vassilika Vouton, GR-700 13 Heraklion, Crete, Greece</en>
+            <fr>Foundation for Research and Technology - Hellas (FORTH)&#10;
+                Institute of Computer Science&#10;
+                N. Plastira 100&#10;
+                Vassilika Vouton, GR-700 13 Heraklion, Crete, Greece</fr> 
+            <it>Foundation for Research and Technology - Hellas (FORTH)&#10;
+                Institute of Computer Science&#10;
+                N. Plastira 100&#10;
+                Vassilika Vouton, GR-700 13 Heraklion, Crete, Greece</it> 
+            <ar>Foundation for Research and Technology - Hellas (FORTH)&#10;
+                Institute of Computer Science&#10;
+                N. Plastira 100&#10;
+                Vassilika Vouton, GR-700 13 Heraklion, Crete, Greece</ar> 
+            <sv>Foundation for Research and Technology - Hellas (FORTH)&#10;
+                Institute of Computer Science&#10;
+                N. Plastira 100&#10;
+                Vassilika Vouton, GR-700 13 Heraklion, Crete, Greece</sv> 
+            <nl>Foundation for Research and Technology - Hellas (FORTH)&#10;
+                Institute of Computer Science&#10;
+                N. Plastira 100&#10;
+                Vassilika Vouton, GR-700 13 Heraklion, Crete, Greece</nl>
+        </forthAddress>
+        <contact>
+            <gr>Επικοινωνία</gr>
+            <en>Contact</en>
+            <fr>Contact</fr>
+            <it>Contact</it>
+            <ar>Contact</ar>
+            <sv>Contact</sv>
+            <nl>Contact</nl>
+        </contact>
+        <tel>
+            <gr>Τηλέφωνο</gr>
+            <en>Telephone</en>
+            <fr>Telephone</fr>
+            <it>Telephone</it>
+            <ar>Telephone</ar>
+            <sv>Telephone</sv>
+            <nl>Telephone</nl>
+        </tel>
     </context>
     <footer>
         <text1>
@@ -4367,7 +4443,7 @@ This file is part of the FIMS webapp.
             <sv>. All rights reserved.</sv>
             <nl>. All rights reserved.</nl>
         </text4>
-          <text5>
+        <text5>
             <gr>EUPL Version 1.1</gr>
             <en>EUPL Version 1.1</en>
             <fr>EUPL Version 1.1</fr>
@@ -4375,6 +4451,6 @@ This file is part of the FIMS webapp.
             <ar>EUPL Version 1.1</ar>
             <sv>EUPL Version 1.1</sv>
             <nl>EUPL Version 1.1</nl>
-          </text5>
+        </text5>
     </footer>
 </locale>

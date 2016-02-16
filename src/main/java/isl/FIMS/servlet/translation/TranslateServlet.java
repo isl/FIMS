@@ -190,9 +190,7 @@ public class TranslateServlet extends ApplicationBasicServlet {
                     } else {
                         queryCond = u.getQueryConditionForTranslate(type, "", mode, userOrg, lang, username);
                     }
-                    //========== paging code ==========
-                    u.initListPaging(request);
-                    //get all
+           
                     String querySource = u.listAllEntityQuery(type, "", mode, userOrg, this.lang, username, outputsTag, queryCond);
                     DBCollection queryCol = new DBCollection(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword);
                     String[] queryRes = queryCol.query(querySource);

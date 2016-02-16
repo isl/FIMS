@@ -74,6 +74,7 @@ public class Config {
     public String signup = "";
     public String comments_versions = "";
     public String compare_xsl = "";
+    public String abouXSL;
 
     public Config(String type) {
         this.ENTITY_TYPE = type;
@@ -84,7 +85,6 @@ public class Config {
         this.VOCABULARY_ENTITY_XSL = ENTITY_XSL_PATH + "voc_entity.xsl";
 
         //Samarita
-
         //----- Entity-AP -----
         this.ADMIN_LIST_ENTITY_XSL = ENTITY_XSL_PATH + "../admin/entity/admin_list_entity.xsl";
         this.LIST_TO_TRANSLATE_XSL = ENTITY_XSL_PATH + "../translate/list_to_translate.xsl";
@@ -118,5 +118,7 @@ public class Config {
         this.signup = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/signup.xsl";
         this.comments_versions = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/version/comment_versions.xsl";
         this.compare_xsl = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/compare/compare.xsl";
+        this.abouXSL = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/ui/about.xsl";
+
     }
 }

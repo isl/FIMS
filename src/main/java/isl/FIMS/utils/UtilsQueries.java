@@ -165,25 +165,7 @@ public class UtilsQueries extends ApplicationBasicServlet {
         //=====Build query source=====
         StringBuffer querySource = new StringBuffer();
 
-        //PAGING CODE
-        int firstPage = this.listStartPage;
-        int lastPage = this.listLastPage;
-        String step = this.listStep;
-        String pagingM = this.pagingMax;
-        int currentP = this.currentPage;
-        int first = this.showfirst;
-        int last = this.showlast;
-
-        //String pagesLoop=this.pageLoop;
-        StringBuffer inQuerySource = new StringBuffer();
-        inQuerySource.append("return $i,\n").append("$count := count($results),\n").append("$k := 0,\n").append("$l := 0,\n").append("$start := " + firstPage + ",\n").append("$max := " + lastPage + ",\n").append("$first := " + first + ",\n").append("$last := " + last + ",\n").append("$end := if($count >= $max) then $max else $count,\n").append("$currentP := " + currentP + ",\n").append("$queryPages := if ($count mod " + step + " > 0) then ($count idiv " + step + ")+1 else $count idiv " + step + ",\n") // .append("$lastPage := if "+last+",\n")
-                .append("$showfirst := if ($first = 0) then 1 else if ($first < 0) then 1 else $first,\n").append("$showlast := if ($last > $queryPages) then $queryPages else $last\n").append("return\n").append("<stats count=\"{$count}\" currentP=\"{$currentP}\" showfirst=\"{$showfirst}\" showlast=\"{$showlast}\" end=\"{$end}\" queryPages=\"{$queryPages}\" start=\"{$start}\" step=\"" + step + "\">\n").append("<pageLoop>\n").append("{for $k in 1 to $queryPages\n").append("return <lista>{$k}</lista>}\n").append("</pageLoop>\n").append("<showPages>\n").append("{for $l in $showfirst to $showlast\n").append("return <show>{$l}</show>}\n").append("</showPages>\n").append("{for $j in $start to $end\n").append("let $current := $results[$j]\n");
-
-        inQuerySource.append("let $groupname := string(doc('" + this.adminDbCollection + this.conf.GROUPS_FILE + "')//group[@id=$current//admin/organization]/@groupname)\n");
-        //until here paging
-
-        //PAGING CODE
-     //   querySource.append("let $results :=\n");
+            //   querySource.append("let $results :=\n");
         querySource.append("for $i in collection ('" + this.systemDbCollection + type + "')/" + rootXPath + "\n");
         querySource.append(queryCond);
         querySource.append(queryOrderBy);
@@ -231,19 +213,7 @@ public class UtilsQueries extends ApplicationBasicServlet {
         outputsTag.append("</outputs>\n");
 //append("<lang>\n{$current" + rootXPath + "/admin/lang}\n</lang>\n")
         queryRet.append("<filename><filename>{fn:tokenize($current/" + rootXPath + "/admin/uri_id/text(),'" + this.URI_Reference_Path + "')[last()]}</filename></filename>\n").append("<FileId>{replace(util:document-name($current),\".xml\",\"\")}</FileId>\n").append("</result>\n");
-        //PAGING CODE
-        int firstPage = this.listStartPage;
-        int lastPage = this.listLastPage;
-        String step = this.listStep;
-        String pagingM = this.pagingMax;
-        int currentP = this.currentPage;
-        int first = this.showfirst;
-        int last = this.showlast;
-        StringBuffer inQuerySource = new StringBuffer();
-        inQuerySource.append("return $i,\n").append("$count := count($results),\n").append("$k := 0,\n").append("$l := 0,\n").append("$start := " + firstPage + ",\n").append("$max := " + lastPage + ",\n").append("$first := " + first + ",\n").append("$last := " + last + ",\n").append("$end := if($count >= $max) then $max else $count,\n").append("$currentP := " + currentP + ",\n").append("$queryPages := if ($count mod " + step + " > 0) then ($count idiv " + step + ")+1 else $count idiv " + step + ",\n") // .append("$lastPage := if "+last+",\n")
-                .append("$showfirst := if ($first = 0) then 1 else if ($first < 0) then 1 else $first,\n").append("$showlast := if ($last > $queryPages) then $queryPages else $last\n").append("return\n").append("<stats count=\"{$count}\" currentP=\"{$currentP}\" showfirst=\"{$showfirst}\" showlast=\"{$showlast}\" end=\"{$end}\" queryPages=\"{$queryPages}\" start=\"{$start}\" step=\"" + step + "\">\n").append("<pageLoop>\n").append("{for $k in 1 to $queryPages\n").append("return <lista>{$k}</lista>}\n").append("</pageLoop>\n").append("<showPages>\n").append("{for $l in $showfirst to $showlast\n").append("return <show>{$l}</show>}\n").append("</showPages>\n").append("{for $j in $start to $end\n").append("let $current := $results[$j]\n");
-
-        inQuerySource.append("let $groupname := string(doc('" + this.adminDbCollection + this.conf.GROUPS_FILE + "')//group[@id=$current//admin/organization]/@groupname)\n");
+      
 
         //=====Build query source=====
         //Diafora me prin einai oti exoume pantou '$i' anti gia '$current'
@@ -360,7 +330,7 @@ public class UtilsQueries extends ApplicationBasicServlet {
         return queryCond.toString();
     }
 
-    public  StringBuffer getQueryConditionsForSearch(StringBuffer queryWhere, Hashtable params, String mode,String username) {
+    public  StringBuffer getQueryConditionsForSearch(StringBuffer queryWhere, Hashtable params, String mode,String username, String lang) {
         String[] users = (String[]) params.get("user");
         String[] extraOrgs = (String[]) params.get("extraOrg");
         String code = (String) params.get("code");
@@ -447,54 +417,5 @@ public class UtilsQueries extends ApplicationBasicServlet {
         }
         return queryWhere;
     }
-
-    public void initListPaging(HttpServletRequest request) {
-        //String listStart = request.getParameter("start");
-        String pages = request.getParameter("pages") != null ? request.getParameter("pages") : "";
-        String current = request.getParameter("current") != null ? request.getParameter("current") : "";
-        String newP = request.getParameter("newP") != null ? request.getParameter("newP") : "";
-        String move = request.getParameter("move") != null ? request.getParameter("move") : "";
-
-        if (pages == "") {
-            this.currentPage = 1;
-            this.listStartPage = 1;
-            this.queryPages = "";
-        } else if (current != "" && move != "") {
-            this.queryPages = pages;
-            int size = this.queryPages.length();
-
-            if (move.trim().equals("next")) {
-                this.currentPage = Integer.parseInt(current) + 1;
-                this.listStartPage = (this.currentPage * Integer.parseInt(this.listStep)) - Integer.parseInt(this.listStep) + 1;
-            } else if (move.trim().equals("prev")) {
-                this.currentPage = Integer.parseInt(current) - 1;
-                this.listStartPage = (this.currentPage * Integer.parseInt(this.listStep)) - Integer.parseInt(this.listStep) + 1;
-            } else if (move.trim().equals("first")) {
-                this.currentPage = 1;
-                this.listStartPage = (this.currentPage * Integer.parseInt(this.listStep)) - Integer.parseInt(this.listStep) + 1;
-            } else if (move.trim().equals("last")) {
-                this.currentPage = Integer.parseInt(this.queryPages);
-                this.listStartPage = (this.currentPage * Integer.parseInt(this.listStep)) - Integer.parseInt(this.listStep) + 1;
-            }
-        } else {
-            if (newP != "") {
-                this.currentPage = Integer.parseInt(newP);
-                this.listStartPage = (this.currentPage * Integer.parseInt(this.listStep)) - Integer.parseInt(this.listStep) + 1;
-            }
-        }
-        this.listLastPage = this.listStartPage + Integer.parseInt(this.listStep) - 1;
-
-        if (this.currentPage >= 3) {
-            this.showfirst = this.currentPage - Integer.parseInt(this.pagingMax);
-            this.showlast = this.currentPage + Integer.parseInt(this.pagingMax);
-        } else if (this.currentPage == 1) {
-            this.showfirst = 1;
-            this.showlast = this.currentPage + (2 * Integer.parseInt(this.pagingMax));
-        } else if (this.currentPage == 2) {
-            this.showfirst = 1;
-            this.showlast = this.currentPage + (2 * Integer.parseInt(this.pagingMax)) - 1;
-        }
-
-    }
-
+    
 }

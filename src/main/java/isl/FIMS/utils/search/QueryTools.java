@@ -118,12 +118,12 @@ public class QueryTools {
             mode = "sys";
         }
 
-        StringBuffer paginSource = SearchResults.getPaging();
-
+        StringBuffer inQuerySource = new StringBuffer();
+        inQuerySource.append("return $i\n").append("return\n").append("<stats>\n").append("{for $j in 1 to count($results)\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
         StringBuffer queryTargets = new StringBuffer();
         StringBuffer queryWhere = new StringBuffer();
         UtilsQueries u = new UtilsQueries();
-        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username);
+        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username, lang);
         for (int i = 0; i < targets.length; i++) {
             queryTargets.append(targets[i]).append(",");
         }
@@ -149,9 +149,9 @@ public class QueryTools {
         StringBuffer queryMiddle = new StringBuffer();
 
         for (int i = 0; i < inputs.length; i++) {
-            if (inputsValues[i].equals("")) {
-                continue;
-            }
+//            if (inputsValues[i].equals("")) {
+//                continue;
+//            }
             inputsValues[i] = inputsValues[i].replaceAll("'", "");
             inputsValues[i] = inputsValues[i].replaceAll("\"", "");
             inputsValues[i] = inputsValues[i].replaceAll("&", "");
@@ -170,7 +170,7 @@ public class QueryTools {
 
         //ws edw...
         ///gia to paging///
-        queryMiddle.append(paginSource);
+        queryMiddle.append(inQuerySource);
 
         ///telos paging//////
         // queryEnd.append("<organization><organization>\n{string(document('" + ApplicationBasicServlet.adminDbCollection + ApplicationBasicServlet.conf.GROUPS_FILE + "')//group[@id=$current/" + rootXPath + "/admin/organization]/@groupname)}\n</organization></organization>\n");
@@ -524,7 +524,6 @@ public class QueryTools {
 
     private static String getPredicate(String input, String oper, String value) {
 
-        String libPathProperty = System.getProperty("java.library.path");
         // gmessarit: perform a case-insensitive match
         if (oper.equals("matches")) {
             return " matches($i" + input + ", \'" + value + "\', \'i\') ";

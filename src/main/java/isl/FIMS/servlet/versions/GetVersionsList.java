@@ -1,44 +1,21 @@
 /*
- * Copyright 2015 Institute of Computer Science,
- * Foundation for Research and Technology - Hellas
- *
- * Licensed under the EUPL, Version 1.1 or - as soon they will be approved
- * by the European Commission - subsequent versions of the EUPL (the "Licence");
- * You may not use this work except in compliance with the Licence.
- * You may obtain a copy of the Licence at:
- *
- * http://ec.europa.eu/idabc/eupl
- *
- * Unless required by applicable law or agreed to in writing, software distributed
- * under the Licence is distributed on an "AS IS" basis,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the Licence for the specific language governing permissions and limitations
- * under the Licence.
- *
- * Contact:  POBox 1385, Heraklio Crete, GR-700 13 GREECE
- * Tel:+30-2810-391632
- * Fax: +30-2810-391638
- * E-mail: isl@ics.forth.gr
- * http://www.ics.forth.gr/isl
- *
- * Authors : Konstantina Konsolaki, Georgios Samaritakis
- *
- * This file is part of the FIMS webapp.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package isl.FIMS.servlet.versions;
 
-import isl.FIMS.utils.Messages;
-import isl.FIMS.utils.entity.XMLEntity;
 import isl.FIMS.servlet.ApplicationBasicServlet;
+import isl.FIMS.utils.Messages;
 import isl.FIMS.utils.entity.Config;
-import isl.FIMS.utils.UtilsXPaths;
+import isl.FIMS.utils.entity.XMLEntity;
 import isl.dbms.DBCollection;
-import isl.dbms.DBFile;
 import isl.dms.DMSException;
 import isl.dms.xml.XMLTransform;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author konsolak
  */
-public class ViewVersions extends ApplicationBasicServlet {
+public class GetVersionsList extends ApplicationBasicServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,26 +36,20 @@ public class ViewVersions extends ApplicationBasicServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/xml");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         this.initVars(request);
-        String username = getUsername(request);
 
-        String displayMsg = "";
         String type = request.getParameter("type");
         Config conf = new Config(type);
-        StringBuffer xml = new StringBuffer(this.xmlStart(this.topmenu, username, this.pageTitle, this.lang, "", request));
         String fileId = request.getParameter("id");
-        String id = fileId.split(type)[1];     
+        String id = fileId.split(type)[1];
 
-        String xsl = "";
         StringBuffer resultsTag = new StringBuffer("<results>\n");
         XMLEntity xmlE = new XMLEntity(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, fileId);
 
         try {
-            StringBuffer outputsTag = new StringBuffer();
 
             DBCollection versionColOfId = new DBCollection(this.DBURI, this.versionDbCollection + type + "/" + fileId, this.DBuser, this.DBpassword);
             String query = "for $i in collection('" + versionColOfId.getName() + "')\n"
@@ -96,41 +67,16 @@ public class ViewVersions extends ApplicationBasicServlet {
             for (int j = 0; j < queryRes.length; j++) {
                 resultsTag.append(queryRes[j]).append("\n");
             }
-            resultsTag.append("\n</results>\n");
-            outputsTag.append("<outputs>\n");
-            outputsTag.append("<path>").append("VersionId").append("</path>\n")
-                    .append("<path>").append("User").append("</path>\n")
-                    .append("<path>").append("date").append("</path>\n")
-                    .append("<path>").append("Sxolio").append("</path>\n");
-            outputsTag.append("</outputs>\n");
-            xml.append("<query>\n");
-            xml.append(outputsTag);
-            xml.append(resultsTag);
-            xml.append("</query>\n");
 
             String nameValue = xmlE.queryString("//admin/uri_id/text()")[0];
-            xml.append("<nameValue>").append(nameValue).append("</nameValue>\n");
-
-            xml.append("<EntityType>").append(type).append("</EntityType>\n");
-            xml.append("<FileId>").append(fileId).append("</FileId>\n");
-            xsl = conf.LIST_VERSIONS;
 
         } catch (isl.dbms.DBMSException e) {
-            displayMsg = Messages.NO_Versions;
-            xsl = conf.DISPLAY_XSL;
         }
+            resultsTag.append("\n</results>\n");
 
-        xml.append("<Display>").append(displayMsg).append("</Display>\n");
+        out.println(resultsTag);
 
-        xml.append(this.xmlEnd());
-            try {
-                XMLTransform xmlTrans = new XMLTransform(xml.toString());
-                xmlTrans.transform(out, xsl);
-            } catch (DMSException e) {
-                e.printStackTrace();
-            }
         out.close();
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -171,4 +117,5 @@ public class ViewVersions extends ApplicationBasicServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

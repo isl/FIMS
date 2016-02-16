@@ -300,6 +300,7 @@ public class ImportXML extends ApplicationBasicServlet {
                                                 dbFSchema.store();
                                             }
                                         }
+                                        uploadFileUnique.renameTo(uploadFile);
 
                                     }
                                     dbF.setXMLAsString(xmlString);

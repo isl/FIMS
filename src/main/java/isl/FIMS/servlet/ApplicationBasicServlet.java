@@ -71,9 +71,7 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected long threshold;
     //Configuration Object
     public static DMSConfig conf;
-    //listEntity Paging Vars
-    protected static String listStep, pageLoop, queryPages, pagingMax;
-    protected static int listStartPage, listLastPage, currentPage, showfirst, showlast;
+
     public static int maxCollsize;
     //various vars
     protected String status, topmenu, lang, type, category;
@@ -91,6 +89,9 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected static String espaLogo = "";
     protected static String contactEmail = "";
     protected static String dbSchemaFolder = "";
+    protected static String schemaVersion = "";
+    protected static String systemVersion = "";
+
     public static int thumbSize, normalSize;
 
     public void init(ServletConfig config) throws ServletException {
@@ -110,8 +111,6 @@ public class ApplicationBasicServlet extends HttpServlet {
         this.primaryEntities = getServletContext().getInitParameter("Primary_EntityTypes").split(",");
         this.secondaryEntyties = getServletContext().getInitParameter("Secondary_EntityTypes").split(",");
         this.systemLangs = getServletContext().getInitParameter("SystemLangs").split(",");
-        this.listStep = getServletContext().getInitParameter("ListStep");
-        this.pagingMax = getServletContext().getInitParameter("pagingMax");
         this.maxCollsize = Integer.parseInt(getServletContext().getInitParameter("maxCollsize"));//        mdaskal
         this.BackupsFile = getServletContext().getInitParameter("Backups");
         this.picSeperator = getServletContext().getInitParameter("picSeperator");
@@ -123,6 +122,8 @@ public class ApplicationBasicServlet extends HttpServlet {
         this.dbSchemaFolder = getServletContext().getInitParameter("dbSchemaFolder");
         this.emailPass = getServletContext().getInitParameter("emailPass");
         this.emailAdress = getServletContext().getInitParameter("emailAdress");
+        this.schemaVersion = getServletContext().getInitParameter("schemaVersion");
+        this.systemVersion = getServletContext().getInitParameter("systemVersion");
 
         File export = new File(this.export_import_Folder);
         if (!export.exists()) {
@@ -207,7 +208,7 @@ public class ApplicationBasicServlet extends HttpServlet {
         } catch (DMSException ex) {
         }
 
-        String pageXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<page user=\"" + user + "\" fullname=\""+firstname+" "+lastname+"\" UserRights=\"" + UserRights + "\" userOrg=\"" + userOrg + "\" title=\"" + title + "\" language=\"" + lang + "\" mode=\"" + mode + "\">\n" +/* "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n" +*/ "<header>\n" + "</header>\n" + session.getAttribute("topSettings") + "\n" + session.getAttribute("leftmenu") + "\n" + "<context>\n" + session.getAttribute("actionsMenu") + "\n";
+        String pageXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<page user=\"" + user + "\" fullname=\"" + firstname + " " + lastname + "\" UserRights=\"" + UserRights + "\" userOrg=\"" + userOrg + "\" title=\"" + title + "\" language=\"" + lang + "\" mode=\"" + mode + "\">\n" +/* "<systemRoot>" + ApplicationConfig.SYSTEM_ROOT + "</systemRoot>\n" +*/ "<header>\n" + "</header>\n" + session.getAttribute("topSettings") + "\n" + session.getAttribute("leftmenu") + "\n" + "<context>\n" + session.getAttribute("actionsMenu") + "\n";
         return pageXML;
     }
 

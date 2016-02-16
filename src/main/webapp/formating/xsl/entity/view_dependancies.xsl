@@ -59,8 +59,7 @@ This file is part of the FIMS webapp.
               
                 });
             </script>
-            <div id="dependants" style="display:none;">            
-                <div class="row">
+                <div class="row" id="dependants" style="display:none;">
                     <div class="col-sm-9 col-md-9 col-lg-9 actionsMenu">
                         <ul class="nav nav-tabs">
                             <li>
@@ -157,7 +156,6 @@ This file is part of the FIMS webapp.
                         
                     </div>
                 </div>
-            </div>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

@@ -85,10 +85,7 @@ public class AdminListEntity extends ApplicationBasicServlet {
             StringBuffer outputsTag = new StringBuffer();
             String userOrg = this.getUserGroup(username);
 
-            //========== paging code ==========
             UtilsQueries u = new UtilsQueries();
-            u.initListPaging(request);
-
             String querySource = u.listEntityQuery(type, this.status, mode, userOrg, this.lang, username, outputsTag);
             DBCollection queryCol = new DBCollection(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword);
             String[] queryRes = queryCol.query(querySource);
