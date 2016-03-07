@@ -422,15 +422,6 @@ This file is part of the FIMS webapp.
             <sv>Utrustning</sv>
             <nl>Uitrusting</nl>
         </Exoplismos>
-        <Exoplismos>
-            <gr>Εξοπλισμός</gr>
-            <en>Equipment</en>
-            <fr>Conservation</fr>
-            <it>Arredo</it>
-            <ar>تجهيزات</ar>
-            <sv>Utrustning</sv>
-            <nl>Uitrusting</nl>
-        </Exoplismos>
         <Simbanta>
             <gr>Συμβάντα</gr>
             <en>Events</en>

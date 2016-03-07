@@ -43,7 +43,7 @@ This file is part of the FIMS webapp.
         <xsl:variable name="TargetCol" select="//context/TargetCol"/>
         <xsl:variable name="root" select="//context/query/Root"/>
         <div class="row">
-            <div class="col-sm-9 col-md-9 col-lg-9 actionsMenu">
+            <div class="col-sm-7 col-md-8 col-lg-9 actionsMenu">
                 <ul class="nav nav-tabs">
                     <xsl:for-each select="//actions/menugroup[menu//actionPerType[@id=$EntityType]/userRights=$user and @id!='Anazitisi']">
                         <xsl:choose>
@@ -117,7 +117,7 @@ This file is part of the FIMS webapp.
                     </xsl:for-each>        
                 </ul>
             </div>
-            <div class="col-sm-3 col-md-3 col-lg-3 actionsMenu">                
+            <div class="col-sm-5 col-md-4 col-lg-3 actionsMenu">                
                 <xsl:variable name="tag" select=" 'Anazitisi' "/>
                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                 <ul class="nav nav-tabs">
@@ -176,7 +176,7 @@ This file is part of the FIMS webapp.
         </div>        
 
     </xsl:template>
-    <xsl:template name="enableLinks" match="/">
+    <xsl:template name="enableLinks">
         <xsl:param name="href" />
         <xsl:param name="onclick" />
         <xsl:param name="image" />

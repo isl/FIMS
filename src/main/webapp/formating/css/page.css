@@ -595,13 +595,11 @@ html,body{
 }
 
 #forthImg{
-    margin-top: -18px;
-    margin-bottom: 31px;
+    margin-bottom: 10px;
 }
 
 .footerCopy{
     margin-top: 10px;
-    width: 15% !important;
 }
 
 .nowrap{

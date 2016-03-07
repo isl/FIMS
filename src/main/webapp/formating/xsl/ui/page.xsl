@@ -57,13 +57,13 @@ This file is part of the FIMS webapp.
                                 <xsl:call-template name="header"/>
                             </div>  
                             <div class="row col-wrap" id="content">
-                                <div class="col-sm-2 col-md-2 col-lg-2 col"  id="leftmenu">
+                                <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 col"  id="leftmenu">
                                     <div class="well" id="leftWell">
                                         <xsl:call-template name="leftmenu"/>
 
                                     </div>
                                 </div>    
-                                <div class="col-sm-10 col-md-10 col-lg-10 rightContent col">
+                                <div class="col-xs-9 col-sm-10 col-md-10 col-lg-10 rightContent col">
                                     <div class="well" id="rightWell">
                                         <xsl:call-template name="context"/>
                                     </div>
@@ -75,14 +75,14 @@ This file is part of the FIMS webapp.
                                 <div id="header">
                                     <xsl:call-template name="header"/>
                                 </div>                   
-                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <xsl:call-template name="context"/>
                                 </div>
                             </div>
                         </xsl:otherwise>
                     </xsl:choose> 
                     <div class="row col-wrap">
-                        <div class="col-sm-12 col-md-12 col-lg-12" id="footer">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="footer">
                             <xsl:call-template name="footer">
                             </xsl:call-template>
                         </div>

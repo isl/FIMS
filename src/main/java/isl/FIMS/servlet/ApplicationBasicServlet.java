@@ -191,7 +191,6 @@ public class ApplicationBasicServlet extends HttpServlet {
         String UserRights = getRights(username);
         String userOrg = this.getUserGroup(username);
         HttpSession session = request.getSession(true);
-        System.out.println("user--> " + user);
         DMSFile df = new DMSFile(this.conf.USERS_FILE, this.conf);
         String firstname = "";
         String lastname = "";

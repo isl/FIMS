@@ -40,7 +40,6 @@ public class About extends ApplicationBasicServlet {
         String type = "About";
         this.initVars(request);
         String username = getUsername(request);
-        System.out.println("username-->" + username);
         Config conf = new Config(type);
 
         StringBuilder xml = new StringBuilder(this.xmlStart(this.topmenu, username, this.pageTitle, this.lang, "", request));
