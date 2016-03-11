@@ -97,7 +97,7 @@ public class QueryTools {
                     temp[i] = outs[outs.length - 1];
                 }
             }
-            Arrays.sort(temp);
+            //Arrays.sort(temp);
             for (int i = 0; i < temp.length; i++) {
                 if (temp[i] != null && temp[i] != "") {
 
@@ -168,11 +168,10 @@ public class QueryTools {
         }
         queryMiddle = queryWhere;
 
-        //ws edw...
-        ///gia to paging///
+        
         queryMiddle.append(inQuerySource);
 
-        ///telos paging//////
+        
         // queryEnd.append("<organization><organization>\n{string(document('" + ApplicationBasicServlet.adminDbCollection + ApplicationBasicServlet.conf.GROUPS_FILE + "')//group[@id=$current/" + rootXPath + "/admin/organization]/@groupname)}\n</organization></organization>\n");
         String[] adminPartsTitle;
         String[] adminPartsPath;
@@ -231,11 +230,8 @@ public class QueryTools {
         query.append("return\n");
         query.append("for $i in collection(concat('" + queryTargets + "/',$m))");
 
-        //eXist 1.1 had a problem with this type of queries, so we decided to change it slightly so that we dont
-        //have typecast XQuery exceptions. We probably have to change saved queries too...(if they are useful!)
-        //Samarita's hack
+   
         query.append("let $id := $i//admin/id\n");
-        //end hack
 
         if (queryMiddle.length() > 0) {
             query.append("where ").append(queryMiddle).append(queryEnd);
@@ -319,7 +315,7 @@ public class QueryTools {
             inputsTag.append("</value>\n</input>\n");
         }
         inputsTag.append("</inputs>\n");
-        Arrays.sort(outputs);
+       // Arrays.sort(outputs);
 
         StringBuffer outputsTag = new StringBuffer("<outputs>\n");
         String querySource = getSource(params, conf, dataCol);
