@@ -54,7 +54,7 @@ This file is part of the FIMS webapp.
             });
             jQuery(".chosen").chosen();
             $('.select2').select2();
-                    $('#submitSearch').click(function() {
+            $('#submitSearch').click(function() {
             
             $('#criteriaBody tr').each(function () {
             // reference all the stuff you need first
@@ -75,7 +75,26 @@ This file is part of the FIMS webapp.
             submitFormTo('searchForm', 'SearchResults');
             });
 
-   
+            $('#submitSave').click(function() {
+            
+            $('#criteriaBody tr').each(function () {
+            // reference all the stuff you need first
+            var dataType = $(this).find('#dataTypes').val();
+
+            if (dataType === "string") {
+            $(this).find('.string_inputoper').prop('disabled', false);
+            $(this).find('.string_inputoper').next().prop('disabled', false).trigger("liszt:updated");
+            $(this).find('.time_inputoper').prop('disabled', true);
+            $(this).find('.time_inputoper').next().prop('disabled', true).trigger("liszt:updated");    
+            } else if (dataType === "time") {
+            $(this).find('.string_inputoper').prop('disabled', true);
+            $(this).find('.string_inputoper').next().prop('disabled', true).trigger("liszt:updated");
+            $(this).find('.time_inputoper').prop('disabled', false);
+            $(this).find('.time_inputoper').next().prop('disabled', false).trigger("liszt:updated");
+            }
+            });
+            submitFormTo('searchForm', 'SearchSave');
+            });
             $('#criteriaBody tr').each(function () {
             // reference all the stuff you need first
             var dataType = $(this).find('#dataTypes').val();
@@ -88,6 +107,12 @@ This file is part of the FIMS webapp.
             $(this).find('.string_inputoper').next().show();
             $(this).find('.time_inputoper').hide();
             $(this).find('.time_inputoper').next().hide();
+            $(this).find('.searchString').removeAttr('disabled');
+            $(this).find('.timeString').attr('disabled','disabled');
+            $(this).find('.searchString').show();
+            $(this).find('.timeString').hide();
+            $(this).find('.timeImg').hide();
+
             } else if (dataType === "time") {
 
 
@@ -95,11 +120,15 @@ This file is part of the FIMS webapp.
             $(this).find('.string_inputoper').next().hide();
             $(this).find('.time_inputoper').hide();
             $(this).find('.time_inputoper').next().show();
+            $(this).find('.timeString').removeAttr('disabled');
+            $(this).find('.searchString').attr('disabled','disabled');
+            $(this).find('.searchString').hide();
+            $(this).find('.timeString').show();
+            $(this).find('.timeImg').show();
 
             }
             });
-            <!--            $(".time_inputoper").next().hide();
-            $(".time_inputoper").hide();-->
+
             
             $('.searchValues').change(function(i){
             var index = $(this).prop('selectedIndex');
@@ -108,6 +137,9 @@ This file is part of the FIMS webapp.
             var dataType = $oper.val();
             $stingInput = $(this).parent().parent().children().eq(2).children().eq(0);
             $timeInput = $(this).parent().parent().children().eq(2).children().eq(2);
+            $searchString = $(this).parent().parent().children().eq(3).children().eq(0);
+            $timeString = $(this).parent().parent().children().eq(3).children().eq(1);
+            $timeImg= $(this).parent().parent().children().eq(3).children().eq(2);
 
             if (dataType == "string") {
 
@@ -118,6 +150,13 @@ This file is part of the FIMS webapp.
 
             $stingInput.hide();
             $stingInput.next().show();
+            
+            $searchString.removeAttr('disabled');
+            $timeString.attr('disabled','disabled');
+            $searchString.show();
+            $timeString.hide();
+            $timeImg.hide();
+            
             } else if (dataType == "time") {
 
 
@@ -125,9 +164,14 @@ This file is part of the FIMS webapp.
             $timeInput.next().show();
 
 
-
             $stingInput.hide();
             $stingInput.next().hide();
+            
+            $timeString.removeAttr('disabled');
+            $searchString.attr('disabled','disabled');
+            $searchString.hide();
+            $timeString.show();
+            $timeImg.show();
             }
             });
 
@@ -306,13 +350,6 @@ This file is part of the FIMS webapp.
                                                 <xsl:for-each select="//context/query/inputs/input">
                                                     <tr id="criterion">
                                                         <td style="display: none"> 
-                                                            <input type="checkbox" id="inputparameter" name="inputparameter" value="{./@id}">
-                                                                <xsl:if test="./@parameter='yes'">
-                                                                    <xsl:attribute name="checked">
-                                                                        <xsl:value-of select="checked"/>
-                                                                    </xsl:attribute>
-                                                                </xsl:if>
-                                                            </input>
                                                             <input type="hidden" id="inputid" name="inputid" value="{./@id}"/>
                                                         </td>
                                                         <td>
@@ -415,8 +452,8 @@ This file is part of the FIMS webapp.
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-12">
                                         <xsl:choose>
-                                            <xsl:when test="//context/query/outputs/path[position() &gt; 1]/@selected='yes' ">     
-                                                <input id="default" type="radio" name="default" class="outputOptions"/>
+                                            <xsl:when test="//context/query/outputs/path/@xpath!='' ">     
+                                                <input id="default" type="radio" name="default" class="outputOptions" />
                                                 <xsl:variable name="tag" select=" 'defaultOutput' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                 <xsl:value-of select="$translated"/>
@@ -459,15 +496,15 @@ This file is part of the FIMS webapp.
                                             </thead>  				
                                             <tbody>
                                                 <xsl:choose>
-                                                    <xsl:when test="//context/query/outputs/path[position() &gt; 1]/@selected='yes' ">                                                       
+                                                    <xsl:when test="//context/query/outputs/path/@selected='yes' ">                                                       
                                                         <tr>
                                                             <td>
                                                                 <xsl:variable name="tag" select=" 'Epilogi_more' "/>
                                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                                 <select  id="outputStrings" data-placeholder="{$translated}" name="output" class="chzn-select searchOutput" multiple="multiple">
-                                                                    <xsl:for-each select="//context/query/outputs/path[position() &gt; 1 and @selected='yes']">
+                                                                    <xsl:for-each select="//context/query/outputs/path[@selected='yes']">
                                                                         <xsl:variable name="outXpath" select="./@xpath"/>
-                                                                        <xsl:for-each select="//context/query/inputs/input[1]/path[position() &gt; 1]">
+                                                                        <xsl:for-each select="//context/query/inputs/input[1]/path">
                                                                             <option value="{./@xpath}">
                                                                                 <xsl:if test="$outXpath = ./@xpath">
                                                                                     <xsl:attribute name="selected">
@@ -559,7 +596,7 @@ This file is part of the FIMS webapp.
                                             
                                             <xsl:variable name="tag" select=" 'Apothikeusi' "/>
                                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <input type="submit" class="btn btn-default .btn-sm" name="submit4save" value="{$translated}" onClick="submitFormTo('searchForm', 'SearchSave')"/>
+                                            <input id="submitSave" type="submit" class="btn btn-default .btn-sm" name="submit4save" value="{$translated}"/>
                                             
                                         </div>
                                     </div>

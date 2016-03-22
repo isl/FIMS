@@ -67,7 +67,7 @@ public class SearchDelete extends BasicSearchServlet {
 		String xmlEnd = this.xmlEnd();
 
 		Hashtable params = this.getParams(request);
-		String xmlMiddle = QueryTools.getXML(params, this.conf,this.dataCol);
+		String xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf,this.dataCol);
 
 		String mnemonicName = (String) params.get("mnemonicName");
 		if (mnemonicName == null || mnemonicName.equals("")){

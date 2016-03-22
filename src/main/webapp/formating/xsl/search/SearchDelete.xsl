@@ -42,7 +42,7 @@ This file is part of the FIMS webapp.
     <xsl:template name="context">
         <script type="text/javascript">
             $(document).ready(function(){
-            h = $('content').height();
+            h = $('#content').height();
             $('#displayRow').height(h);
             });
         </script>

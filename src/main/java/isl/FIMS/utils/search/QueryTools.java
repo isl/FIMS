@@ -29,7 +29,6 @@ package isl.FIMS.utils.search;
 
 import timeprimitve.SISdate;
 import isl.FIMS.servlet.ApplicationBasicServlet;
-import isl.FIMS.servlet.search.SearchResults;
 import isl.FIMS.utils.UtilsQueries;
 import isl.FIMS.utils.UtilsXPaths;
 import isl.dbms.DBMSException;
@@ -38,14 +37,14 @@ import isl.dms.DMSException;
 import isl.dms.file.DMSTag;
 import isl.dms.file.DMSUser;
 import isl.dms.file.DMSXQuery;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class QueryTools {
 
-    public static String getSource(Hashtable params, DMSConfig conf, String dataCol) {
+    //Returns the query for the results of search (simple r advanced)
+    public static String getQueryForSearchResults(Hashtable params, DMSConfig conf, String dataCol) throws DMSException {
         String[] targets = (String[]) params.get("targets");
         String operator = (String) params.get("operator");
         String[] inputs = (String[]) params.get("inputs");
@@ -56,123 +55,53 @@ public class QueryTools {
         String category = (String) params.get("category");
         String lang = (String) params.get("lang");
         String status = (String) params.get("status");
+        String username = (String) params.get("username");
+        String organization = (String) params.get("organization");
+        String mode = "";
+        String rootXPath = "";
+        try {
+            rootXPath = DMSTag.valueOf("rootxpath", "target", category, conf)[0];
+        } catch (DBMSException e) {
+        }
+
+        if (userHasAction("sysadmin", username, conf)) {
+            mode = "sys";
+        }
         if (status.equals("null")) {
             status = null;
         }
         StringBuffer queryEnd = new StringBuffer("return\n<result pos='{$j}'>\n");
-
         if (outputs.length == 0) {
             outputs = UtilsXPaths.getOutputResultForSimpleSearch(category);
-            for (int i = 0; i < outputs.length; i++) {
-                String[] outs = outputs[i].split("/");
+            for (String output : outputs) {
+                String[] outs = output.split("/");
                 String outTag = outs[outs.length - 1];
-
-                queryEnd.append("<" + outTag + ">\n").append("{$current").append(outputs[i]).append("}\n").append("</" + outTag + ">\n");
+                queryEnd.append("<").append(outTag).append(">\n").append("{$current").append(output).append("}\n").append("</").append(outTag).append(">\n");
             }
             try {
                 outputs = DMSTag.valueOf("xpath", "listOutputExternal", category, conf);
             } catch (DMSException ex) {
             }
-            for (int i = 0; i < outputs.length; i++) {
-                String[] outs = outputs[i].split("/");
+            for (String output : outputs) {
+                String[] outs = output.split("/");
                 String outTag = outs[outs.length - 1];
-
-                queryEnd.append("<" + outTag + ">\n").append("{").append(outputs[i]).append("}\n").append("</" + outTag + ">\n");
+                queryEnd.append("<").append(outTag).append(">\n").append("{").append(output).append("}\n").append("</").append(outTag).append(">\n");
             }
         } else {
-            Map<String, String> listing = new HashMap();
-            for (int i = 0; i < outputs.length; i++) {
-                if (outputs[i] != null) {
-
-                    String[] outs = outputs[i].split("/");
+            for (String output : outputs) {
+                if (output != null) {
+                    String[] outs = output.split("/");
                     String outTag = outs[outs.length - 1];
-                    listing.put(outTag, outputs[i]);
-                }
-            }
-
-            String temp[] = new String[outputs.length];
-            for (int i = 0; i < outputs.length; i++) {
-                if (outputs[i] != null) {
-                    String[] outs = outputs[i].split("/");
-                    temp[i] = outs[outs.length - 1];
-                }
-            }
-            //Arrays.sort(temp);
-            for (int i = 0; i < temp.length; i++) {
-                if (temp[i] != null && temp[i] != "") {
-
-                    String tmp = listing.get(temp[i]).split("/")[1];
+                    String tmp = outs[1];
                     if (tmp.equals(category)) {
-                        queryEnd.append("<" + temp[i] + ">\n").append("{$current").append(listing.get(temp[i])).append("}\n").append("</" + temp[i] + ">\n");
+                        queryEnd.append("<" + outTag + ">\n").append("{$current").append(output).append("}\n").append("</" + outTag + ">\n");
                     } else {
-                        queryEnd.append("<" + temp[i] + ">\n").append("{").append(listing.get(temp[i])).append("}\n").append("</" + temp[i] + ">\n");
+                        queryEnd.append("<" + outTag + ">\n").append("{").append(output).append("}\n").append("</" + outTag + ">\n");
                     }
                 }
             }
         }
 
-        String username = (String) params.get("username");
-        String organization = (String) params.get("organization");
-        String mode = "";
-        if (userHasAction("sysadmin", username, conf)) {
-            mode = "sys";
-        }
-
-        StringBuffer inQuerySource = new StringBuffer();
-        inQuerySource.append("return $i\n").append("return\n").append("<stats>\n").append("{for $j in 1 to count($results)\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
-        StringBuffer queryTargets = new StringBuffer();
-        StringBuffer queryWhere = new StringBuffer();
-        UtilsQueries u = new UtilsQueries();
-        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username, lang);
-        for (int i = 0; i < targets.length; i++) {
-            queryTargets.append(targets[i]).append(",");
-        }
-
-        try {
-            queryTargets.delete(queryTargets.lastIndexOf(","), queryTargets.length());
-        } catch (StringIndexOutOfBoundsException se) {
-        }
-
-        String type = category;
-
-        //---------- Conditions ----------//
-        String rootXPath = "";
-        try {
-            rootXPath = DMSTag.valueOf("rootxpath", "target", type, conf)[0];
-        } catch (DBMSException e) {
-            e.printStackTrace();
-        } catch (DMSException e) {
-            e.printStackTrace();
-        }
-
-        //---------- End Of Conditions ----------//
-        StringBuffer queryMiddle = new StringBuffer();
-
-        for (int i = 0; i < inputs.length; i++) {
-//            if (inputsValues[i].equals("")) {
-//                continue;
-//            }
-            inputsValues[i] = inputsValues[i].replaceAll("'", "");
-            inputsValues[i] = inputsValues[i].replaceAll("\"", "");
-            inputsValues[i] = inputsValues[i].replaceAll("&", "");
-
-            queryMiddle.append(getPredicate(inputs[i], inputsOpers[i], inputsValues[i])).append(operator).append("\n");
-        }
-        try {
-            queryMiddle.delete(queryMiddle.lastIndexOf(operator), queryMiddle.length());
-        } catch (StringIndexOutOfBoundsException se) {
-        }
-
-        if (queryMiddle.length() > 0) {
-            queryWhere.append(" and (\n").append(queryMiddle).append("\n)\n");
-        }
-        queryMiddle = queryWhere;
-
-        
-        queryMiddle.append(inQuerySource);
-
-        
-        // queryEnd.append("<organization><organization>\n{string(document('" + ApplicationBasicServlet.adminDbCollection + ApplicationBasicServlet.conf.GROUPS_FILE + "')//group[@id=$current/" + rootXPath + "/admin/organization]/@groupname)}\n</organization></organization>\n");
         String[] adminPartsTitle;
         String[] adminPartsPath;
         try {
@@ -188,49 +117,68 @@ public class QueryTools {
                 }
             }
         } catch (DMSException ex) {
-            ex.printStackTrace();
         } catch (DBMSException ex) {
-            ex.printStackTrace();
         }
 
+        StringBuffer inQuerySource = new StringBuffer();
+        inQuerySource.append("return $i\n").append("return\n").append("<stats>\n").append("{for $j in 1 to count($results)\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
+        StringBuffer queryTargets = new StringBuffer();
+        StringBuffer queryWhere = new StringBuffer();
+        UtilsQueries u = new UtilsQueries();
+        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username, lang);
+        for (String target : targets) {
+            queryTargets.append(target).append(",");
+        }
 
-        /* if (GetEntityCategory.getEntityCategory(type).equals("primary")) {
-         queryEnd.append("<status>\n{$current/" + rootXPath + "/admin/status}\n</status>\n");
-         }*/
-        //lang comment
-        //    queryEnd.append("<lang>\n{$current/" + rootXPath + "/admin/lang}\n</lang>\n");
-        queryEnd.append("<info>\n{$current/" + rootXPath + "/admin/info}\n</info>\n");
-        //CRINNO Pros8hkh...
+        try {
+            queryTargets.delete(queryTargets.lastIndexOf(","), queryTargets.length());
+        } catch (StringIndexOutOfBoundsException se) {
+        }
+
+        StringBuffer queryMiddle = new StringBuffer();
+
+        for (int i = 0; i < inputs.length; i++) {
+            inputsValues[i] = inputsValues[i].replaceAll("'", "");
+            inputsValues[i] = inputsValues[i].replaceAll("\"", "");
+            inputsValues[i] = inputsValues[i].replaceAll("&", "");
+            queryMiddle.append(getPredicate(inputs[i], inputsOpers[i], inputsValues[i])).append(operator).append("\n");
+        }
+        try {
+            queryMiddle.delete(queryMiddle.lastIndexOf(operator), queryMiddle.length());
+        } catch (StringIndexOutOfBoundsException se) {
+        }
+
+        if (queryMiddle.length() > 0) {
+            queryWhere.append(" and (\n").append(queryMiddle).append("\n)\n");
+        }
+        queryMiddle = queryWhere;
+
+        queryMiddle.append(inQuerySource);
+
+        queryEnd.append("<info>\n{$current/").append(rootXPath).append("/admin/info}\n</info>\n");
         queryEnd.append("<FileId>{replace(util:document-name($current),\".xml\",\"\")}</FileId>\n");
-        //ws edw...
         queryEnd.append("<hiddenResults>");
         queryEnd.append("<FileId>{replace(util:document-name($current),\".xml\",\"\")}</FileId>\n");
-        queryEnd.append("{$current/" + rootXPath + "/admin/organization}\n");
-        queryEnd.append("<hasPublicDependants>{exists($current/" + rootXPath + "/admin/refs_by/ref_by[./@isUnpublished='false'])}\n</hasPublicDependants>");
-        queryEnd.append("<userHasWrite>{$current/" + rootXPath + "/admin/write/text()='" + username + "'}\n</userHasWrite>");
-        queryEnd.append("<isImported>{exists($current/" + rootXPath + "/admin/imported)}\n</isImported>");
-        queryEnd.append("<versionId>{$current/" + rootXPath + "/admin/versions/versionId/text()}\n</versionId>");
-        queryEnd.append("<type>{$current/" + rootXPath + "/admin/type}</type>\n");
+        queryEnd.append("{$current/").append(rootXPath).append("/admin/organization}\n");
+        queryEnd.append("<hasPublicDependants>{exists($current/").append(rootXPath).append("/admin/refs_by/ref_by[./@isUnpublished='false'])}\n</hasPublicDependants>");
+        queryEnd.append("<userHasWrite>{$current/").append(rootXPath).append("/admin/write/text()='").append(username).append("'}\n</userHasWrite>");
+        queryEnd.append("<isImported>{exists($current/").append(rootXPath).append("/admin/imported)}\n</isImported>");
+        queryEnd.append("<versionId>{$current/").append(rootXPath).append("/admin/versions/versionId/text()}\n</versionId>");
+        queryEnd.append("<type>{$current/").append(rootXPath).append("/admin/type}</type>\n");
         queryEnd.append("</hiddenResults>");
-        //diplo 'filename' gia na akolou8oume th symbash me ta outputs
-        queryEnd.append("<filename><filename>{fn:tokenize($current/" + rootXPath + "/admin/uri_id/text(),'" + ApplicationBasicServlet.URI_Reference_Path + "')[last()]}</filename></filename>\n");
+        queryEnd.append("<filename><filename>{fn:tokenize($current/").append(rootXPath).append("/admin/uri_id/text(),'").append(ApplicationBasicServlet.URI_Reference_Path).append("')[last()]}</filename></filename>\n");
 
         queryEnd.append("</result>}</stats>");
 
-//        StringBuffer query = new StringBuffer("let $results:=\n");
-//        query.append("for $i in collection('").append(queryTargets).append("')\n");
-//        
         StringBuffer query = new StringBuffer("let $collections:=\n");
-        query.append("let $b:= xmldb:get-child-collections('" + queryTargets + "')");
+        query.append("let $b:= xmldb:get-child-collections('").append(queryTargets).append("')");
         query.append("return count($b),");
-        query.append("$collcount:=$collections+" + dataCol + ",");
+        query.append("$collcount:=$collections+").append(dataCol).append(",");
         query.append("$results:=\n");
-        //query.append("for $i in collection('").append(queryTargets).append("')\n");
-        query.append("for $m in " + dataCol + " to  $collcount\n");
+        query.append("for $m in ").append(dataCol).append(" to  $collcount\n");
         query.append("return\n");
-        query.append("for $i in collection(concat('" + queryTargets + "/',$m))");
+        query.append("for $i in collection(concat('").append(queryTargets).append("/',$m))");
 
-   
         query.append("let $id := $i//admin/id\n");
 
         if (queryMiddle.length() > 0) {
@@ -238,12 +186,11 @@ public class QueryTools {
         } else {
             query.append(queryEnd);
         }
-
         return query.toString();
     }
 
     //Builds XML representing query (XQueries-like format)
-    public static String getXML(Hashtable params, DMSConfig conf, String dataCol) throws DMSException {
+    public static String getXML4ResultXsl(Hashtable params, DMSConfig conf, String dataCol) throws DMSException {
         String qId = (String) params.get("qId");
         String category = (String) params.get("category");
         String lang = (String) params.get("lang");
@@ -253,11 +200,10 @@ public class QueryTools {
         String operator = (String) params.get("operator");
         String[] inputs = (String[]) params.get("inputs");
         String[] inputsIds = (String[]) params.get("inputsIds");
-        String[] inputsParameters = (String[]) params.get("inputsParameters");
+//        String[] inputsParameters = (String[]) params.get("inputsParameters");
         String[] inputsValues = (String[]) params.get("inputsValues");
         String[] outputs = (String[]) params.get("outputs");
 
-        //Samarita (selectable operator)
         String[] inputsOpers = (String[]) params.get("inputsOpers");
 
         String[] tagXPaths = DMSTag.valueOf("xpath", "target", category, conf);
@@ -279,22 +225,19 @@ public class QueryTools {
 
         tagXPaths = DMSTag.valueOf("xpath", "input", category, conf);
         tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "input", category, conf);
-        //Samarita (selectable operator)
-        String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
+//        String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
         String[] tagType = DMSTag.valueOf("dataType", "input", category, conf);
 
-        Arrays.sort(inputsParameters);
+//        Arrays.sort(inputsParameters);
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
         for (int i = 0; i < inputs.length; i++) {
             String inputId = inputsIds[i];
-            String parameter = (Arrays.binarySearch(inputsParameters, inputId) >= 0) ? "yes" : "no";
-            inputsTag.append("<input id=\"" + inputId + "\" parameter=\"" + parameter + "\">\n");
+            inputsTag.append("<input id=\"").append(inputId).append("\">\n");
 
             for (int j = 0; j < tagXPaths.length; j++) {
                 String xPath = tagXPaths[j];
                 inputsTag.append("<path xpath=\"").append(xPath).append("\"");
-                inputsTag.append(" dataType=\"").append(tagType[j] + "\"");
-                inputsTag.append(" oper=\"").append(tagOpers[j]).append("\"");
+                inputsTag.append(" dataType=\"").append(tagType[j]).append("\"");
 
                 if (xPath.equals(inputs[i])) {
                     inputsTag.append(" selected=\"yes\">");
@@ -315,19 +258,16 @@ public class QueryTools {
             inputsTag.append("</value>\n</input>\n");
         }
         inputsTag.append("</inputs>\n");
-       // Arrays.sort(outputs);
 
         StringBuffer outputsTag = new StringBuffer("<outputs>\n");
-        String querySource = getSource(params, conf, dataCol);
 
-        StringBuffer infoTag = new StringBuffer("<info>\n<source>\n<![CDATA[" + querySource + "]]>\n</source>\n");
+        StringBuffer infoTag = new StringBuffer("<info>\n");
 
         if (outputs.length != 0) {
             Map<String, String> listing = new HashMap();
             for (int i = 0; i < tagXPaths.length; i++) {
                 listing.put(tagXPaths[i], tagDisplayNames[i]);
             }
-
             for (int i = 0; i < outputs.length; i++) {
                 String xPath = tagXPaths[i];
                 outputsTag.append("<path xpath=\"").append(outputs[i]).append("\"");
@@ -337,16 +277,16 @@ public class QueryTools {
         } else {
 
             String[] outputsTitle = UtilsXPaths.getOutpuTitleForSimpleSearch(category);
-            for (int i = 0; i < outputsTitle.length; i++) {
+            for (String outputsTitle1 : outputsTitle) {
                 outputsTag.append("<path xpath=\"").append("").append("\"");
                 outputsTag.append(" selected=\"yes\">");
-                outputsTag.append(outputsTitle[i]).append("</path>\n");
+                outputsTag.append(outputsTitle1).append("</path>\n");
             }
             outputsTitle = DMSTag.valueOf("tagname", "listOutputExternal", category, conf);
-            for (int i = 0; i < outputsTitle.length; i++) {
+            for (String outputsTitle1 : outputsTitle) {
                 outputsTag.append("<path xpath=\"").append("").append("\"");
                 outputsTag.append(" selected=\"yes\">");
-                outputsTag.append(outputsTitle[i]).append("</path>\n");
+                outputsTag.append(outputsTitle1).append("</path>\n");
             }
         }
 
@@ -371,9 +311,8 @@ public class QueryTools {
         return ret.toString();
     }
 
-    public static String getXML(DMSXQuery query, DMSConfig conf) throws DMSException {
+    public static String getXML4SavedQuery(DMSXQuery query, DMSConfig conf) throws DMSException {
         String category = query.getInfo("category");
-
         String status = query.getInfo("status");
         String lang = query.getInfo("lang");
 
@@ -397,19 +336,15 @@ public class QueryTools {
         tagXPaths = DMSTag.valueOf("xpath", "input", category, conf);
         tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "input", category, conf);
         String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
-
-        //Samarita (selectable operator)
         String[] tagType = DMSTag.valueOf("dataType", "input", category, conf);
 
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
         for (int i = 0; i < qInputs.length; i++) {
             int inId = qInputs[i];
-            String parameter = query.isParameter(inId) ? "yes" : "no";
-            inputsTag.append("<input id=\"" + inId + "\" parameter=\"" + parameter + "\">\n");
+            inputsTag.append("<input id=\"").append(inId).append("\">\n");
             for (int p = 0; p < tagXPaths.length; p++) {
                 inputsTag.append("<path xpath=\"").append(tagXPaths[p]).append("\"");
-                //Samarita
-                inputsTag.append(" dataType=\"").append(tagType[p] + "\"");
+                inputsTag.append(" dataType=\"").append(tagType[p]).append("\"");
                 inputsTag.append(" oper=\"").append(tagOpers[i]).append("\"");
 
                 if (tagXPaths[p].equals(query.getFromInput(inId, "path"))) {
@@ -420,7 +355,6 @@ public class QueryTools {
                 inputsTag.append(tagDisplayNames[p]).append("</path>\n");
             }
 
-            //Samarita (selectable operator)
             inputsTag.append("<oper>").append(query.getFromInput(inId, "oper"));
             inputsTag.append("</oper>\n");
 
@@ -442,24 +376,24 @@ public class QueryTools {
         outputsTag.append("</outputs>\n");
 
         StringBuffer infoTag = new StringBuffer("<info>\n");
-        infoTag.append("<name>" + query.getInfo("name") + "</name>\n");
-        infoTag.append("<category>" + category + "</category>\n");
-        infoTag.append("<lang>" + lang + "</lang>\n");
-        infoTag.append("<status>" + status + "</status>\n");
-        infoTag.append("<operator>" + query.getInfo("operator") + "</operator>\n");
+        infoTag.append("<name>").append(query.getInfo("name")).append("</name>\n");
+        infoTag.append("<category>").append(category).append("</category>\n");
+        infoTag.append("<lang>").append(lang).append("</lang>\n");
+        infoTag.append("<status>").append(status).append("</status>\n");
+        infoTag.append("<operator>").append(query.getInfo("operator")).append("</operator>\n");
         infoTag.append("</info>\n");
 
         StringBuffer ret = buildXML(query.getId(), category, infoTag, targetsTag, inputsTag, outputsTag);
         return ret.toString();
     }
 
-    public static String xmlForGet(String category, String lang, String status, DMSConfig conf) throws DMSException {
+    public static String xml4InitialSearch(String category, String lang, String status, DMSConfig conf) throws DMSException {
         StringBuffer infoTag = new StringBuffer("<info>\n");
-        infoTag.append("<operator>and</operator>\n");	//default value
-        infoTag.append("<category>" + category + "</category>\n");
-        infoTag.append("<lang>" + lang + "</lang>\n");
+        infoTag.append("<operator>and</operator>\n");	
+        infoTag.append("<category>").append(category).append("</category>\n");
+        infoTag.append("<lang>").append(lang).append("</lang>\n");
         infoTag.append("<status>" + status + "</status>\n");
-        infoTag.append("<name></name>\n");	//default name
+        infoTag.append("<name></name>\n");	
         infoTag.append("</info>\n");
 
         String[] tagXPaths = DMSTag.valueOf("xpath", "target", category, conf);
@@ -491,12 +425,8 @@ public class QueryTools {
 
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
 
-//        inputsTag.append(xmlTmp);
-//        inputsTag.append("<input id=\"1\" parameter=\"no\">\n").append("<value/>\n</input>\n");
-//        inputsTag.append("<input id=\"2\" parameter=\"no\">\n").append("<value/>\n</input>\n");
-        inputsTag.append("<input id=\"1\" parameter=\"no\">\n").append(xmlTmp).append("<value/>\n</input>\n");
-        //To Get only one criteria at the begining
-        //  inputsTag.append("<input id=\"2\" parameter=\"no\">\n").append(xmlTmp).append("<value/>\n</input>\n");
+
+        inputsTag.append("<input id=\"1\">\n").append(xmlTmp).append("<value/>\n</input>\n");
         inputsTag.append("</inputs>\n");
 
         StringBuffer outputsTag = new StringBuffer("<outputs>\n");
@@ -520,12 +450,12 @@ public class QueryTools {
 
     private static String getPredicate(String input, String oper, String value) {
 
-        // gmessarit: perform a case-insensitive match
+        // perform a case-insensitive match
         if (oper.equals("matches")) {
             return " matches($i" + input + ", \'" + value + "\', \'i\') ";
         }
 
-        // gmessarit: assume operators like: =, !=, etc.
+        // assume operators like: =, !=, etc.
         // for support for '<' or '>', we replace '&lt;' and '&gt;'
         oper = oper.replaceAll("&gt;", ">");
         oper = oper.replaceAll("&lt;", "<");
@@ -533,8 +463,7 @@ public class QueryTools {
             return " ($i" + input + oper + "\'" + value + "\') ";
         }
 
-        //TIME-HANDLING (Samarita)
-        //   if (oper.equals("ΠΡΙΝ")||oper.equals("ΜΕΤΑ")||oper.equals("ΣΥΜΠΙΠΤΕΙ")||oper.equals("ΠΕΡΙΕΧΕΤΑΙ")||oper.equals("ΤΟΜΗ")||oper.equals("ΤΟΜΗ ΔΕΞΙΑ")||oper.equals("ΤΟΜΗ ΑΡΙΣΤΕΡΑ")) {
+        //TIME-HANDLING 
         if (oper.startsWith("time")) {
             SISdate sisTime = new SISdate(value);
 

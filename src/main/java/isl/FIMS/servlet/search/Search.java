@@ -132,7 +132,7 @@ public class Search extends BasicSearchServlet {
             // from another page (SearchResults, SearchSave, SearchDelete).
             Hashtable params = this.getParams(request);
             // Get XML depending on our params, that depends on request.
-            xmlMiddle = QueryTools.getXML(params, this.conf, this.dataCol);
+            xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
         } else if (qId != 0) {
             // if there is the 'qid', it means we want a particular query.
             String qName = DMSXQuery.getNameOf(qId, userId, this.conf);
@@ -145,17 +145,12 @@ public class Search extends BasicSearchServlet {
             } catch (Exception e) {
             }
             query.addInfo("status", this.status);
-            // Get XML for that query.
-            xmlMiddle = QueryTools.getXML(query, this.conf);
+            xmlMiddle = QueryTools.getXML4SavedQuery(query, this.conf);
         } else {
-            xmlMiddle = QueryTools.xmlForGet(category, this.lang, this.status, this.conf);
+            xmlMiddle = QueryTools.xml4InitialSearch(category, this.lang, this.status, this.conf);
         }
 
-        //Samarita's hack
         DBFile dataTypes = new DBFile(this.DBURI, this.adminDbCollection, this.dataTypesFile, this.DBuser, this.DBpassword);
-        //StringBuffer queriesNames = new StringBuffer("");
-
-        //added for extra conditions in search
         String entityCategory = "secondary";
         StringBuffer statusType = null;
         if (GetEntityCategory.getEntityCategory(category).equals("primary")) {

@@ -34,22 +34,6 @@ function trim(str) {
     return str.replace(/^\s*|\s*$/g, "");
 }
 
-
-
-function submitSearchPagingForm(param, valueof) {
-
-    var frm = document.forms["searchPagingForm"];
-    if (param == 'move') {
-        frm.move.value = valueof;
-    }
-    else {
-        frm.newP.value = valueof;
-    }
-    frm.submit();
-}
-
-
-
 function addNewVocTerm(term, url, noTermMsg, termExistsMsg) {
     term = trim(term);
     if (term == '') {
@@ -77,13 +61,8 @@ function addCriterion(tableBodyId, rowId) {
     newRow = tbody.rows[tbody.rows.length - 1];
     lastRow = tbody.rows[tbody.rows.length - 2];
     var newId = lastRow.cells[0].childNodes[0].value * 1 + 1;
-    //first cell: parameter. Two childrens: checkbox and hidden
-    newRow.cells[0].childNodes[0].checked = false;
     newRow.cells[0].childNodes[0].value = newId;
-    newRow.cells[0].childNodes[1].value = newId;
-    //second cell: input field select. Two childrens: select and select (hidden)
 
-    //third cell: input field text value. Two childrens: text and button
     newRow.cells[2].childNodes[1].value = '';
     newRow.cells[4].childNodes[1].style.display = '';
 
@@ -97,26 +76,25 @@ function addCriterion(tableBodyId, rowId) {
         var dataType = $(this).find('#dataTypes').val();
 
         if (dataType === "string") {
-            //$(this).find('.string_inputoper').prop('disabled', false);
-          //  $(this).find('.string_inputoper').next().prop('disabled', false).trigger("liszt:updated");
-          //  $(this).find('.time_inputoper').prop('disabled', true);
-         //   $(this).find('.time_inputoper').next().prop('disabled', true).trigger("liszt:updated");
-
             $(this).find('.string_inputoper').hide();
             $(this).find('.string_inputoper').next().show();
             $(this).find('.time_inputoper').hide();
             $(this).find('.time_inputoper').next().hide();
+            $(this).find('.searchString').removeAttr('disabled');
+            $(this).find('.timeString').attr('disabled', 'disabled');
+            $(this).find('.searchString').show();
+            $(this).find('.timeString').hide();
+            $(this).find('.timeImg').hide();
         } else if (dataType === "time") {
-        //    $(this).find('.string_inputoper').prop('disabled', true);
-         //   $(this).find('.string_inputoper').next().prop('disabled', true).trigger("liszt:updated");
-          //  $(this).find('.time_inputoper').prop('disabled', false);
-         //  // $(this).find('.time_inputoper').next().prop('disabled', false).trigger("liszt:updated");
-
             $(this).find('.string_inputoper').hide();
             $(this).find('.string_inputoper').next().hide();
             $(this).find('.time_inputoper').hide();
             $(this).find('.time_inputoper').next().show();
-
+            $(this).find('.timeString').removeAttr('disabled');
+            $(this).find('.searchString').attr('disabled', 'disabled');
+            $(this).find('.searchString').hide();
+            $(this).find('.timeString').show();
+            $(this).find('.timeImg').show();
         }
     });
 
@@ -129,25 +107,31 @@ function addCriterion(tableBodyId, rowId) {
         $stingInput = $(this).parent().parent().children().eq(2).children().eq(0);
         $timeInput = $(this).parent().parent().children().eq(2).children().eq(2);
 
+        $searchString = $(this).parent().parent().children().eq(3).children().eq(0);
+        $timeString = $(this).parent().parent().children().eq(3).children().eq(1);
+        $timeImg = $(this).parent().parent().children().eq(3).children().eq(2);
+
         if (dataType == "string") {
-           // $timeInput.prop('disabled', true);
-          //  $timeInput.next().prop('disabled', true).trigger("liszt:updated");
             $timeInput.hide();
             $timeInput.next().hide();
-          //  $stingInput.prop('disabled', false);
-         //   $stingInput.next().prop('disabled', false).trigger("liszt:updated");
             $stingInput.hide();
             $stingInput.next().show();
+
+            $searchString.removeAttr('disabled');
+            $timeString.attr('disabled', 'disabled');
+            $searchString.show();
+            $timeString.hide();
+            $timeImg.hide();
         } else if (dataType == "time") {
-         //   $timeInput.prop('disabled', false);
-          //  $timeInput.next().prop('disabled', false).trigger("liszt:updated");
             $timeInput.hide();
             $timeInput.next().show();
-           // $stingInput.prop('disabled', true);
-         //   $stingInput.next().prop('disabled', true).trigger("liszt:updated");
-
             $stingInput.hide();
             $stingInput.next().hide();
+            $timeString.removeAttr('disabled');
+            $searchString.attr('disabled', 'disabled');
+            $searchString.hide();
+            $timeString.show();
+            $timeImg.show();
         }
     });
 
@@ -169,41 +153,19 @@ function removeRow(rowObj) {
 function submitFormTo(formId, formAction) {
     var form = getObj(formId);
     form.action = formAction;
-//form.submit();
 }
 
 function confirmAction(text) {
     return confirm(text);
 }
 
-function highlight(obj, f) {
-    if (f == true)
-        obj.className = 'highlighted_' + obj.id;
-    else
-        obj.className = obj.id;
-}
-
-function showInfoWin(type, fileId) {
-    popUpNoScroll('AdminEntity?type=' + type + '&action=info&id=' + fileId, 'info', 400, 250);
-}
 
 function showInfo(id) {
     getObj('showInfo_' + id).style.display = 'none';
     getObj('info_' + id).style.display = '';
 }
 
-function hideInfo(id) {
-    getObj('showInfo_' + id).style.display = '';
-    getObj('info_' + id).style.display = 'none';
-}
-
-
-function editPopUp(url, winName) {
-    return popUp(url, winName, 850, 500);
-}
-
 function previewPopUp(url, winName) {
-// alert(winName);
     return popUp(url, winName, 900, 700, " ");
 }
 
@@ -259,23 +221,6 @@ function popUpNoScroll(url, winName, w, h) {
     w.focus();
     return w;
 }
-
-
-//Variable to check if link is clicked!
-var linkClicked = false;
-function closeCardAndMakeItAvailable(filename) {
-
-
-    //alert(linkClicked);
-    if (linkClicked) {
-        //alert("ITS A LINK");
-    } else {
-        //alert("CLOSING");
-        popUp("SystemMessages?file=" + filename + "&time=3000", "lala", "300", "150", " ")
-    }
-
-}
-
 function timeCheck(timeValue) {
 
     var str = timeValue.value;
@@ -381,215 +326,6 @@ function createPatternsTable(language) {
     return Patterns;
 }
 
-function dosubmit(formName, ServletName) {
-
-    var frm = document.forms[formName];
-    frm.method = "post";
-    frm.action = ServletName;
-    if (ServletName == 'ViewAll') {
-        frm.target = "_blank";
-    } else if (ServletName == 'Search' && formName == 'BugReportResultsFrm') {
-        frm.target = "_self";
-    }
-    frm.submit();
-}
-
-function setValue(chechBox) {
-    if (chechBox.checked == true)
-        chechBox.value = 'checked';
-    else
-        chechBox.value = '';
-}
-
-
-function checkUncheckAll(theElement) {
-    var theForm = theElement.form, z = 0;
-    for (z = 0; z < theForm.length; z++) {
-        if (theForm[z].type == 'checkbox' && theForm[z].name != 'SelectAll') {
-            theForm[z].checked = theElement.checked;
-            if (theForm[z].checked == true)
-                theForm[z].value = 'checked';
-            else
-                theForm[z].value = '';
-        }
-    }
-
-}
-
-function countChecked(results) {
-    var counter = 0;
-    for (var x = 1; x <= results; x++)
-    {
-        if (document.getElementById("checkbox" + x).getAttribute("value") == 'checked')
-        {
-            counter++;
-        }
-    }
-    return counter;
-}
-
-function disp_confirm(msgOne, msgMore, msgNo, image, count, formName, EntityType) {
-
-    flag = false;
-    if (countChecked(count) == 1) {
-        for (var x = 1; x <= count; x++) {
-
-            if (document.getElementById("checkbox" + x).getAttribute("value") == 'checked')
-            {
-                break;
-            }
-        }
-        var id = document.getElementById("checkbox" + x).getAttribute("name");
-        var r = confirm(msgOne + id.split("Selectcheckbox")[1] + "?");
-    } else if (countChecked(count) > 1) {
-        var r = confirm(msgMore + countChecked(count) + image);
-    } else {
-        var r = alert(msgNo);
-        flag = true;
-    }
-
-    if (r == true && flag != true)
-    {
-        for (var x = 1; x <= count; x++) {
-
-            if (document.getElementById("checkbox" + x).getAttribute("value") == 'checked') {
-                var id = document.getElementById("checkbox" + x).getAttribute("name");
-                location.href = "DeleteEntity?type=" + EntityType + "&id=" + id.split("Selectcheckbox")[1];
-            }
-        }
-    }
-}
-
-function docancel(formName, ServletName) {
-
-    var frm = document.forms[formName];
-    frm.method = "post";
-    frm.action = ServletName;
-    if (ServletName == 'ViewAll') {
-        frm.target = "_blank";
-    } else if (ServletName == 'Cancel' && formName == 'BugReportResultsFrm') {
-        frm.target = "_self";
-    }
-    frm.cancel();
-}
-
-function confirmActionDel(text, id) {
-    return confirm(text + id + "?");
-}
-
-function confirmActionRestore(text, date, time) {
-    return confirm(text + date + "[ " + time + " ]");
-}
-
-var javascriptVersion1_1 = false;
-var detectableWithVB = false;
-var pluginFound = false;
-function goURL(daURL) {
-    // if the browser can do it, use replace to preserve back button
-    if (javascriptVersion1_1) {
-        window.location.replace(daURL);
-    } else {
-        window.location = daURL;
-    }
-    return;
-}
-
-function redirectCheck(pluginFound, redirectURL, redirectIfFound) {
-// check for redirection
-    if (redirectURL && ((pluginFound && redirectIfFound) ||
-            (!pluginFound && !redirectIfFound))) {
-// go away
-        goURL(redirectURL);
-        return pluginFound;
-    } else {
-// stay here and return result of plugin detection
-        return pluginFound;
-    }
-}
-
-
-// Here we write out the VBScript block for MSIE Windows
-
-if ((navigator.userAgent.indexOf('MSIE') != -1) && (navigator.userAgent.indexOf('Win') != -1)) {
-    document.writeln('<script language="VBscript">');
-    document.writeln('\'do a one-time test for a version of VBScript that can handle this code');
-    document.writeln('detectableWithVB = False');
-    document.writeln('If ScriptEngineMajorVersion >= 2 then');
-    document.writeln('  detectableWithVB = True');
-    document.writeln('End If');
-    document.writeln('\'this next function will detect most plugins');
-    document.writeln('Function detectActiveXControl(activeXControlName)');
-    document.writeln('  on error resume next');
-    document.writeln('  detectActiveXControl = False');
-    document.writeln('  If detectableWithVB Then');
-    document.writeln('     detectActiveXControl = IsObject(CreateObject(activeXControlName))');
-    document.writeln('  End If');
-    document.writeln('End Function');
-    document.writeln('</scr' + 'ipt>');
-}
-
-
-
-function refreshUploader(who) {
-// pass who as argument,
-    who = document.getElementsByName('xx_file')[0];
-    var who2 = who.cloneNode(false);
-    who2.onchange = who.onchange; // events are not cloned
-    who.parentNode.replaceChild(who2, who);
-}
-
-
-function selectFolder(pathName) {
-
-    var frm = document.forms["MassImportForm"];
-    var bn = pathName.substring(0, pathName.lastIndexOf('\\'));
-    who = document.getElementsByName('Topo8esiaFoto')[0];
-    var who2 = who.cloneNode(false);
-    who2.onchange = who.onchange; // events are not cloned
-    who2.appendChild(bn);
-    who.parentNode.replaceChild(who2, who);
-}
-
-
-
-function validateForm(MasterFile, Master, ExcelMissing) {
-
-    var frm = document.forms["MassImportForm"];
-    if (frm.space.value == "false") {
-        alert(nofreespace);
-        return false;
-    } else if (frm.foto.value == "") {
-        alert(Master);
-        frm.foto.focus();
-        return false;
-    } else if (frm.excel.value == "") {
-        alert(ExcelMissing);
-        frm.excel.focus();
-        return false;
-    } else {
-        frm.fotoFilename.value = frm.foto.value;
-        var bn = frm.fotoFilename.value;
-        bn = bn.substring(0, bn.lastIndexOf('\\'));
-        frm.fotoFilename.value = bn;
-        frm.excelFilename.value = frm.excel.value;
-        var folder = bn.substring(bn.lastIndexOf('\\') + 1);
-        if (folder == "Master") {
-            alert(MasterFile);
-            return true;
-        } else {
-            alert(Master);
-            frm.foto.focus();
-            return false;
-        }
-    }
-}
-
-//mdaskal
-function confirmActionRestore(text, date, time) {
-    return confirm(text + date + "[ " + time + " ]");
-}
-
-
 function isFirefoxOnWindows() {
     return ((navigator.userAgent.indexOf("Firefox") != -1) && (navigator.userAgent.indexOf("Win") != -1));
 }
@@ -609,27 +345,6 @@ function replaceAll(txt, replace, with_this) {
 }
 
 
-function writeDependencies(title, content) {
-
-    content = replaceAll(content, "\t", "<br/>");
-    var ref = window.open('', title,
-            'width=350,height=250'
-            + ',menubar=0'
-            + ',toolbar=1'
-            + ',status=0'
-            + ',scrollbars=1'
-            + ',resizable=1')
-    ref.document.writeln(
-            '<html><head><title>' + title + '</title></head>'
-            + '<body bgcolor=white onLoad="self.focus()">'
-            + '<h3>' + title + ':' + '</h3>'
-            + content
-            + '</body></html>'
-            )
-    ref.document.close()
-}
-
-
 function toggleVisibility(id) {
     if (id.style.display == 'block')
         id.style.display = 'none';
@@ -637,46 +352,6 @@ function toggleVisibility(id) {
         id.style.display = 'block';
 }
 
-
-var timeout = 10;
-var closetimer = 0;
-var ddmenuitem = 0;
-// open hidden layer
-function mopen(id) {
-    // cancel close timer
-    mcancelclosetime();
-    // close old layer
-    if (ddmenuitem)
-        ddmenuitem.style.visibility = 'hidden';
-    // get new layer and show it
-    ddmenuitem = document.getElementById(id);
-    ddmenuitem.style.visibility = 'visible';
-}
-// close showed layer
-function mclose()
-{
-    if (ddmenuitem)
-        ddmenuitem.style.visibility = 'hidden';
-}
-
-// go close timer
-function mclosetime()
-{
-    closetimer = window.setTimeout(mclose, timeout);
-}
-
-// cancel close timer
-function mcancelclosetime()
-{
-    if (closetimer)
-    {
-        window.clearTimeout(closetimer);
-        closetimer = null;
-    }
-}
-
-// close layer when click-out
-document.onclick = mclose;
 var popupWindow = null;
 function centeredPopup(url, winName, w, h, scroll) {
     LeftPosition = (screen.width) ? (screen.width - w) / 2 : 0;
@@ -685,43 +360,7 @@ function centeredPopup(url, winName, w, h, scroll) {
             'height=' + h + ',width=' + w + ',top=' + TopPosition + ',left=' + LeftPosition + ',scrollbars=' + scroll + ',resizable'
     popupWindow = window.open(url, winName, settings)
 }
-function getElementsByClassName(node, classname) {
-    if (node.getElementsByClassName) { // use native implementation if available
-        return node.getElementsByClassName(classname);
-    } else {
-        return (function getElementsByClass(searchClass, node) {
-            if (node == null)
-                node = document;
-            var classElements = [],
-                    els = node.getElementsByTagName("*"),
-                    elsLen = els.length,
-                    pattern = new RegExp("(^|\\s)" + searchClass + "(\\s|$)"), i, j;
-            for (i = 0, j = 0; i < elsLen; i++) {
-                if (pattern.test(els[i].className)) {
-                    classElements[j] = els[i];
-                    j++;
-                }
-            }
-            return classElements;
-        })(classname, node);
-    }
-}
 
-function toggle_visibility_Class(className, display) {
-    var elements = getElementsByClassName(document, className),
-            n = elements.length;
-    for (var i = 0; i < n; i++) {
-        var e = elements[i];
-        if (display.length > 0) {
-            e.style.display = display;
-        } else {
-            if (e.style.display == 'block') {
-                e.style.display = 'none';
-            } else {
-                e.style.display = 'block';
-            }
-        }
-    }
+function confirmActionRestore(text, date, time) {
+    return confirm(text + date + "[ " + time + " ]");
 }
-
- 

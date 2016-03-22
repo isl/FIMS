@@ -108,14 +108,11 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
             inputsIds = new String[0];
         }
         String[] inputsOpers = request.getParameterValues("inputoper");
-     
+  
         if (inputsOpers == null) {
             inputsOpers = new String[0];
         }
-        String[] inputsParameters = request.getParameterValues("inputparameter");
-        if (inputsParameters == null) {
-            inputsParameters = new String[0];
-        }
+
         String[] inputsValues = request.getParameterValues("inputvalue");
         if (inputsValues == null) {
             inputsValues = new String[0];
@@ -172,7 +169,6 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         params.put("inputs", inputs);
         params.put("inputsIds", inputsIds);
         params.put("inputsOpers", inputsOpers);
-        params.put("inputsParameters", inputsParameters);
         params.put("inputsValues", inputsValues);
         params.put("outputs", outputs);
         //anna komnini pros8hkh

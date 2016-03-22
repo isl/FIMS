@@ -71,7 +71,7 @@ public class SearchSave extends BasicSearchServlet {
 
         mnemonicName = mnemonicName.replaceAll("'", "");
         mnemonicName = mnemonicName.replaceAll("\"", "");
-        String xmlMiddle = QueryTools.getXML(params, this.conf, this.dataCol);
+        String xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
 
         if (mnemonicName == null || mnemonicName.equals("")) {
             xml.append(xmlStart);
@@ -91,16 +91,12 @@ public class SearchSave extends BasicSearchServlet {
 
         String[] targets = (String[]) params.get("targets");
         String operator = (String) params.get("operator");
-        String source = QueryTools.getSource(params, this.conf, this.dataCol);
+        String source = QueryTools.getQueryForSearchResults(params, this.conf, this.dataCol);
         String[] inputs = (String[]) params.get("inputs");
         if (inputs == null) {
             inputs = new String[0];
         }
-        String[] inputsIds = (String[]) params.get("inputsIds");
-        String[] inputsParameters = (String[]) params.get("inputsParameters");
-        if (inputsParameters == null) {
-            inputsParameters = new String[0];
-        }
+     
         String[] inputsValues = (String[]) params.get("inputsValues");
         if (inputsValues == null) {
             inputsValues = new String[0];
@@ -110,8 +106,8 @@ public class SearchSave extends BasicSearchServlet {
             outputs = new String[0];
         }
 
-        //Samarita (selectable operator)
         String[] inputsOpers = (String[]) params.get("inputsOpers");
+     
         if (inputsOpers == null) {
             inputsOpers = new String[0];
         }
@@ -129,7 +125,6 @@ public class SearchSave extends BasicSearchServlet {
             xml.append(xmlMiddle);
             xml.append("<success return=\"0\">" + "QUERY_EXIST" + "</success>\n");
             xml.append(xmlEnd);
-
             XMLTransform xmlTrans = new XMLTransform(xml.toString());
             String xsl = Config.SEARCH_SAVE_XSL;
             xmlTrans.transform(out, xsl);
@@ -143,22 +138,18 @@ public class SearchSave extends BasicSearchServlet {
         q.setInfo("source", "<![CDATA[" + source + "]]>");
         q.setInfo("operator", operator);
 
-        Arrays.sort(inputsParameters);
         for (int i = 0; i < inputs.length; i++) {
             int inputId = q.addInput(this.conf);
             q.addIntoInput(inputId, "path", inputs[i]);
-            //Samarita again
             q.addIntoInput(inputId, "oper", inputsOpers[i]);
             q.addIntoInput(inputId, "value", inputsValues[i]);
-            if (Arrays.binarySearch(inputsParameters, inputsIds[i]) >= 0) {
-                q.setParameter(inputId, true);
-            }
+          
         }
 
-        for (int i = 0; i < outputs.length; i++) {
+        for (String output : outputs) {
             try {
-                q.addOutput(outputs[i]);
-            } catch (Exception e) {
+                q.addOutput(output);
+            }catch (Exception e) {
             }
         }
 
@@ -166,7 +157,6 @@ public class SearchSave extends BasicSearchServlet {
         xml.append(xmlMiddle);
         xml.append("<success return=\"1\"></success>\n");
         xml.append(xmlEnd);
-
         XMLTransform xmlTrans = new XMLTransform(xml.toString());
         String xsl = Config.SEARCH_SAVE_XSL;
         xmlTrans.transform(out, xsl);

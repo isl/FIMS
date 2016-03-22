@@ -90,15 +90,6 @@ This file is part of the FIMS webapp.
                     <xsl:for-each select="//context/query/targets/path[@selected='yes']">
                         <input type="hidden" name="target" value="{./@xpath}"/>
                     </xsl:for-each>
-                    <xsl:for-each select="//context/query/inputs/input">
-                        <input type="hidden" name="inputid" value="{./@id}"/>
-                        <xsl:if test="./@parameter='yes'">
-                            <input type="hidden" name="inputparameter" value="{./@id}"/>
-                        </xsl:if>
-                        <input type="hidden" name="input" value="{./path[@selected='yes']/@xpath}"/>
-                        <input type="hidden" name="inputoper" value="{./path[@selected='yes']/@oper}"/>
-                        <input type="hidden" name="inputvalue" value="{./value}"/>
-                    </xsl:for-each>
                     <xsl:for-each select="$output">
                         <input type="hidden" name="output" value="{./@xpath}"/>
                     </xsl:for-each>

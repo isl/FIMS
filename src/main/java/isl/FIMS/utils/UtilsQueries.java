@@ -206,30 +206,23 @@ public class UtilsQueries extends ApplicationBasicServlet {
         queryRet = query[1];
         queryRet.append("<lang>\n{$current" + rootXPath + "/admin/lang}\n</lang>\n");
         queryOrderBy = query[2];
-//lang comment
-        //    outputsTag.append("<path xpath=\"xxx\" selected=\"yes\">").append("lang").append("</path>\n");
         outputsTag.append("<path xpath=\"xxx\" selected=\"yes\">").append("URI_ID").append("</path>\n");
 
         outputsTag.append("</outputs>\n");
-//append("<lang>\n{$current" + rootXPath + "/admin/lang}\n</lang>\n")
         queryRet.append("<filename><filename>{fn:tokenize($current/" + rootXPath + "/admin/uri_id/text(),'" + this.URI_Reference_Path + "')[last()]}</filename></filename>\n").append("<FileId>{replace(util:document-name($current),\".xml\",\"\")}</FileId>\n").append("</result>\n");
       
 
         //=====Build query source=====
-        //Diafora me prin einai oti exoume pantou '$i' anti gia '$current'
-        //opws epishs to idio isxuei kai sto return-result meros...
+
         StringBuffer querySource = new StringBuffer();
-      //  querySource.append("let $results :=\n");
         querySource.append("for $i in collection('" + this.systemDbCollection + type + "')\n");
         querySource.append("let $groupname := string(doc('" + this.adminDbCollection + this.conf.GROUPS_FILE + "')//group[@id=$i//admin/organization]/@groupname)\n");
         querySource.append("let $j := -1\n");
         querySource.append("let $current := $i\n");
         querySource.append(queryCond);
         querySource.append(queryOrderBy);
-       // querySource.append(inQuerySource);
         querySource.append(queryRet);
-        //========== PAGING CODE ==========
-      //  querySource.append("}\n</stats>");
+
         return querySource.toString();
     }
 

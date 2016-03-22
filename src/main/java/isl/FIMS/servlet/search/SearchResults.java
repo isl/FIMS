@@ -85,7 +85,7 @@ public class SearchResults extends BasicSearchServlet {
 
             //Hashtable params = this.getParams(request);
             category = (String) params.get("category");
-            queryXML = QueryTools.getXML(params, this.conf, this.dataCol);
+            queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
 
             xml.append(queryXML);
 
@@ -110,7 +110,7 @@ public class SearchResults extends BasicSearchServlet {
             DMSXQuery query = new DMSXQuery(qName, userId, this.conf);
             targets = query.getTargets();
             querySource = query.getInfo("source");
-            queryXML = QueryTools.getXML(query, this.conf);
+            queryXML = QueryTools.getXML4SavedQuery(query, this.conf);
         } else if (request.getMethod().equals("GET")) {
             //wrong access
             response.sendRedirect("Search");
@@ -118,17 +118,16 @@ public class SearchResults extends BasicSearchServlet {
         } else {
             //Hashtable params = this.getParams(request);
             category = (String) params.get("category");
-            querySource = QueryTools.getSource(params, this.conf, this.dataCol);
-            queryXML = QueryTools.getXML(params, this.conf, this.dataCol);
+            querySource = QueryTools.getQueryForSearchResults(params, this.conf, this.dataCol);
+            queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
         }
         long start = System.currentTimeMillis();
         StringBuffer resultsTag = new StringBuffer("<results>\n");
-        // If many targets then
-        //for (int i = 0; i < targets.length; i++) { test uncomment if something not works
+
         DBCollection queryCol = new DBCollection(this.DBURI, this.systemDbCollection, this.DBuser, this.DBpassword);
         String[] queryRes = queryCol.query(querySource);
-        for (int j = 0; j < queryRes.length; j++) {
-            String res = queryRes[j].replaceAll("&lt;", "<");
+        for (String queryRe : queryRes) {
+            String res = queryRe.replaceAll("&lt;", "<");
             res = res.replaceAll("&gt;", ">");
             resultsTag.append(res).append("\n");
         }
