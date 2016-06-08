@@ -36,7 +36,7 @@ This file is part of the FIMS webapp.
 
     <xsl:variable name="EntityType" select="//context/EntityType"/>
     <xsl:variable name="SearchMode" select="//context/SearchMode"/>
-    <xsl:variable name="output" select="//context/query/outputs/path[@selected='yes']"/>
+    <xsl:variable name="output" select="//context/query/outputs/path"/>
     <xsl:variable name="ServletName" select="//context/ServletName"/>
     <xsl:variable name="DocStatus" select="//context/DocStatus"/>
     <xsl:variable name="URI_Reference_Path" select="//context/URI_Reference_Path"/>
@@ -116,16 +116,16 @@ This file is part of the FIMS webapp.
                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
                                 <xsl:value-of select="$translated"/> :
                             </strong>
-                            <xsl:for-each select="//context/query/inputs/input/path[@selected='yes']">
-                                <xsl:variable name="operatorRealname" select="../oper"/>
+                            <xsl:for-each select="//context/query/inputs/input">
+                                <xsl:variable name="operatorRealname" select="oper/text()"/>
                                
-                                <xsl:value-of select="."/>
+                                <xsl:value-of select="inputLabel/text()"/>
                                 
                                 <xsl:text> </xsl:text>
                                 <xsl:value-of select="//types/*/operator[text()=$operatorRealname]/@*[name(.)=$lang]"/>
                                 <xsl:text> </xsl:text>
                                 '
-                                <xsl:value-of select="../value"/>
+                                <xsl:value-of select="value/text()"/>
                                 <xsl:text> </xsl:text>
                                 '
                                 <xsl:if test="position()!=last()">
@@ -133,14 +133,16 @@ This file is part of the FIMS webapp.
                                 </xsl:if>
                             </xsl:for-each>	
                         </p>
-                        <p  class="searchResults">
-                            <strong>
-                                <xsl:variable name="tag" select=" 'Telestis' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
-                                <xsl:value-of select="$translated"/> :
-                            </strong>
-                            <xsl:value-of select="//context/query/info/operator"/>
-                        </p>
+                        <xsl:if test="//context/query/info/operator!=''">
+                            <p  class="searchResults">
+                                <strong>
+                                    <xsl:variable name="tag" select=" 'Telestis' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
+                                    <xsl:value-of select="$translated"/> :
+                                </strong>                            
+                                <xsl:value-of select="//context/query/info/operator"/>
+                            </p>
+                        </xsl:if>
                         <!--                        <p  class="searchbottom searchResults">
                             <xsl:variable name="tag" select=" 'execTime' "/>
                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
@@ -441,18 +443,18 @@ This file is part of the FIMS webapp.
                     <input type="hidden" name="operator" value="{//context/query/info/operator}"/>
 
                     <input type="hidden" name="status" value="{//context/query/info/status}"/>
-				
+                    <xsl:for-each select="//context/query/inputs/input/selectedXapths">
+                        <input type="hidden" name="input" value="{./text()}"/>
+                    </xsl:for-each>
                     <xsl:for-each select="//context/query/targets/path[@selected='yes']">
                         <input type="hidden" name="target" value="{./@xpath}"/>
                     </xsl:for-each>
-                    <xsl:for-each select="//context/query/inputs/input">
-                        <input type="hidden" name="inputid" value="{./@id}"/>
-                        <xsl:if test="./@parameter='yes'">
-                            <input type="hidden" name="inputparameter" value="{./@id}"/>
-                        </xsl:if>
-                        <input type="hidden" name="input" value="{./path[@selected='yes']/@xpath}"/>
-                        <input type="hidden" name="inputoper" value="{./oper}"/>
-                        <input type="hidden" name="inputvalue" value="{./value}"/>
+                    <xsl:for-each select="//context/query/inputs/input/value">
+                      
+                        <input type="hidden" name="inputvalue" value="{./text()}"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="//context/query/inputs/input/oper">                      
+                        <input type="hidden" name="inputoper" value="{./text()}"/>
                     </xsl:for-each>
                     <xsl:for-each select="$output">
                         <input type="hidden" name="output" value="{./@xpath}"/>

@@ -1546,6 +1546,15 @@ This file is part of the FIMS webapp.
             <sv>Välj utdatafält</sv>
             <nl>Selecteer Output Fields</nl>
         </EpiloghPediwnEksodou>
+        <PediaEksodou>
+            <gr>Πεδία Εξόδου</gr>
+            <en>Output Fields</en>
+            <fr>Champs de sortie</fr>
+            <it>Campi di uscita</it>
+            <ar>حدد حقول الإخراج</ar>
+            <sv>Välj utdatafält</sv>
+            <nl>Output Fields</nl>
+        </PediaEksodou>
         <Apenergopoiisi>
             <gr>Απενεργοποίηση</gr>
             <en>Deactivate</en>
@@ -1681,6 +1690,15 @@ This file is part of the FIMS webapp.
             <sv>Redaktör</sv>
             <nl>Editor</nl>
         </sintaktis>
+        <sintaktis_deltiou>
+            <gr>Συντάκτης Δελτίου</gr>
+            <en>Card Editor</en>
+            <fr>Editeur de cartes</fr>
+            <it>Editor Scheda</it>
+            <ar>محرر بطاقة</ar>
+            <sv>Kort Redaktör</sv>
+            <nl>card Status</nl>
+        </sintaktis_deltiou>
         <Κωδικός_ΕΚΒΜΜ>
             <gr>Κωδικός ΕΚΒΜΜ</gr>
             <en>EKBMM Code</en>
@@ -2014,6 +2032,15 @@ This file is part of the FIMS webapp.
             <sv>Institution</sv>
             <nl>Instelling</nl>
         </AdminOrganization>
+        <AdminOrganization_card>
+            <gr>Φορέας Δελτίου</gr>
+            <en>Card Institution</en>
+            <fr>Institution de la carte</fr>
+            <it>Istituzione della carta</it>
+            <ar>مؤسسة بطاقة</ar>
+            <sv>Kortet Institution</sv>
+            <nl>Card Institution</nl>
+        </AdminOrganization_card>
         <INTERNAL_ERROR>
             <gr>Σφάλμα συστήματος. Επικοινωνήστε με το διαχειριστή του συστήματος.</gr>
             <en>Internal error. Contact with the administrator of the system.</en>
@@ -2565,6 +2592,15 @@ This file is part of the FIMS webapp.
             <sv>Sök</sv>
             <nl>Zoek</nl>
         </Eperotisi>
+        <clearAll>
+            <gr>Καθαρισμός Όλων</gr>
+            <en>Clear all</en>
+            <fr>Tout Effacer</fr>
+            <it>Cancella Tutto</it>
+            <ar>واضح كل</ar>
+            <sv>Rensa Alla</sv>
+            <nl>Wis Alles</nl>
+        </clearAll>
         <FormaEperotisis>
             <gr>Φόρμα Επερώτησης</gr>
             <en>Query Form</en>
@@ -2737,13 +2773,13 @@ This file is part of the FIMS webapp.
             <nl>Staat van bewaring</nl>
         </KatastasiDiatirisis>
         <AdminStatus>
-            <gr>Κατάσταση</gr>
-            <en>Status</en>
-            <fr>Situation</fr>
-            <it>Stato </it>
-            <ar>الحالة</ar>
-            <sv>Status</sv>
-            <nl>Status</nl>
+            <gr>Κατάσταση Δελτίου</gr>
+            <en>Card Status</en>
+            <fr>État de la carte</fr>
+            <it>Stato della scheda </it>
+            <ar>حالة بطاقة</ar>
+            <sv>Kort Status</sv>
+            <nl>Card Status</nl>
         </AdminStatus>
         <Kataxwrisi>
             <gr>Καταχώρηση</gr>

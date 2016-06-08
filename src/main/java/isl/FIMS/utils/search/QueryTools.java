@@ -31,15 +31,19 @@ import timeprimitve.SISdate;
 import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.UtilsQueries;
 import isl.FIMS.utils.UtilsXPaths;
+import isl.FIMS.utils.Vocabulary;
+import isl.dbms.DBFile;
 import isl.dbms.DBMSException;
 import isl.dms.DMSConfig;
 import isl.dms.DMSException;
 import isl.dms.file.DMSTag;
 import isl.dms.file.DMSUser;
 import isl.dms.file.DMSXQuery;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class QueryTools {
 
@@ -223,63 +227,88 @@ public class QueryTools {
         }
         targetsTag.append("</targets>\n");
 
-        tagXPaths = DMSTag.valueOf("xpath", "input", category, conf);
-        tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "input", category, conf);
-//        String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
-        String[] tagType = DMSTag.valueOf("dataType", "input", category, conf);
+        ArrayList[] all = getListOfTags(category, lang);
+        ArrayList<String> xpaths = all[0];
 
-//        Arrays.sort(inputsParameters);
-        StringBuffer inputsTag = new StringBuffer("<inputs>\n");
-        for (int i = 0; i < inputs.length; i++) {
-            String inputId = inputsIds[i];
-            inputsTag.append("<input id=\"").append(inputId).append("\">\n");
+        StringBuffer selectedTags = getSelectedTags(inputs, xpaths);
 
-            for (int j = 0; j < tagXPaths.length; j++) {
-                String xPath = tagXPaths[j];
-                inputsTag.append("<path xpath=\"").append(xPath).append("\"");
-                inputsTag.append(" dataType=\"").append(tagType[j]).append("\"");
+        StringBuffer xpathsTags = new StringBuffer("<xpaths>\n");
+        xpathsTags.append(all[0]);
+        xpathsTags.append("</xpaths>\n");
 
-                if (xPath.equals(inputs[i])) {
-                    inputsTag.append(" selected=\"yes\">");
-                } else {
-                    inputsTag.append(" selected=\"no\">");
-                }
-                inputsTag.append(tagDisplayNames[j]).append("</path>\n");
+        StringBuffer labelsTags = new StringBuffer("<labels>\n");
+        labelsTags.append(all[1]);
+        labelsTags.append("</labels>\n");
+
+        StringBuffer dataTypesTags = new StringBuffer("<dataTypes>\n");
+        dataTypesTags.append(all[2]);
+        dataTypesTags.append("</dataTypes>\n");
+
+        String[] inputLabels = (String[]) params.get("inputLabels");
+
+        StringBuffer vocTags = new StringBuffer("<vocTags>\n");
+//        for (int i = 0; i < all[4].size(); i++) {
+//            String[] terms = (String[]) all[4].get(i);
+//            vocTags.append("<vocabulary>\n");
+//            for (String t : terms) {
+//
+//                vocTags.append("***").append(t.trim()).append("***");
+//            }
+//            vocTags.append("</vocabulary>\n");
+//        }
+        vocTags.append(all[4]);
+        vocTags.append("</vocTags>\n");
+
+        StringBuffer input = new StringBuffer("");
+
+        int i = 0;
+
+        for (String t : inputs) {
+            input.append("<input>\n");
+
+            input.append("<selectedXapths>\n");
+            input.append(t.trim());
+            input.append("</selectedXapths>\n");
+            input.append("<value>");
+            input.append(inputsValues[i].trim());
+            input.append("</value>\n");
+            input.append("<oper>").append(inputsOpers[i]);
+            input.append("</oper>\n");
+            if (inputLabels.length > 0) {
+                input.append("<inputLabel>\n").append(inputLabels[i]);
+                input.append("</inputLabel>\n");
             }
-            /*
-             * check inputsOpers[i] =null
-             */
-            if ((inputsOpers.length - 1) >= i) {
-                inputsTag.append("<oper>").append(inputsOpers[i]);
-                inputsTag.append("</oper>\n");
-            }
+            i++;
+            input.append("</input>\n");
 
-            inputsTag.append("<value>").append(inputsValues[i]);
-            inputsTag.append("</value>\n</input>\n");
         }
+
+        StringBuffer inputsTag = new StringBuffer("<inputs>\n");
+
+        inputsTag.append(xpathsTags);
+        inputsTag.append(labelsTags);
+        inputsTag.append(dataTypesTags);
+        inputsTag.append(selectedTags);
+        inputsTag.append(vocTags);
+        inputsTag.append(input);
+
         inputsTag.append("</inputs>\n");
 
         StringBuffer outputsTag = new StringBuffer("<outputs>\n");
 
-        StringBuffer infoTag = new StringBuffer("<info>\n");
-
-        if (outputs.length != 0) {
-            Map<String, String> listing = new HashMap();
-            for (int i = 0; i < tagXPaths.length; i++) {
-                listing.put(tagXPaths[i], tagDisplayNames[i]);
-            }
-            for (int i = 0; i < outputs.length; i++) {
-                String xPath = tagXPaths[i];
-                outputsTag.append("<path xpath=\"").append(outputs[i]).append("\"");
-                outputsTag.append(" selected=\"yes\">");
-                outputsTag.append(listing.get(outputs[i])).append("</path>\n");
+        if (outputs.length != 0) {//           
+            String[] labelsOutput = (String[]) params.get("labelsOutput");
+            for (i = 0; i < outputs.length; i++) {
+                outputsTag.append("<path xpath=\"").append(outputs[i]).append("\">");
+                if (labelsOutput.length > 0) {
+                    outputsTag.append(labelsOutput[i]);
+                }
+                outputsTag.append("</path>\n");
             }
         } else {
-
             String[] outputsTitle = UtilsXPaths.getOutpuTitleForSimpleSearch(category);
             for (String outputsTitle1 : outputsTitle) {
-                outputsTag.append("<path xpath=\"").append("").append("\"");
-                outputsTag.append(" selected=\"yes\">");
+                outputsTag.append("<path xpath=\"").append("").append("\">");
                 outputsTag.append(outputsTitle1).append("</path>\n");
             }
             outputsTitle = DMSTag.valueOf("tagname", "listOutputExternal", category, conf);
@@ -298,7 +327,7 @@ public class QueryTools {
             outputsTag.append("<title>").append(title).append("</title>\n");
         }
         outputsTag.append("</adminParts>");
-
+        StringBuffer infoTag = new StringBuffer("<info>\n");
         infoTag.append("<name>" + mnemonicName + "</name>\n");
         infoTag.append("<category>" + category + "</category>\n");
         infoTag.append("<lang>" + lang + "</lang>\n");
@@ -314,7 +343,6 @@ public class QueryTools {
     public static String getXML4SavedQuery(DMSXQuery query, DMSConfig conf) throws DMSException {
         String category = query.getInfo("category");
         String status = query.getInfo("status");
-        String lang = query.getInfo("lang");
 
         int[] qInputs = query.getInputs();
 
@@ -333,67 +361,105 @@ public class QueryTools {
         }
         targetsTag.append("</targets>\n");
 
-        tagXPaths = DMSTag.valueOf("xpath", "input", category, conf);
-        tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "input", category, conf);
-        String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
-        String[] tagType = DMSTag.valueOf("dataType", "input", category, conf);
+        ArrayList[] all = getListOfTags(category, conf.LANG);
+        ArrayList<String> xpaths = all[0];
 
-        StringBuffer inputsTag = new StringBuffer("<inputs>\n");
+        StringBuffer xpathsTags = new StringBuffer("<xpaths>\n");
+        xpathsTags.append(all[0]);
+        xpathsTags.append("</xpaths>\n");
+
+        StringBuffer labelsTags = new StringBuffer("<labels>\n");
+        labelsTags.append(all[1]);
+        labelsTags.append("</labels>\n");
+
+        StringBuffer dataTypesTags = new StringBuffer("<dataTypes>\n");
+        dataTypesTags.append(all[2]);
+        dataTypesTags.append("</dataTypes>\n");
+
+        StringBuffer vocTags = new StringBuffer("<vocTags>\n");
+//        for (int i = 0; i < all[4].size(); i++) {
+//            String[] terms = (String[]) all[4].get(i);
+//            vocTags.append("<vocabulary>\n");
+//            for (String t : terms) {
+//
+//                vocTags.append("***").append(t.trim()).append("***");
+//            }
+//            vocTags.append("</vocabulary>\n");
+//        }
+        vocTags.append(all[4]);
+        vocTags.append("</vocTags>\n");
+
+        StringBuffer input = new StringBuffer("");
+        ArrayList<String> inputs = new ArrayList();
+
         for (int i = 0; i < qInputs.length; i++) {
             int inId = qInputs[i];
-            inputsTag.append("<input id=\"").append(inId).append("\">\n");
-            for (int p = 0; p < tagXPaths.length; p++) {
-                inputsTag.append("<path xpath=\"").append(tagXPaths[p]).append("\"");
-                inputsTag.append(" dataType=\"").append(tagType[p]).append("\"");
-                inputsTag.append(" oper=\"").append(tagOpers[i]).append("\"");
+            String xpath = query.getFromInput(inId, "path");
+            String value = query.getFromInput(inId, "value");
+            String oper = query.getFromInput(inId, "oper");
+            String label = query.getFromInput(inId, "inputLabels");
 
-                if (tagXPaths[p].equals(query.getFromInput(inId, "path"))) {
-                    inputsTag.append(" selected=\"yes\">");
-                } else {
-                    inputsTag.append(" selected=\"no\">");
-                }
-                inputsTag.append(tagDisplayNames[p]).append("</path>\n");
-            }
+            inputs.add(xpath);
+            input.append("<input>\n");
 
-            inputsTag.append("<oper>").append(query.getFromInput(inId, "oper"));
-            inputsTag.append("</oper>\n");
+            input.append("<selectedXapths>\n");
+            input.append(xpath);
+            input.append("</selectedXapths>\n");
+            input.append("<value>\n");
+            input.append(value);
+            input.append("</value>\n");
+            input.append("<oper>\n").append(oper);
+            input.append("</oper>\n");
+            input.append("<inputLabel>\n").append(label);
+            input.append("</inputLabel>\n");
+            input.append("</input>\n");
 
-            inputsTag.append("<value>").append(query.getFromInput(inId, "value"));
-            inputsTag.append("</value>\n</input>\n");
         }
+        StringBuffer selectedTags = getSelectedTags(inputs.toArray(new String[inputs.size()]), xpaths);
+
+        StringBuffer inputsTag = new StringBuffer("<inputs>\n");
+
+        inputsTag.append(xpathsTags);
+        inputsTag.append(labelsTags);
+        inputsTag.append(dataTypesTags);
+        inputsTag.append(selectedTags);
+        inputsTag.append(vocTags);
+        inputsTag.append(input);
+
         inputsTag.append("</inputs>\n");
 
         StringBuffer outputsTag = new StringBuffer("<outputs>\n");
-        for (int i = 0; i < tagXPaths.length; i++) {
-            outputsTag.append("<path xpath=\"").append(tagXPaths[i]).append("\"");
-            if (query.hasOutput(tagXPaths[i])) {
-                outputsTag.append(" selected=\"yes\">");
-            } else {
-                outputsTag.append(" selected=\"no\">");
-            }
-            outputsTag.append(tagDisplayNames[i]).append("</path>\n");
+        String[] outputs = query.getOutputs();
+
+        for (int i = 0; i < outputs.length; i++) {
+            String path = outputs[i].split("--")[0];
+            String label = outputs[i].split("--")[1];
+
+            outputsTag.append("<path xpath=\"").append(path).append("\">");
+            outputsTag.append(label);
+            outputsTag.append("</path>\n");
         }
+
         outputsTag.append("</outputs>\n");
 
         StringBuffer infoTag = new StringBuffer("<info>\n");
         infoTag.append("<name>").append(query.getInfo("name")).append("</name>\n");
         infoTag.append("<category>").append(category).append("</category>\n");
-        infoTag.append("<lang>").append(lang).append("</lang>\n");
+        infoTag.append("<lang>").append(conf.LANG).append("</lang>\n");
         infoTag.append("<status>").append(status).append("</status>\n");
         infoTag.append("<operator>").append(query.getInfo("operator")).append("</operator>\n");
         infoTag.append("</info>\n");
-
         StringBuffer ret = buildXML(query.getId(), category, infoTag, targetsTag, inputsTag, outputsTag);
         return ret.toString();
     }
 
     public static String xml4InitialSearch(String category, String lang, String status, DMSConfig conf) throws DMSException {
         StringBuffer infoTag = new StringBuffer("<info>\n");
-        infoTag.append("<operator>and</operator>\n");	
+        infoTag.append("<operator>and</operator>\n");
         infoTag.append("<category>").append(category).append("</category>\n");
         infoTag.append("<lang>").append(lang).append("</lang>\n");
         infoTag.append("<status>" + status + "</status>\n");
-        infoTag.append("<name></name>\n");	
+        infoTag.append("<name></name>\n");
         infoTag.append("</info>\n");
 
         String[] tagXPaths = DMSTag.valueOf("xpath", "target", category, conf);
@@ -407,35 +473,8 @@ public class QueryTools {
         }
         targetsTag.append("</targets>\n");
 
-        tagXPaths = DMSTag.valueOf("xpath", "input", category, conf);
-        tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "input", category, conf);
-        String[] tagOpers = DMSTag.valueOf("oper", "input", category, conf);
-
-        String[] tagType = DMSTag.valueOf("dataType", "input", category, conf);
-
-        StringBuffer xmlTmp = new StringBuffer();
-        for (int i = 0; i < tagXPaths.length; i++) {
-            if (i == 0) {
-                xmlTmp.append("<path xpath=\"").append(tagXPaths[i]).append("\"").append(" dataType=\"").append(tagType[i] + "\"").append(" oper=\"").append(tagOpers[i]).append("\" selected=\"yes\">").append(tagDisplayNames[i]).append("</path>\n");
-            } else {
-
-                xmlTmp.append("<path xpath=\"").append(tagXPaths[i]).append("\"").append(" dataType=\"").append(tagType[i] + "\"").append(" oper=\"").append(tagOpers[i]).append("\" selected=\"no\">").append(tagDisplayNames[i]).append("</path>\n");
-            }
-        }
-
-        StringBuffer inputsTag = new StringBuffer("<inputs>\n");
-
-
-        inputsTag.append("<input id=\"1\">\n").append(xmlTmp).append("<value/>\n</input>\n");
-        inputsTag.append("</inputs>\n");
-
-        StringBuffer outputsTag = new StringBuffer("<outputs>\n");
-        for (int i = 0; i < tagXPaths.length; i++) {
-            outputsTag.append("<path xpath=\"").append(tagXPaths[i]).append("\" selected=\"no\">").append(tagDisplayNames[i]).append("</path>\n");
-        }
-        outputsTag.append("</outputs>\n");
-
-        StringBuffer ret = buildXML(0, category, infoTag, targetsTag, inputsTag, outputsTag);
+        StringBuffer inputsTag = getLaAndLiTags(category, lang);
+        StringBuffer ret = buildXML(0, category, infoTag, targetsTag, inputsTag, new StringBuffer(""));
         return ret.toString();
     }
 
@@ -498,6 +537,23 @@ public class QueryTools {
             }
             return newOper;
 
+        } else if (oper.startsWith("math")) {
+            String newOper = "";
+
+            if (oper.endsWith("1")) {
+                newOper = " ($i" + input + "/text() =" + value + ") ";
+            } else if (oper.endsWith("2")) {
+                newOper = " ($i" + input + "/text() !=" + value + ") ";
+            } else if (oper.endsWith("3")) {
+                newOper = " ($i" + input + "/text() >" + value + ") ";
+            } else if (oper.endsWith("4")) {
+                newOper = " ($i" + input + "/text() >=" + value + ") ";
+            } else if (oper.endsWith("5")) {
+                newOper = " ($i" + input + "/text() <" + value + ") ";
+            } else if (oper.endsWith("6")) {
+                newOper = " ($i" + input + "/text() <=" + value + ") ";
+            }
+            return newOper;
         } else {
 
             return " " + oper + "($i" + input + ", \'" + value + "\') ";
@@ -515,5 +571,161 @@ public class QueryTools {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    private static String getMatch(String input, String pattern) {
+        String ResultString = "";
+        try {
+            Pattern Regex = Pattern.compile(pattern,
+                    Pattern.DOTALL);
+            Matcher RegexMatcher = Regex.matcher(input);
+            if (RegexMatcher.find()) {
+                ResultString = RegexMatcher.group();
+            }
+        } catch (PatternSyntaxException ex) {
+            // Syntax error in the regular expression
+        }
+        return ResultString;
+    }
+
+    private static StringBuffer getLaAndLiTags(String category, String lang) {
+
+        ArrayList[] allListTags = getListOfTags(category, lang);
+        StringBuffer xpathsTags = new StringBuffer("<xpaths>\n");
+        xpathsTags.append(allListTags[0]);
+        xpathsTags.append("</xpaths>\n");
+
+        StringBuffer labelsTags = new StringBuffer("<labels>\n");
+        labelsTags.append(allListTags[1]);
+        labelsTags.append("</labels>\n");
+
+        StringBuffer dataTypesTags = new StringBuffer("<dataTypes>\n");
+        dataTypesTags.append(allListTags[2]);
+        dataTypesTags.append("</dataTypes>\n");
+
+        StringBuffer selectedTags = new StringBuffer("<selectedTags>\n");
+        selectedTags.append(allListTags[3]);
+        selectedTags.append("</selectedTags>\n");
+
+        StringBuffer vocTags = new StringBuffer("<vocTags>\n");
+//        for (int i = 0; i < allListTags[4].size(); i++) {
+//            String[] terms = (String[]) allListTags[4].get(i);
+//            vocTags.append("<vocabulary>\n");
+//            for (String t : terms) {
+//
+//                vocTags.append("***").append(t.trim()).append("***");
+//            }
+//            vocTags.append("</vocabulary>\n");
+//        }
+        vocTags.append(allListTags[4]);
+        vocTags.append("</vocTags>\n");
+
+        StringBuffer inputsTag = new StringBuffer("<inputs>\n");
+
+        inputsTag.append(xpathsTags);
+        inputsTag.append(labelsTags);
+        inputsTag.append(dataTypesTags);
+        inputsTag.append(selectedTags);
+        inputsTag.append(vocTags);
+
+        inputsTag.append("</inputs>\n");
+        return inputsTag;
+
+    }
+
+    private static ArrayList[] getListOfTags(String category, String lang) {
+
+        ArrayList[] allList = new ArrayList[5];
+        DBFile nodesFile = new DBFile(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "LaAndLi/", category + ".xml", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+
+        String nodesQuery = "";
+        nodesQuery = "for $node in //node[@type='" + category + "']"
+                + " return"
+                + " <label>"
+                + " {$node/xpath}"
+                + " <lang>{$node/" + lang + "/string()}</lang>"
+                + " <dataType>{$node/dataType/string()}</dataType>"
+                + " <vocabulary>{$node/vocabulary/string()}</vocabulary>"
+                + " </label>";
+
+        String[] nodes = nodesFile.queryString(nodesQuery);
+        ArrayList<String> xpaths = new ArrayList<String>();
+        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<String> dataTypes = new ArrayList<String>();
+        // ArrayList<String[]> vocabulary = new ArrayList<String[]>();
+        ArrayList<String> vocabulary = new ArrayList<String>();
+        DMSConfig vocConf = new DMSConfig(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "Vocabulary/", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+
+        for (int i = 0; i < nodes.length; i++) {
+            xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
+            labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
+            String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
+            if (!vocName.equals("")) {
+               // Vocabulary voc = new Vocabulary(vocName, lang, vocConf);
+                // String[] terms = voc.termValues();
+                //  vocabulary.add(terms);
+                vocabulary.add(vocName);
+            } else {
+                vocabulary.add("");
+            }
+
+            if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
+                dataTypes.add("string");
+            } else {
+                dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
+            }
+        }
+
+        ArrayList selectedInputs = new ArrayList();
+
+        for (int i = 0; i < xpaths.size(); i++) {
+            selectedInputs.add("0");
+        }
+
+        allList[0] = xpaths;
+        allList[1] = labels;
+        allList[2] = dataTypes;
+        allList[3] = selectedInputs;
+        allList[4] = vocabulary;
+
+        return allList;
+
+    }
+
+    private static StringBuffer getSelectedTags(String[] inputs, ArrayList<String> xpaths) {
+
+        StringBuffer selectedTags = new StringBuffer("");
+        if (inputs.length > 0) {
+            for (String input : inputs) {
+                selectedTags.append("<selectedTags>\n");
+                ArrayList selectedInputs = new ArrayList();
+
+                for (int i = 0; i < xpaths.size(); i++) {
+                    String xpath = xpaths.get(i);
+
+                    if (input.trim().equals("/" + xpath)) {
+                        selectedInputs.add("1");
+                    } else {
+                        selectedInputs.add("0");
+                    }
+
+                }
+                selectedTags.append(selectedInputs);
+
+                selectedTags.append("</selectedTags>");
+
+            }
+        } else {
+            selectedTags.append("<selectedTags>\n");
+            ArrayList selectedInputs = new ArrayList();
+            for (int i = 0; i < xpaths.size(); i++) {
+                selectedInputs.add("0");
+            }
+            selectedTags.append("</selectedTags>\n");
+
+        }
+
+        return selectedTags;
+
     }
 }

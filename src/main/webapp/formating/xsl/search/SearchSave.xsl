@@ -35,7 +35,7 @@ This file is part of the FIMS webapp.
     <xsl:include href="../ui/page.xsl"/>
 
     <xsl:variable name="mnemonicName" select="//context/query/info/name/text()"/>
-    <xsl:variable name="output" select="//context/query/outputs/path[@selected='yes']"/>
+    <xsl:variable name="output" select="//context/query/outputs/path"/>
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
@@ -93,28 +93,14 @@ This file is part of the FIMS webapp.
                     <xsl:for-each select="$output">
                         <input type="hidden" name="output" value="{./@xpath}"/>
                     </xsl:for-each>
-                    <input type="hidden" name="mode" value="fromDelete"/>       
-                    <input type="hidden" name="qid" value="{//context/query/@id}"/>
-                    <input type="hidden" name="mnemonicName" value="{//context/query/info/name/text()}"/>
-                    <input type="hidden" name="category" value="{//context/query/info/category}"/>
-                    <input type="hidden" name="operator" value="{//context/query/info/operator}"/>
-                    <input type="hidden" name="source" value="{//context/query/info/source}"/>
-				
-                    <input type="hidden" name="status" value="{//context/query/info/status}"/>
-
-                    <xsl:for-each select="//context/query/targets/path[@selected='yes']">
-                        <input type="hidden" name="target" value="{./@xpath}"/>
+                    <xsl:for-each select="//context/query/inputs/input/selectedXapths">
+                        <input type="hidden" name="input" value="{./text()}"/>
                     </xsl:for-each>
-                    <xsl:for-each select="//context/query/inputs/input">
-                        <input type="hidden" name="inputid" value="{./@id}"/>
-                        <xsl:if test="./@parameter='yes'">
-                            <input type="hidden" name="inputparameter" value="{./@id}"/>
-                        </xsl:if>
-                        <input type="hidden" name="input" value="{./path[@selected='yes']/@xpath}"/>
-                        <!-- Samarita -->
-                        <!--input type="hidden" name="inputoper" value="{./path[@selected='yes']/@oper}"/-->
-                        <input type="hidden" name="inputoper" value="{./oper}"/>
-                        <input type="hidden" name="inputvalue" value="{./value}"/>
+                    <xsl:for-each select="//context/query/inputs/input/value">                      
+                        <input type="hidden" name="inputvalue" value="{./text()}"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="//context/query/inputs/input/oper">                      
+                        <input type="hidden" name="inputoper" value="{./text()}"/>
                     </xsl:for-each>
                     <xsl:for-each select="$output">
                         <input type="hidden" name="output" value="{./@xpath}"/>

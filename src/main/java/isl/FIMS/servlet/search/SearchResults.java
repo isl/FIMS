@@ -63,7 +63,6 @@ public class SearchResults extends BasicSearchServlet {
         this.initVars(request);
         String username = getUsername(request);
 
-
         StringBuffer xml = new StringBuffer();
         String xmlStart = this.xmlStart(this.topmenu, username, "Search Results", this.lang, "", request);
         String xmlEnd = this.xmlEnd();
@@ -91,10 +90,9 @@ public class SearchResults extends BasicSearchServlet {
 
             xml.append("<success return=\"0\">" + "EMPTY_FIELD_TargetCollection" + "</success>\n");
             xml.append(xmlEnd);
-
             XMLTransform xmlTrans = new XMLTransform(xml.toString());
             String xsl = Config.SEARCH_RESULTS_XSL;
-  
+
             xmlTrans.transform(out, xsl);
             out.close();
             return;
@@ -137,7 +135,6 @@ public class SearchResults extends BasicSearchServlet {
         float elapsedTimeSec = elapsedTimeMillis / 1000F;
 
         xmlMiddle.append(resultsTag).append("<querytime>" + elapsedTimeSec + "</querytime>\n").append(queryXML);
-
         xml.append(xmlStart);
         //CRINNO-KMNINI-IOS pros8hkh...for actions on file
         xml.append("<EntityCategory>").append(GetEntityCategory.getEntityCategory(category)).append("</EntityCategory>\n");
@@ -149,7 +146,7 @@ public class SearchResults extends BasicSearchServlet {
             xml.append("<photoType>").append(category).append("</photoType>");
 
         }
-        xml.append("<IsGuestUser>").append(this.userHasAction("guest",username)).append("</IsGuestUser>\n");
+        xml.append("<IsGuestUser>").append(this.userHasAction("guest", username)).append("</IsGuestUser>\n");
         xml.append("<DocStatus>").append(this.status).append("</DocStatus>\n");
         xml.append("<ServletName>").append(this.servletName).append("</ServletName>\n");
         xml.append("<SearchMode>").append(style).append("</SearchMode>\n");
@@ -166,12 +163,12 @@ public class SearchResults extends BasicSearchServlet {
         xml.append("<success return=\"1\"></success>\n");
         xml.append(dataTypes.toString());
         xml.append(xmlEnd);
+
         XMLTransform xmlTrans = new XMLTransform(xml.toString());
         String xsl = Config.SEARCH_RESULTS_XSL;
         xmlTrans.transform(out, xsl);
         out.close();
     }
-
 
     /**
      * Handles the HTTP <code>GET</code> method.

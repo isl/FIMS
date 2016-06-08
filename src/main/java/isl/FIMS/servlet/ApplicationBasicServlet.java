@@ -58,8 +58,8 @@ public class ApplicationBasicServlet extends HttpServlet {
     //parameters from web.xml
 
     protected String systemWebRoot;
-    protected static String DBURI, DBuser, DBpassword, DB_REST_URL;
-    protected static String systemDbCollection, systemUploads, versionDbCollection;
+    public static String DBURI, DBuser, DBpassword, DB_REST_URL, systemDbCollection;
+    protected static String  systemUploads, versionDbCollection;
     public static String adminDbCollection, URI_Reference_Path;
     public static String[] entityTypes, systemLangs, dbSchemaPath;
     public static String[] uploadAttributes;

@@ -35,6 +35,8 @@ This file is part of the FIMS webapp.
     <xsl:variable name="EntityCategory" select="//context/EntityCategory"/>
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:include href="../ui/page.xsl"/>
+    <xsl:include href="../utils/utils.xsl"/>
+
     <xsl:template match="/">
         <xsl:call-template name="page"/>
     </xsl:template>
@@ -44,280 +46,88 @@ This file is part of the FIMS webapp.
         <script type="text/javascript" src="formating/javascript/chosen_plugin/chosen.jquery.min.js"></script>      
         <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+        
+        <link rel="stylesheet" href="formating/css/angular-multi-select-tree-0.1.0.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script type="text/javascript" src="formating/javascript/angular/app.js"></script>
+        <script type="text/javascript" src="formating/javascript/angular/angular-multi-select-tree-0.1.0.js"></script>
+        <script type="text/javascript" src="formating/javascript/angular/angular-multi-select-tree-0.1.0.tpl.js"></script>
+        
         <script type="text/javascript">
-            $(document).ready(function(){
-            $('.chzn-select').chosen();                 
-            var zidx = 100;
-            $('.chzn-container').each(function(){
-            $(this).css('z-index', zidx);
-            zidx-=1;
-            });
-            jQuery(".chosen").chosen();
-            $('.select2').select2();
-            $('#submitSearch').click(function() {
-            
-            $('#criteriaBody tr').each(function () {
-            // reference all the stuff you need first
-            var dataType = $(this).find('#dataTypes').val();
 
-            if (dataType === "string") {
-            $(this).find('.string_inputoper').prop('disabled', false);
-            $(this).find('.string_inputoper').next().prop('disabled', false).trigger("liszt:updated");
-            $(this).find('.time_inputoper').prop('disabled', true);
-            $(this).find('.time_inputoper').next().prop('disabled', true).trigger("liszt:updated");    
-            } else if (dataType === "time") {
-            $(this).find('.string_inputoper').prop('disabled', true);
-            $(this).find('.string_inputoper').next().prop('disabled', true).trigger("liszt:updated");
-            $(this).find('.time_inputoper').prop('disabled', false);
-            $(this).find('.time_inputoper').next().prop('disabled', false).trigger("liszt:updated");
-            }
+            $(document).ready(function () {
+            $('.chzn-select').chosen();
+            var zidx = 100;
+            $('.chzn-container').each(function () {
+            $(this).css('z-index', zidx);
+            zidx -= 1;
             });
+
+
+            $('.select2').select2();
+            $('#submitSearch').click(function () {
+
             submitFormTo('searchForm', 'SearchResults');
             });
 
-            $('#submitSave').click(function() {
-            
-            $('#criteriaBody tr').each(function () {
-            // reference all the stuff you need first
-            var dataType = $(this).find('#dataTypes').val();
-
-            if (dataType === "string") {
-            $(this).find('.string_inputoper').prop('disabled', false);
-            $(this).find('.string_inputoper').next().prop('disabled', false).trigger("liszt:updated");
-            $(this).find('.time_inputoper').prop('disabled', true);
-            $(this).find('.time_inputoper').next().prop('disabled', true).trigger("liszt:updated");    
-            } else if (dataType === "time") {
-            $(this).find('.string_inputoper').prop('disabled', true);
-            $(this).find('.string_inputoper').next().prop('disabled', true).trigger("liszt:updated");
-            $(this).find('.time_inputoper').prop('disabled', false);
-            $(this).find('.time_inputoper').next().prop('disabled', false).trigger("liszt:updated");
-            }
-            });
+            $('#submitSave').click(function () {
             submitFormTo('searchForm', 'SearchSave');
             });
-            $('#criteriaBody tr').each(function () {
-            // reference all the stuff you need first
-            var dataType = $(this).find('#dataTypes').val();
-            
-
-            if (dataType === "string") {
 
 
-            $(this).find('.string_inputoper').hide();
-            $(this).find('.string_inputoper').next().show();
-            $(this).find('.time_inputoper').hide();
-            $(this).find('.time_inputoper').next().hide();
-            $(this).find('.searchString').removeAttr('disabled');
-            $(this).find('.timeString').attr('disabled','disabled');
-            $(this).find('.searchString').show();
-            $(this).find('.timeString').hide();
-            $(this).find('.timeImg').hide();
 
-            } else if (dataType === "time") {
+            if ($("#default").prop("checked") == true) {
+            $('#outputTree').css('pointer-events', 'none');
+            }
 
-
-            $(this).find('.string_inputoper').hide();
-            $(this).find('.string_inputoper').next().hide();
-            $(this).find('.time_inputoper').hide();
-            $(this).find('.time_inputoper').next().show();
-            $(this).find('.timeString').removeAttr('disabled');
-            $(this).find('.searchString').attr('disabled','disabled');
-            $(this).find('.searchString').hide();
-            $(this).find('.timeString').show();
-            $(this).find('.timeImg').show();
-
+            $('.outputOptions').change(function () {
+            if ($("#default").prop("checked") == true) {
+            $('#outputTree').css('pointer-events', 'none');
+            } else {
+            $('#outputTree').css('pointer-events', 'all');
             }
             });
-
             
-            $('.searchValues').change(function(i){
-            var index = $(this).prop('selectedIndex');
-            $oper = $(this).parent().children().eq(2);
-            $oper.prop('selectedIndex',index);
-            var dataType = $oper.val();
-            $stingInput = $(this).parent().parent().children().eq(2).children().eq(0);
-            $timeInput = $(this).parent().parent().children().eq(2).children().eq(2);
-            $searchString = $(this).parent().parent().children().eq(3).children().eq(0);
-            $timeString = $(this).parent().parent().children().eq(3).children().eq(1);
-            $timeImg= $(this).parent().parent().children().eq(3).children().eq(2);
-
-            if (dataType == "string") {
-
-
-            $timeInput.hide();
-            $timeInput.next().hide();
-
-
-            $stingInput.hide();
-            $stingInput.next().show();
-            
-            $searchString.removeAttr('disabled');
-            $timeString.attr('disabled','disabled');
-            $searchString.show();
-            $timeString.hide();
-            $timeImg.hide();
-            
-            } else if (dataType == "time") {
-
-
-            $timeInput.hide();
-            $timeInput.next().show();
-
-
-            $stingInput.hide();
-            $stingInput.next().hide();
-            
-            $timeString.removeAttr('disabled');
-            $searchString.attr('disabled','disabled');
-            $searchString.hide();
-            $timeString.show();
-            $timeImg.show();
-            }
-            });
-
-            if($("#default").prop("checked")==true){
-            $('#outputStrings').prop('disabled', true).trigger("liszt:updated");
-            }
-            
-            $('.outputOptions').change(function(){
-            if($("#default").prop("checked")==true){
-            $('#outputStrings').prop('disabled', true).trigger("liszt:updated");
-            }else{
-            $('#outputStrings').prop('disabled', false).trigger("liszt:updated");
-            }
-            });
+       
 
             });
         </script>
-        <div class="row">
+        <div id="test" class="row" ng-app="searchApp" ng-controller="searchAppCtrl">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h4 class="title">
                     <xsl:variable name="tag" select=" 'sunthethAnazhthsh' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                     <xsl:value-of select="$translated"/>
                 </h4>
-                <form id="searchForm"  action="" method="post">
-                    <xsl:if test="$EntityCategory='primary'">
-                        <div class="row">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                                <p>
-                                    <b>
-                                        <xsl:variable name="tag" select="'AdminStatus'"/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <xsl:value-of select="$translated"/>:
-                                    </b>
-                                </p>
-                            </div>
-                            <div class="col-sm-9 col-md-9 col-lg-9">
-                                <p>
-                                    <xsl:variable name="tag" select=" 'Epilogi_more' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <select  data-placeholder="{$translated}" class="chzn-select" style="width:350px;"  multiple="multiple" name="extraStatus">                             
-                                        <option value=""></option> 
-                                        <xsl:for-each select="//context/statusType/status">
-                                            <xsl:variable name="tag" select="./text()"/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <option  value="{./text()}">
-                                                <xsl:value-of select="$translated"/>
-                                            </option>
-                                        </xsl:for-each>
-                                    </select>                                                           
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                                <p>
-                                    <b>
-                                        <xsl:variable name="tag" select=" 'sintaktis' "/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <xsl:value-of select="$translated"/>:
-                                    </b>
-                                </p>
-                            </div>
-                            <div class="col-sm-9 col-md-9 col-lg-9">
-                                <p>
-                                    <xsl:variable name="tag" select=" 'Epilogi_more' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <select data-placeholder="{$translated}" name="user" style="width:350px;" class="chzn-select" multiple="multiple">
-                                        <option value=""></option>
-                                        <xsl:for-each select="//context/Users/group">
-                                            <optgroup label="{string(./@name)}">
-                                                <xsl:for-each select="./userInGroup">
-                                                    <option value="{./text()}">
-                                                        <xsl:value-of select="./text()"/>
-                                                    </option>    
-                                                </xsl:for-each>
-                                            </optgroup>
-                                        </xsl:for-each>
-                                    </select>                                         
-                                </p>
-                            </div>
-                        </div>
-                        <xsl:if test="count(//context/Groups/groups)&gt;1">
-                            <div class="row">
-                                <div class="col-sm-3 col-md-3 col-lg-3">
-                                    <p>
-                                        <b>
-                                            <xsl:variable name="tag" select=" 'AdminOrganization' "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <xsl:value-of select="$translated"/>: 
-                                        </b>
-                                    </p>
-                                </div>
-                                <div class="col-sm-9 col-md-9 col-lg-9">
-                                    <p>
-                                        <xsl:variable name="tag" select=" 'Epilogi_more' "/>
-                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                        <select data-placeholder="{$translated}" class="chzn-select" multiple="multiple" style="width:350px;" name="org">                             
-                                            <option value=""></option>
-                                            <xsl:for-each select="//context/Groups/groups">
-                                                <option value="{string(./@id)}">
-                                                    <xsl:value-of select="./text()"/>
-                                                </option>                                   
-                                            </xsl:for-each>
-                                        </select>                                  
-                                    </p>
-                                </div>
-                            </div>
-                        </xsl:if>
-                    </xsl:if>
-
-                    <div class="row">
-                        <div class="col-sm-3 col-md-3 col-lg-3">
-                            <p>
-                                <b>
-                                    <xsl:variable name="tag" select=" 'id' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <xsl:value-of select="$translated"/>:
-                                </b>
-                            </p>
-                        </div>
-                        <div class="col-sm-9 col-md-9 col-lg-9">
-                            <p>
-                                <input style="width: 53%;" class="inputwidth"  type="text" value="" name="code"/>                        
-                            </p>
-                        </div>
-                    </div>
+                <form id="searchForm"  action="" method="post">   
+                    <input type="hidden" id="lang" value="{$lang}"/>         
                     <input type="hidden" name="target" value="{//context/query/targets/path[@selected='yes']/@xpath}"/>
+                    <input type="hidden" id="xpaths" value="{//context/query/inputs/xpaths}"/>
+                    <input type="hidden" id="dataTypes" value="{//context/query/inputs/dataTypes}"/>
+                    <input type="hidden" id="labels" value="{//context/query/inputs/labels}"/>
+                    <input type="hidden" id="vocabularies" value="{//context/query/inputs/vocTags}"/>
+
+
+                    <xsl:for-each select="//context/query/inputs/selectedTags">
+                        <input type="hidden" class="selectedInputs" value="{./text()}"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="//context/query/inputs/input/value">
+                        <input type="hidden" class="value" value="{./text()}"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="//context/query/outputs/path">
+                        <input type="hidden" class="selectedOutputs" value="{./@xpath}"/>
+                    </xsl:for-each>
+
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
-                            <div class="searchBox">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-3 col-lg-3">
-
-                                        <xsl:choose>
-                                            <xsl:when test="//context/query/info/operator='or'">                                           
-                                                <input type="radio" name="operator" value="and"/>AND 
-                                                <xsl:text> </xsl:text>                                           
-                                                <input type="radio" name="operator" value="or" style="margin-left:5px;" checked="checked"/>OR
-                                            </xsl:when>
-                                            <xsl:otherwise>                                            
-                                                <input type="radio" name="operator" value="and" checked="checked"/>AND
-                                                <xsl:text> </xsl:text>                                           
-                                                <input type="radio" name="operator" style="margin-left:5px;" value="or"/>OR
-                                            </xsl:otherwise>
-                                        </xsl:choose>
+                            <div class="searchBox">                     
+                                <div class="row extraSearch">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <xsl:variable name="tag" select=" 'MeKritiriaAnazitisis' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <h5 class="titleSearch">
+                                            <xsl:value-of select="$translated"/>
+                                        </h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -342,113 +152,250 @@ This file is part of the FIMS webapp.
                                                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                     <th>
                                                         <xsl:value-of select="$translated"/>
-                                                    </th>                                        
+                                                    </th>    
+                                                    <th>
+                                                        <xsl:choose>
+                                                            <xsl:when test="//context/query/info/operator='or'">                                           
+                                                                <input ng-disabled="items.length&lt;2" type="radio" name="operator" value="and"/>AND 
+                                                                <xsl:text> </xsl:text>                                           
+                                                                <input ng-disabled="items.length&lt;2" type="radio" name="operator" value="or" style="margin-left:5px;" checked="checked"/>OR
+                                                            </xsl:when>
+                                                            <xsl:otherwise>                                            
+                                                                <input ng-disabled="items.length&lt;2" type="radio" name="operator" value="and" checked="checked"/>AND
+                                                                <xsl:text> </xsl:text>                                           
+                                                                <input ng-disabled="items.length&lt;2" type="radio" name="operator" style="margin-left:5px;" value="or"/>OR
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </th>                                    
                                                 </tr>
                                             </thead>  				
                                             <tbody id="criteriaBody">
                                         
-                                                <xsl:for-each select="//context/query/inputs/input">
-                                                    <tr id="criterion">
-                                                        <td style="display: none"> 
-                                                            <input type="hidden" id="inputid" name="inputid" value="{./@id}"/>
-                                                        </td>
-                                                        <td>
-                                                            <select   data-placeholder="{$translated}"  class="chosen searchValues" name="input">
-                                                                <xsl:for-each select="./path">
-                                                                    <option value="{./@xpath}">
-                                                                        <xsl:if test="./@selected='yes'">
+                                                <tr class="criterion" ng-repeat="item in items  track by $index">
+                                                    <td>
+                                                        <xsl:variable name="tag" select=" 'Epilogi' "/>
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+
+                                                        <multi-select-tree data-input-model="item.data"  
+                                                                           data-output-model="item.selectedItem2" data-default-label="{$translated}"
+                                                                           data-callback="setDataType(item)" 
+                                                                           data-select-only-leafs="true"/>                                                            
+                                    
+                                                        <input type="hidden" name="input" ng-value="'/'+item.selectedItem2[0].id"/>
+                                                        <input type="hidden" class="dataTypes" ng-value="item.selectedItem2[0].dataType"/>
+                                                        <input type="hidden" name="inputLabels" ng-value="item.selectedItem2[0].name"/>
+                                                    </td>
+
+                                                    <td>                                                
+                                                        <xsl:variable name="operPos" select="position()"/>    
+                                                        <select data-ng-show="showConditionOr(showString(item.selectedItem2[0].showString), showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0]))" ng-disabled="!(showConditionOr(showString(item.selectedItem2[0].showString), showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])))" class="string_inputoper"  name="inputoper" >                                                              
+                                                            <xsl:for-each select="//types/string/operator">
+
+                                                                <option value="{./text()}">                                                              
+                                                                    <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
+                                                                        <xsl:attribute name="selected">
+                                                                            <xsl:value-of select="selected"/>
+                                                                        </xsl:attribute>
+                                                                    </xsl:if>
+                                                                    <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                </option>
+                                                            </xsl:for-each>                                                   
+                                                        </select>
+                                                        <select ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" class="time_inputoper"  name="inputoper">
+                                                            <xsl:for-each select="//types/time/operator">
+                                                                <xsl:variable name="oper" select="./text()"/>
+                                                                <option value="{$oper}">
+                                                                    <xsl:for-each select="//inputs/input/oper">                                                            
+                                                                        <xsl:if test="./text()=$oper">
                                                                             <xsl:attribute name="selected">
                                                                                 <xsl:value-of select="selected"/>
                                                                             </xsl:attribute>
                                                                         </xsl:if>
-                                                                        <xsl:value-of select="."/>
-                                                                    </option>
-                                                                </xsl:for-each>
-                                                            </select>
-                                                            <select id="dataTypes" name="input" disabled="disabled" style="display:none">
-
-                                                                <xsl:for-each select="./path">
-                                                                    <option value="{./@dataType}">
-                                                                        <xsl:if test="./@selected='yes'">
+                                                                    </xsl:for-each>
+                                                                    <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                </option>
+                                                            </xsl:for-each>                                                   
+                                                        </select>
+                                                        
+                                                        <select ng-show="showMath(item.selectedItem2[0].showMath)" ng-disabled="!showMath(item.selectedItem2[0].showMath)" class="time_inputoper"  name="inputoper">
+                                                            <xsl:for-each select="//types/math/operator">
+                                                                <xsl:variable name="oper" select="./text()"/>
+                                                                <option value="{$oper}">
+                                                                    <xsl:for-each select="//inputs/input/oper">                                                            
+                                                                        <xsl:if test="./text()=$oper">
                                                                             <xsl:attribute name="selected">
                                                                                 <xsl:value-of select="selected"/>
                                                                             </xsl:attribute>
                                                                         </xsl:if>
-                                                                        <xsl:value-of select="./@dataType"/>
-                                                                    </option>
-                                                                </xsl:for-each>
-                                                            </select>
-                                                        </td>
-                                                        <td>                                                
-                                                            <xsl:variable name="operPos" select="position()"/>                                                
-                                                            <select class="chosen string_inputoper"  name="inputoper" >                                                              
+                                                                    </xsl:for-each>
+                                                                    <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                </option>
+                                                            </xsl:for-each>                                                   
+                                                        </select>      
+                                                    </td>
+                                                     
+                                                    <td  nowrap="nowrap">                                             
+                                                        <input data-ng-show="showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0]))" ng-disabled="!(showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])))" type="text" class="searchString" name="inputvalue" ng-value="item.selectedItem2[0].valueString"/>
+                                                        <input data-ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" type="text"  class="timeString" style="width:120px;margin-right:5px;" name="inputvalue" onkeydown="timeCheck(this);" onkeyup="timeCheck(this);" ng-value="item.selectedItem2[0].valueTime"/>
+                                                        <img data-ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" class="timeImg" style=" margin-right:10px;" src="formating/images/info.png" onclick="javascript:popUp('time_directives/HelpPage_{$lang}.html','helpPage',450,580);"></img>
+                                                        <input data-ng-show="showMath(item.selectedItem2[0].showMath)" ng-disabled="!showTime(item.selectedItem2[0].showMath)" type="number"  class="timeString" name="inputvalue" ng-value="item.selectedItem2[0].valueMath"/>
+
+                                                        <select class="vocSelect" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])" ng-disabled="!showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])" name="inputvalue">
+                                                            <option ng-repeat="term in item.selectedItem2[0].term  track by $index"  ng-value="term" ng-selected="vocSelected(term,item.selectedItem2[0].valueVoc)">
+                                                                {{term}}
+                                                            </option>
+                                                        </select>   
 
 
-                                                                <xsl:for-each select="//types/string/operator">
-                                                                    <option value="{./text()}">                                                              
-                                                                        <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
-                                                                            <xsl:attribute name="selected">
-                                                                                <xsl:value-of select="selected"/>
-                                                                            </xsl:attribute>
-                                                                        </xsl:if>
-                                                                        <xsl:value-of select="@*[name(.)=$lang]"/>
-                                                                    </option>
-                                                                </xsl:for-each>
-                                                   
-                                                            </select>
-                                                            <select class="chosen time_inputoper" name="inputoper">
-
-
-                                                                <xsl:for-each select="//types/time/operator">
-                                                                    <option value="{./text()}">                                                              
-                                                                        <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
-                                                                            <xsl:attribute name="selected">
-                                                                                <xsl:value-of select="selected"/>
-                                                                            </xsl:attribute>
-                                                                        </xsl:if>
-                                                                        <xsl:value-of select="@*[name(.)=$lang]"/>
-                                                                    </option>
-                                                                </xsl:for-each>                                                   
-                                                            </select>   
-                                                        </td>
-                               
-                                                        <td  nowrap="nowrap">                                             
-                                                            <input type="text" class="searchString" name="inputvalue" value="{./value}"/>
-                                                            <input type="text"  class="timeString" style="display:none;width:120px;margin-right:5px;" name="inputvalue" onkeydown="timeCheck(this);" onkeyup="timeCheck(this);" value="{./value}"/>
-                                                            <img class="timeImg" style="display:none; margin-right:10px;" src="formating/images/info.png" onclick="javascript:popUp('time_directives/HelpPage_{$lang}.html','helpPage',450,580);"></img>
-                                                        </td> 
-                                                        <td  nowrap="nowrap">
-                                                            <xsl:variable name="tag" select=" 'ProsthikiKritiriou' "/>
-                                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                            <input style="font-size: x-small;" type="button" class="btn btn-default .btn-xs" name="more" value="+" onclick="addCriterion('criteriaBody', 'criterion');" />
-                                                            <xsl:choose>
-                                                                <xsl:when test="position()&gt;1">
-                                                                    <xsl:variable name="tag" select=" 'DiagrafiKritiriou' "/>
-                                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                                    <input style=" margin-left: 4px;font-size: x-small;" type="button" class="btn btn-default .btn-xs" value="X" title="{$translated}" onClick="removeRow(this.parentNode.parentNode)"/>
-                                                                </xsl:when>
-                                                                <xsl:otherwise>
-                                                                    <xsl:variable name="tag" select=" 'DiagrafiKritiriou' "/>
-                                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                                    <input style=" margin-left: 4px;display:none;font-size: x-small;" type="button" class="btn btn-default .btn-xs" value="X" title="{$translated}" onClick="removeRow(this.parentNode.parentNode)"/>
-                                                                </xsl:otherwise>
-                                                            </xsl:choose>
-                                                            
-                                                        </td>                                                                                        
-                                                    </tr>
-                                                </xsl:for-each>
+                                                    </td> 
+                                                    <td  nowrap="nowrap">
+                                                        <xsl:variable name="tag" select=" 'ProsthikiKritiriou' "/>
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                        <input style="font-size: x-small;" type="button" class="btn btn-default .btn-xs" title="{$translated}" name="more" value="+" ng-click="addItem(item)"/>
+                                                        <xsl:variable name="tag" select=" 'DiagrafiKritiriou' "/>
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                        <input ng-show="$index>0" style=" margin-left: 4px;font-size: x-small;" type="button" class="btn btn-default .btn-xs" value="X" title="{$translated}" ng-click="removeItem(item)"/>
+                                                    </td>   
+                                                </tr>  
                                             </tbody>
                                         </table>
-                                    </div>                            
+                                    </div>
+                                    
+                                    <div class="row extraSearch">
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            <xsl:variable name="tag" select=" 'ExtraSearchKrithria' "/>
+                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                            <h5 class="titleSearch">
+                                                <a class="extraSearchaccordion-toggle" data-toggle="collapse" href="#collapseExtraSearch" aria-expanded="false" aria-controls="collapseExtraSearch">
+                                                    <xsl:value-of select="$translated"/>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="collapseExtraSearch">                        
+                                        <xsl:if test="$EntityCategory='primary'">
+                                            <div class="row">
+                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                    <p>
+                                                        <b>
+                                                            <xsl:variable name="tag" select="'AdminStatus'"/>
+                                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                            <xsl:value-of select="$translated"/>:
+                                                        </b>
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-9 col-md-9 col-lg-9">
+                                                    <p>
+                                                        <xsl:variable name="tag" select=" 'Epilogi_more' "/>
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                        <select  data-placeholder="{$translated}" class="chzn-select" style="width:350px;"  multiple="multiple" name="extraStatus">                             
+                                                            <option value=""></option> 
+                                                            <xsl:for-each select="//context/statusType/status">
+                                                                <xsl:variable name="tag" select="./text()"/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <option  value="{./text()}">
+                                                                    <xsl:value-of select="$translated"/>
+                                                                </option>
+                                                            </xsl:for-each>
+                                                        </select>                                                           
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <xsl:if test="//page/@UserRights='admin'">
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <p>
+                                                            <b>
+                                                                <xsl:variable name="tag" select=" 'sintaktis_deltiou' "/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <xsl:value-of select="$translated"/>:
+                                                            </b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-sm-9 col-md-9 col-lg-9">
+                                                        <p>
+                                                            <xsl:variable name="tag" select=" 'Epilogi_more' "/>
+                                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                            <select data-placeholder="{$translated}" name="user" style="width:350px;" class="chzn-select" multiple="multiple">
+                                                                <option value=""></option>
+                                                                <xsl:for-each select="//context/Users/group">
+                                                                    <optgroup label="{string(./@name)}">
+                                                                        <xsl:for-each select="./userInGroup">
+                                                                            <option value="{./text()}">
+                                                                                <xsl:value-of select="./text()"/>
+                                                                            </option>    
+                                                                        </xsl:for-each>
+                                                                    </optgroup>
+                                                                </xsl:for-each>
+                                                            </select>                                         
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <xsl:if test="count(//context/Groups/groups)&gt;1">
+                                                    <div class="row">
+                                                        <div class="col-sm-3 col-md-3 col-lg-3">
+                                                            <p>
+                                                                <b>
+                                                                    <xsl:variable name="tag" select=" 'AdminOrganization_card' "/>
+                                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                    <xsl:value-of select="$translated"/>: 
+                                                                </b>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                                            <p>
+                                                                <xsl:variable name="tag" select=" 'Epilogi_more' "/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <select data-placeholder="{$translated}" class="chzn-select" multiple="multiple" style="width:350px;" name="org">                             
+                                                                    <option value=""></option>
+                                                                    <xsl:for-each select="//context/Groups/groups">
+                                                                        <option value="{string(./@id)}">
+                                                                            <xsl:value-of select="./text()"/>
+                                                                        </option>                                   
+                                                                    </xsl:for-each>
+                                                                </select>                                  
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </xsl:if>
+                                            </xsl:if>
+                                        </xsl:if>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                                <p>
+                                                    <b>
+                                                        <xsl:variable name="tag" select=" 'id' "/>
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                        <xsl:value-of select="$translated"/>:
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-9 col-md-9 col-lg-9">
+                                                <p>
+                                                    <input style="width: 53%;" class="inputwidth"  type="text" value="" name="code"/>                        
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>   
+                            
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-
+                   
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <div class="searchBox">
+                                <div class="row extraSearch">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <xsl:variable name="tag" select=" 'PediaEksodou' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <h5 class="titleSearch">
+                                            <xsl:value-of select="$translated"/>
+                                        </h5>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-12">
                                         <xsl:choose>
@@ -476,8 +423,7 @@ This file is part of the FIMS webapp.
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                 <xsl:value-of select="$translated"/>
                                             </xsl:otherwise>
-                                        </xsl:choose>
-                                               
+                                        </xsl:choose>   
                                     </div>
                                 </div>
                                 <div class="row">
@@ -495,46 +441,18 @@ This file is part of the FIMS webapp.
                                                 </tr>
                                             </thead>  				
                                             <tbody>
-                                                <xsl:choose>
-                                                    <xsl:when test="//context/query/outputs/path/@selected='yes' ">                                                       
-                                                        <tr>
-                                                            <td>
-                                                                <xsl:variable name="tag" select=" 'Epilogi_more' "/>
-                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                                <select  id="outputStrings" data-placeholder="{$translated}" name="output" class="chzn-select searchOutput" multiple="multiple">
-                                                                    <xsl:for-each select="//context/query/outputs/path[@selected='yes']">
-                                                                        <xsl:variable name="outXpath" select="./@xpath"/>
-                                                                        <xsl:for-each select="//context/query/inputs/input[1]/path">
-                                                                            <option value="{./@xpath}">
-                                                                                <xsl:if test="$outXpath = ./@xpath">
-                                                                                    <xsl:attribute name="selected">
-                                                                                        <xsl:value-of select="selected"/>
-                                                                                    </xsl:attribute>
-                                                                                </xsl:if>
-                                                                                <xsl:value-of select="."/>
-                                                                            </option>
-                                                                        </xsl:for-each>
-                                                                    </xsl:for-each>
-                                                                </select>                                                                                
-                                                            </td>
-                                                        </tr>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <tr>
-                                                            <td>
-                                                                <xsl:variable name="tag" select=" 'Epilogi_more' "/>
-                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                                <select  id="outputStrings"  data-placeholder="{$translated}" class="chzn-select searchOutput" multiple="multiple" name="output" >
-                                                                    <xsl:for-each select="//context/query/inputs/input[1]/path[position() &gt; 1]">
-                                                                        <option value="{./@xpath}">
-                                                                            <xsl:value-of select="."/>
-                                                                        </option>
-                                                                    </xsl:for-each>
-                                                                </select>                                                                          
-                                                            </td>
-                                                        </tr>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
+                                                <tr>
+                                                    <td>
+                                                        <xsl:variable name="tag" select=" 'Epilogi_more' "/>
+                                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                                                        
+                                                        <multi-select-tree id="outputTree" data-input-model="output"  multi-select="true"
+                                                                           data-output-model="selectedItem3" data-default-label="{$translated}"
+                                                                           data-select-only-leafs="true"/>
+                                                        <input ng-repeat="x in selectedItem3" type="hidden" name="output" ng-value="'/'+x.id"/>
+                                                        <input ng-repeat="x in selectedItem3" type="hidden" name="labelsOutput" ng-value="x.name"/>
+
+                                                    </td>
+                                                </tr>                                             
                                             </tbody>
                                         </table>
                                     </div>
@@ -543,10 +461,16 @@ This file is part of the FIMS webapp.
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-sm-3 col-md-3 col-lg-3" style="width:21%;">
                             <xsl:variable name="tag" select=" 'Eperotisi' "/>
                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                             <input id="submitSearch" type="submit" class="btn btn-default .btn-sm" name="submit4search" value="{$translated}"  style="width:180"/> 
+         
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <xsl:variable name="tag" select=" 'clearAll' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <input id="submitClearSearch" ng-click="clearAll(selectedItem3);" class="btn btn-default .btn-sm" value="{$translated}"  style="width:180"/> 
          
                         </div>
                     </div>
@@ -559,7 +483,7 @@ This file is part of the FIMS webapp.
                                 <div class="col-sm-6 col-md-6 col-lg-6">
                                     <xsl:variable name="tag" select=" 'createQuery' "/>
                                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <h5 class="title" style="margin-top:20px;">
+                                    <h5 class="title" style="margin-top:40px; margin-bottom:15px;">
                                         <a class="saveQaccordion-toggle" data-toggle="collapse" href="#collapseCreateQ" aria-expanded="false" aria-controls="collapseCreateQ">
                                             <xsl:value-of select="$translated"/>
                                         </a>
@@ -576,12 +500,12 @@ This file is part of the FIMS webapp.
                                             <xsl:value-of select="$translated"/>
                                             <xsl:variable name="tag" select=" 'Genikes' "/>
                                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <input style="margin-left:12px;"  type="radio" name="type" value="public"/>
+                                            <input style="margin-left:12px; margin-bottom:10px"  type="radio" name="type" value="public"/>
                                             <xsl:value-of select="$translated"/>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-4 col-md-4 col-lg-4">
+                                    <div class="row" style="margin-bottom: 10px;">
+                                        <div class="col-sm-4 col-md-4 col-lg-4>">
                                             <b>
                                                 <xsl:variable name="tag" select=" 'MnimonikoOnomaEperwthshs' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
@@ -596,7 +520,7 @@ This file is part of the FIMS webapp.
                                             
                                             <xsl:variable name="tag" select=" 'Apothikeusi' "/>
                                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <input id="submitSave" type="submit" class="btn btn-default .btn-sm" name="submit4save" value="{$translated}"/>
+                                            <input id="submitSave" type="submit" class="btn btn-default .btn-sm" name="submit4save" value="{$translated}" style="padding: 2px 12px;"/>
                                             
                                         </div>
                                     </div>
@@ -606,7 +530,7 @@ This file is part of the FIMS webapp.
                                 <div class="col-sm-6 col-md-6 col-lg-6">
                                     <xsl:variable name="tag" select=" 'saveQuery' "/>
                                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <h5 class="title" style="margin-top:20px;">
+                                    <h5 class="title">
                                         <a class="saveQaccordion-toggle" data-toggle="collapse" href="#collapseSaveQ" aria-expanded="false" aria-controls="collapseSaveQ">
                                             <xsl:value-of select="$translated"/>
                                         </a>
@@ -616,7 +540,7 @@ This file is part of the FIMS webapp.
                             <div class="collapse" id="collapseSaveQ">
                                 <div class="searchBox">
                         
-                                    <div class="row">
+                                    <div class="row"  style="margin-top: 10px;margin-bottom: 10px;">
                                         <div class="col-sm-4 col-md-4 col-lg-4">
                                             <b>
                                                 <xsl:variable name="tag" select=" 'EpilexteApo8hkeymenhEperwtisi' "/>
@@ -664,7 +588,7 @@ This file is part of the FIMS webapp.
                                         <div class="col-sm-3 col-md-3 col-lg-3">
                                             <xsl:variable name="tag" select=" 'Epilogi' "/>
                                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <input  type="submit" class="btn btn-default .btn-sm" name="submit4select" onClick="submitFormTo('searchForm', 'Search')" value="{$translated}"/>
+                                            <input  style="padding: 2px 12px;" type="submit" class="btn btn-default .btn-sm" name="submit4select" onClick="submitFormTo('searchForm', 'Search')" value="{$translated}"/>
                                             <xsl:if test="//context/isPersonal='true'">
                                                 <xsl:variable name="tag" select=" 'Diagrafi' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
@@ -672,7 +596,7 @@ This file is part of the FIMS webapp.
                                                 <xsl:variable name="translated2" select="$locale/context/*[name()=$tag2]/*[name()=$lang]"/>
                                                 <xsl:variable name="tag1" select=" 'DiagrafiPrompt' "/>
                                                 <xsl:variable name="translated1" select="$locale/context/*[name()=$tag1]/*[name()=$lang]"/>
-                                                <input style="margin-left:5px;" type="submit" class="btn btn-default .btn-sm" name="submit4delete" value="{$translated}" onClick="if (confirmAction('{$translated1}{$translated2}')) submitFormTo('searchForm', 'SearchDelete'); else return false;"/>
+                                                <input style="margin-left:5px;padding: 2px 12px;" type="submit" class="btn btn-default .btn-sm" name="submit4delete" value="{$translated}" onClick="if (confirmAction('{$translated1}{$translated2}')) submitFormTo('searchForm', 'SearchDelete'); else return false;"/>
                                             </xsl:if>       
                                         </div>
                                     </div>

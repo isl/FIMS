@@ -45,9 +45,8 @@ import javax.servlet.http.*;
 public class SearchSave extends BasicSearchServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -63,7 +62,7 @@ public class SearchSave extends BasicSearchServlet {
         String username = getUsername(request);
 
         StringBuffer xml = new StringBuffer();
-        String xmlStart = this.xmlStart(this.topmenu, username, "Search Save", this.lang, "",request);
+        String xmlStart = this.xmlStart(this.topmenu, username, "Search Save", this.lang, "", request);
         String xmlEnd = this.xmlEnd();
 
         Hashtable params = this.getParams(request);
@@ -96,22 +95,27 @@ public class SearchSave extends BasicSearchServlet {
         if (inputs == null) {
             inputs = new String[0];
         }
-     
+
         String[] inputsValues = (String[]) params.get("inputsValues");
         if (inputsValues == null) {
             inputsValues = new String[0];
         }
+
+        String[] inputLabels = (String[]) params.get("inputLabels");
+        if (inputLabels == null) {
+            inputLabels = new String[0];
+        }
+
         String[] outputs = (String[]) params.get("outputs");
         if (outputs == null) {
             outputs = new String[0];
         }
 
         String[] inputsOpers = (String[]) params.get("inputsOpers");
-     
+
         if (inputsOpers == null) {
             inputsOpers = new String[0];
         }
-
 
         DMSXQuery q;
         try {
@@ -125,6 +129,9 @@ public class SearchSave extends BasicSearchServlet {
             xml.append(xmlMiddle);
             xml.append("<success return=\"0\">" + "QUERY_EXIST" + "</success>\n");
             xml.append(xmlEnd);
+            System.out.println("----------------------------------");
+            System.out.println(xml.toString());
+            System.out.println("----------------------------------");
             XMLTransform xmlTrans = new XMLTransform(xml.toString());
             String xsl = Config.SEARCH_SAVE_XSL;
             xmlTrans.transform(out, xsl);
@@ -143,13 +150,19 @@ public class SearchSave extends BasicSearchServlet {
             q.addIntoInput(inputId, "path", inputs[i]);
             q.addIntoInput(inputId, "oper", inputsOpers[i]);
             q.addIntoInput(inputId, "value", inputsValues[i]);
-          
-        }
+            q.addIntoInput(inputId, "inputLabels", inputLabels[i]);
 
+        }
+        String[] labelsOutput = (String[]) params.get("labelsOutput");
+        if (labelsOutput == null) {
+            labelsOutput = new String[0];
+        }
+        int i=0; 
         for (String output : outputs) {
             try {
-                q.addOutput(output);
-            }catch (Exception e) {
+                q.addOutput(output + "--" + labelsOutput[i]);
+                i++;
+            } catch (Exception e) {
             }
         }
 
@@ -157,6 +170,9 @@ public class SearchSave extends BasicSearchServlet {
         xml.append(xmlMiddle);
         xml.append("<success return=\"1\"></success>\n");
         xml.append(xmlEnd);
+        System.out.println("----------------------------------");
+        System.out.println(xml.toString());
+        System.out.println("----------------------------------");
         XMLTransform xmlTrans = new XMLTransform(xml.toString());
         String xsl = Config.SEARCH_SAVE_XSL;
         xmlTrans.transform(out, xsl);
@@ -164,8 +180,7 @@ public class SearchSave extends BasicSearchServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

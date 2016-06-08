@@ -97,21 +97,24 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         if (operator == null) {
             operator = new String();
         }
+
         String[] inputs = request.getParameterValues("input");
 
         if (inputs == null) {
             inputs = new String[0];
         }
-
-        String[] inputsIds = request.getParameterValues("inputid");
-        if (inputsIds == null) {
-            inputsIds = new String[0];
+        for (int i = 0; i < inputs.length; i++) {
+            if (inputs[i].equals("/")) {
+                inputs[i] = "/" + type;
+            }
         }
+
         String[] inputsOpers = request.getParameterValues("inputoper");
-  
+
         if (inputsOpers == null) {
             inputsOpers = new String[0];
         }
+     
 
         String[] inputsValues = request.getParameterValues("inputvalue");
         if (inputsValues == null) {
@@ -119,9 +122,18 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         } else {
             inputsValues[0] = inputsValues[0].trim();
         }
+         String[] inputLabels = request.getParameterValues("inputLabels");
+        if (inputLabels == null) {
+            inputLabels = new String[0];
+        }
+        
         String[] outputs = request.getParameterValues("output");
         if (outputs == null) {
             outputs = new String[0];
+        }
+        String[] labelsOutput = request.getParameterValues("labelsOutput");
+        if (labelsOutput == null) {
+            labelsOutput = new String[0];
         }
         String[] extraStatus = request.getParameterValues("extraStatus");
         if (extraStatus != null) {
@@ -167,10 +179,12 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         params.put("targets", targets);
         params.put("operator", operator);
         params.put("inputs", inputs);
-        params.put("inputsIds", inputsIds);
         params.put("inputsOpers", inputsOpers);
         params.put("inputsValues", inputsValues);
         params.put("outputs", outputs);
+        params.put("labelsOutput", labelsOutput);
+        params.put("inputLabels", inputLabels);
+
         //anna komnini pros8hkh
         params.put("lang", this.lang);
         params.put("status", this.status);

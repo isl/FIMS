@@ -53,103 +53,6 @@ function addNewVocTerm(term, url, noTermMsg, termExistsMsg) {
     return true;
 }
 
-function addCriterion(tableBodyId, rowId) {
-    var tbody = getObj(tableBodyId);
-    var row = getObj(rowId);
-    var newRow = row.cloneNode(true);
-    tbody.appendChild(newRow);
-    newRow = tbody.rows[tbody.rows.length - 1];
-    lastRow = tbody.rows[tbody.rows.length - 2];
-    var newId = lastRow.cells[0].childNodes[0].value * 1 + 1;
-    newRow.cells[0].childNodes[0].value = newId;
-
-    newRow.cells[2].childNodes[1].value = '';
-    newRow.cells[4].childNodes[1].style.display = '';
-
-
-    $("#" + rowId + " select.chosen").removeClass("chzn-done").removeAttr('id').css("display", "block").next().remove();
-    $("#" + rowId + " select.chosen").chosen();
-
-    //run through each row
-    $('#criteriaBody tr').each(function () {
-        // reference all the stuff you need first
-        var dataType = $(this).find('#dataTypes').val();
-
-        if (dataType === "string") {
-            $(this).find('.string_inputoper').hide();
-            $(this).find('.string_inputoper').next().show();
-            $(this).find('.time_inputoper').hide();
-            $(this).find('.time_inputoper').next().hide();
-            $(this).find('.searchString').removeAttr('disabled');
-            $(this).find('.timeString').attr('disabled', 'disabled');
-            $(this).find('.searchString').show();
-            $(this).find('.timeString').hide();
-            $(this).find('.timeImg').hide();
-        } else if (dataType === "time") {
-            $(this).find('.string_inputoper').hide();
-            $(this).find('.string_inputoper').next().hide();
-            $(this).find('.time_inputoper').hide();
-            $(this).find('.time_inputoper').next().show();
-            $(this).find('.timeString').removeAttr('disabled');
-            $(this).find('.searchString').attr('disabled', 'disabled');
-            $(this).find('.searchString').hide();
-            $(this).find('.timeString').show();
-            $(this).find('.timeImg').show();
-        }
-    });
-
-
-    $('.searchValues').change(function (i) {
-        var index = $(this).prop('selectedIndex');
-        $oper = $(this).parent().children().eq(2);
-        $oper.prop('selectedIndex', index);
-        var dataType = $oper.val();
-        $stingInput = $(this).parent().parent().children().eq(2).children().eq(0);
-        $timeInput = $(this).parent().parent().children().eq(2).children().eq(2);
-
-        $searchString = $(this).parent().parent().children().eq(3).children().eq(0);
-        $timeString = $(this).parent().parent().children().eq(3).children().eq(1);
-        $timeImg = $(this).parent().parent().children().eq(3).children().eq(2);
-
-        if (dataType == "string") {
-            $timeInput.hide();
-            $timeInput.next().hide();
-            $stingInput.hide();
-            $stingInput.next().show();
-
-            $searchString.removeAttr('disabled');
-            $timeString.attr('disabled', 'disabled');
-            $searchString.show();
-            $timeString.hide();
-            $timeImg.hide();
-        } else if (dataType == "time") {
-            $timeInput.hide();
-            $timeInput.next().show();
-            $stingInput.hide();
-            $stingInput.next().hide();
-            $timeString.removeAttr('disabled');
-            $searchString.attr('disabled', 'disabled');
-            $searchString.hide();
-            $timeString.show();
-            $timeImg.show();
-        }
-    });
-
-}
-
-function addOutput(tableBodyId, rowId) {
-    var tbody = getObj(tableBodyId);
-    var row = getObj(rowId);
-    var newRow = row.cloneNode(true);
-    tbody.appendChild(newRow);
-}
-
-function removeRow(rowObj) {
-    var parent = rowObj.parentNode;
-    if (parent.rows.length > 1)
-        rowObj.parentNode.removeChild(rowObj);
-}
-
 function submitFormTo(formId, formAction) {
     var form = getObj(formId);
     form.action = formAction;
@@ -222,9 +125,10 @@ function popUpNoScroll(url, winName, w, h) {
     return w;
 }
 function timeCheck(timeValue) {
+        var lang = $("#lang").val();
 
     var str = timeValue.value;
-    var Patterns = createPatternsTable(LanguageOfManual);
+    var Patterns = createPatternsTable(lang);
     for (i = 0; i < Patterns.length; i++) {
         var reg = new RegExp(Patterns[i]);
         if (reg.test(str)) {
