@@ -84,13 +84,15 @@ This file is part of the FIMS webapp.
                                     </a>
                                 </li>
                             </xsl:if>
-                            <li>
-                                <xsl:variable name="tag" select=" 'ForgetPass' "/>
-                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                <a href="ForgetPass?lang={$lang}">                            
-                                    <xsl:value-of select="$translated"/>
-                                </a>
-                            </li>
+                            <xsl:if test="//context/forgetPass/text() = 'true'">
+                                <li>
+                                    <xsl:variable name="tag" select=" 'ForgetPass' "/>
+                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                    <a href="ForgetPass?lang={$lang}">                            
+                                        <xsl:value-of select="$translated"/>
+                                    </a>
+                                </li>
+                            </xsl:if>
                         </ul>
                         <span class="clearfix"/>
                     </form>

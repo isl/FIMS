@@ -43,8 +43,10 @@ angular.module('multi-select-tree').run(['$templateCache', function($templateCac
     "        <span ng-if=\"showExpand(item)\" class=\"expand\" ng-class=\"{'expand-opened': item.isExpanded}\"\n" +
     "              ng-click=\"onExpandClicked(item, $event)\"></span>\n" +
     "\n" +
-    "        <div class=\"item-details\"><input class=\"tree-checkbox\" type=\"checkbox\" ng-if=\"showCheckbox()\"\n" +
-    "                                         ng-checked=\"item.selected\"/>{{item.name}}\n" +
+    "        <div class=\"item-details\" ng-bind-html=\"item.name | highlight:item.filterKeyword\">\n"+
+   
+    "<input class=\"tree-checkbox\" type=\"checkbox\" ng-if=\"showCheckbox()\"\n" +
+    "                                         ng-checked=\"item.selected\"/>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <ul ng-repeat=\"child in item.children\" ng-if=\"item.isExpanded\">\n" +

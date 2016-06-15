@@ -250,10 +250,15 @@ function replaceAll(txt, replace, with_this) {
 
 
 function toggleVisibility(id) {
-    if (id.style.display == 'block')
-        id.style.display = 'none';
-    else
-        id.style.display = 'block';
+    $(id).toggle();
+    var oTable =$('#results').dataTable();
+            if ( oTable.length > 0 ) {
+                oTable.fnAdjustColumnSizing();
+            }
+//    if (id.style.display == 'block')
+//        id.style.display = 'none';
+//    else
+//        id.style.display = 'block';
 }
 
 var popupWindow = null;

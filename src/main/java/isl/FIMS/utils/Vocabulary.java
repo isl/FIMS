@@ -427,11 +427,14 @@ public class Vocabulary {
         ArrayList fileNames = new ArrayList();
         DBCollection dbc = new DBCollection(this.transConf.DB, sysDbCol, this.transConf.DB_USERNAME, this.transConf.DB_PASSWORD);
         String col = sysDbCol.substring(0, sysDbCol.length() - 1);
-        String query = "let $c :=  collection('" + col + "')"
-                + " for $b in $c//(" + names + ") "
-                + "where $b//@sps_id='" + termId + "' and  $b//@sps_vocabulary='" + this.vocName + "'  and $c//admin/lang/text()='" + this.vocLang + "' "
+        String query;
+        query = " for $b in collection('" + col + "')[*//admin/lang/text()='"+vocLang+"']//(" + names + ") "
+                + "where $b//@sps_id='" + termId + "' and  $b//@sps_vocabulary='" + this.vocName + "'"
                 + "return "
                 + "util:document-name($b) ";
+
+        
+        System.out.println("q--> "+query);
         String[] dbFs = dbc.query(query);
         for (int k = 0; k < dbFs.length; k++) {
             String name = dbFs[k].toString();
@@ -455,7 +458,8 @@ public class Vocabulary {
             }
             q = q.substring(0, q.length() - 2);
             q += ")\n";
-            q += "return replace($b//node[./vocabulary/text()='" + this.vocName + "']/xpath/text(),'.*/','')";
+            q += "return $b//node[./vocabulary/text()='" + this.vocName + "']/xpath/text()";
+            System.out.println("tags q : "+q);
             String[] tagNames2 = dbcol.query(q);
 
             for (int m = 0; m < tagNames2.length; m++) {

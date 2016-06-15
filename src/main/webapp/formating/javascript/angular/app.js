@@ -364,8 +364,10 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
             var childNodes = getAllChildNodesFromNode(index, []);
             for (var i = 0, len = childNodes.length; i < len; i++) {
                 childNodes[i].isFiltered = false;
+                childNodes[i].filterKeyword = "";
             }
             index.isFiltered = false;
+            index.filterKeyword ="";
         });
         $scope.items.push(angular.copy(item));
 

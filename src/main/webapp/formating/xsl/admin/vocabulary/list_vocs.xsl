@@ -47,6 +47,15 @@ This file is part of the FIMS webapp.
     <xsl:template name="context">     
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
+                <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='SysAdminVocs']/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                    <xsl:text> - </xsl:text>
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='SysAdminVocs']/submenu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                </h4>
                 <div class="panel-group" id="accordion">        
                     <xsl:for-each select="$VocsList"> <!-- gia ka8e omada le3ilogiwn -->
                         <div class="panel panel-default">

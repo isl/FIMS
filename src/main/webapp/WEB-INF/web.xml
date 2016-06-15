@@ -85,7 +85,6 @@ This file is part of the FIMS webapp.
 	<context-param>
 		<description>exist schema folder</description>
 		<param-name>dbSchemaFolder</param-name>
-
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -99,7 +98,6 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>editorWebapp</param-name>
-
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -124,13 +122,10 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>entityListPhoto</param-name>
-
 		<param-value/>
 	</context-param>
-
 	<context-param>
 		<param-name>maxCollsize</param-name>
-
 		<!-- eXist collection size -->
 		<param-value>999</param-value>
 	</context-param>
@@ -151,17 +146,14 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<param-name>EntityTypes</param-name>
-
 		<param-value>Person</param-value>
 	</context-param>
 	<context-param>
 		<param-name>Primary_EntityTypes</param-name>
-
 		<param-value/>
 	</context-param>
 	<context-param>
 		<param-name>Secondary_EntityTypes</param-name>
-
 		<param-value>Person</param-value>
 	</context-param>
 	<context-param>
@@ -170,20 +162,16 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<description>
-
-            gmail password
+			gmail password
 		</description>
 		<param-name>emailPass</param-name>
-
 		<param-value/>
 	</context-param>
 	<context-param>
 		<description>
-
-            gmail address
+			gmail address
 		</description>
 		<param-name>emailAdress</param-name>
-
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -198,11 +186,15 @@ This file is part of the FIMS webapp.
 		<!--The entity shown in at the first page. If empty the user is redirected to the welcome page-->
 		<param-name>defaultEntity</param-name>
 		<param-value>Person</param-value>
-
 	</context-param>
 	<context-param>
 		<!--Users sgin up to the system if true-->
 		<param-name>signUp</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<!--Option forget password-->
+		<param-name>forgetPass</param-name>
 		<param-value>true</param-value>
 	</context-param>
 	<context-param>
@@ -212,20 +204,17 @@ This file is part of the FIMS webapp.
 	</context-param>
 	<context-param>
 		<!--Espa logo neeeded-->
-
 		<param-name>espaLogo</param-name>
 		<param-value>false</param-value>
 	</context-param>
 	<context-param>
 		<!--Contact Email-->
-
 		<param-name>contactEmail</param-name>
 		<param-value/>
 	</context-param>
 	<context-param>
 		<!--Acronym's Description of the system-->
 		<param-name>uploadAttributes</param-name>
-
 		<param-value/>
 	</context-param>
 	<context-param>
@@ -233,16 +222,16 @@ This file is part of the FIMS webapp.
 		<param-name>dataTypesFile</param-name>
 		<param-value>DatatypeOperators.xml</param-value>
 	</context-param>
- <context-param>
-        <description>Schema Version</description>
-        <param-name>schemaVersion</param-name>
-        <param-value>3.0</param-value>
-    </context-param>
-    <context-param>
-        <description>System Version</description>
-        <param-name>systemVersion</param-name>
-        <param-value>2.0</param-value>
-    </context-param>
+	<context-param>
+		<description>Schema Version</description>
+		<param-name>schemaVersion</param-name>
+		<param-value>3.0</param-value>
+	</context-param>
+	<context-param>
+		<description>System Version</description>
+		<param-name>systemVersion</param-name>
+		<param-value>2.0</param-value>
+	</context-param>
 	<!-- ====================FILTERS==================== -->
 	<context-param>
 		<param-name>threshold</param-name>
@@ -341,10 +330,10 @@ This file is part of the FIMS webapp.
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/CreateCopy</url-pattern>
 	</filter-mapping>
-	    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/About</url-pattern>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/About</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>ValidateAction</filter-name>
 		<url-pattern>/AdminEntity</url-pattern>
@@ -572,18 +561,18 @@ This file is part of the FIMS webapp.
 		<servlet-name>ExportSchema</servlet-name>
 		<servlet-class>isl.FIMS.servlet.export.ExportSchema</servlet-class>
 	</servlet>
-    <servlet>
-        <servlet-name>About</servlet-name>
-        <servlet-class>isl.FIMS.servlet.ui.About</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GetVersionsList</servlet-name>
-        <servlet-class>isl.FIMS.servlet.versions.GetVersionsList</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GetTerms</servlet-name>
-        <servlet-class>isl.FIMS.servlet.search.GetTerms</servlet-class>
-    </servlet>
+	<servlet>
+		<servlet-name>About</servlet-name>
+		<servlet-class>isl.FIMS.servlet.ui.About</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GetVersionsList</servlet-name>
+		<servlet-class>isl.FIMS.servlet.versions.GetVersionsList</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GetTerms</servlet-name>
+		<servlet-class>isl.FIMS.servlet.search.GetTerms</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>AdminEntity</servlet-name>
 		<url-pattern>/AdminEntity</url-pattern>
@@ -735,18 +724,18 @@ This file is part of the FIMS webapp.
 		<servlet-name>ExportSchema</servlet-name>
 		<url-pattern>/ExportSchema</url-pattern>
 	</servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>About</servlet-name>
-        <url-pattern>/About</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetVersionsList</servlet-name>
-        <url-pattern>/GetVersionsList</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetTerms</servlet-name>
-        <url-pattern>/GetTerms</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>About</servlet-name>
+		<url-pattern>/About</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetVersionsList</servlet-name>
+		<url-pattern>/GetVersionsList</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetTerms</servlet-name>
+		<url-pattern>/GetTerms</url-pattern>
+	</servlet-mapping>
 	<session-config>
 		<session-timeout>180</session-timeout>
 	</session-config>

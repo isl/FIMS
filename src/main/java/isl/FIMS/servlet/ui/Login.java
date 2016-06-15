@@ -60,6 +60,7 @@ public class Login extends ApplicationBasicServlet {
         PrintWriter out = response.getWriter();
         String lang = request.getParameter("lang");
         String signUp = getServletContext().getInitParameter("signUp");
+        String forgetPass = getServletContext().getInitParameter("forgetPass");
 
         if (lang == null) {
             lang = this.getLang(request);
@@ -130,6 +131,8 @@ public class Login extends ApplicationBasicServlet {
 
         xml.append("</Langs>\n");
         xml.append("<signUp>" + signUp + "</signUp>");
+        xml.append("<forgetPass>" + forgetPass + "</forgetPass>");
+
         xml.append(xmlEnd);
 
         String xsl = ApplicationConfig.LOGIN_XSL;
@@ -150,6 +153,7 @@ public class Login extends ApplicationBasicServlet {
         String password = request.getParameter("password").trim();
         String status = "";
         String signUp = getServletContext().getInitParameter("signUp");
+        String forgetPass = getServletContext().getInitParameter("forgetPass");
 
         boolean isUserValid = false;
         try {
@@ -208,6 +212,8 @@ public class Login extends ApplicationBasicServlet {
 
             xml.append("</Langs>\n");
             xml.append("<signUp>" + signUp + "</signUp>");
+            xml.append("<forgetPass>" + forgetPass + "</forgetPass>");
+
             xml.append(this.xmlEnd());
 
             String comment = "";

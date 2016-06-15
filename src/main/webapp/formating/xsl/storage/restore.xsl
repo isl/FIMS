@@ -52,51 +52,57 @@ This file is part of the FIMS webapp.
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                     var strRestore = '<xsl:value-of select="$translated"/>';              
                 </script>
-                    <table id="results">
-                        <thead>
-                            <tr class="contentHeadText">
-                                <th style="display:none;">                                                         
+                
+                <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='Backup']/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                </h4>
+                <table id="results">
+                    <thead>
+                        <tr class="contentHeadText">
+                            <th style="display:none;">                                                         
+                            </th>
+                            <th style="display:none;">                                                         
+                            </th>
+                            <th style="display:none;">                                                         
+                            </th>
+                            <xsl:for-each select="$restoreFiles">
+                                <th>
+                                    <strong>
+                                        <xsl:variable name="tag" select=" ./text() "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>
+                                    </strong>
                                 </th>
-                                <th style="display:none;">                                                         
-                                </th>
-                                <th style="display:none;">                                                         
-                                </th>
-                                <xsl:for-each select="$restoreFiles">
-                                    <th>
-                                        <strong>
-                                            <xsl:variable name="tag" select=" ./text() "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                            <xsl:value-of select="$translated"/>
-                                        </strong>
-                                    </th>
-                                </xsl:for-each>                        
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <xsl:for-each select="//result">
-                                <xsl:variable name="FileName" select="./filename/text()"/>
-                                <xsl:variable name="RestoreMsgDate" select="./date/text()"/>
-                                <xsl:variable name="RestoreMsgTime" select="./time/text()"/>
-                                <tr class="resultRow" >
-                                    <td class="invisible">
-                                        <xsl:value-of select="$FileName"/>
-                                    </td>
-                                    <td id="date" class="invisible">
-                                        <xsl:value-of select="$RestoreMsgDate"/>
-                                    </td>
-                                    <td id="time" class="invisible">
-                                        <xsl:value-of select="$RestoreMsgTime"/>
-                                    </td>
+                            </xsl:for-each>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each select="//result">
+                            <xsl:variable name="FileName" select="./filename/text()"/>
+                            <xsl:variable name="RestoreMsgDate" select="./date/text()"/>
+                            <xsl:variable name="RestoreMsgTime" select="./time/text()"/>
+                            <tr class="resultRow" >
+                                <td class="invisible">
+                                    <xsl:value-of select="$FileName"/>
+                                </td>
+                                <td id="date" class="invisible">
+                                    <xsl:value-of select="$RestoreMsgDate"/>
+                                </td>
+                                <td id="time" class="invisible">
+                                    <xsl:value-of select="$RestoreMsgTime"/>
+                                </td>
                                
-                                    <xsl:for-each select="./*[name() != 'filename']">
-                                        <td>                                           
-                                            <xsl:value-of select="./text()"/>
-                                        </td>
-                                    </xsl:for-each>
-                                </tr>
-                            </xsl:for-each>
-                        </tbody>
-                    </table>
+                                <xsl:for-each select="./*[name() != 'filename']">
+                                    <td>                                           
+                                        <xsl:value-of select="./text()"/>
+                                    </td>
+                                </xsl:for-each>
+                            </tr>
+                        </xsl:for-each>
+                    </tbody>
+                </table>
             </div>
         </div>        
     </xsl:template>

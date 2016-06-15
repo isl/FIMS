@@ -31,7 +31,21 @@
 /*global angular: false */
 (function () {
     'use strict';
-    var mainModule = angular.module('multi-select-tree');
+    var mainModule = angular.module('multi-select-tree', ['ngSanitize']);
+
+    mainModule.filter('highlight', function () {
+        return function (text, search) {
+
+            if (text && (search || angular.isNumber(search))) {
+                text = text.toString();
+                search = search.toString();
+                return text.replace(new RegExp(search, 'gi'), '<span class="highlight">$&</span>');
+            } else {
+                return text;
+            }
+        };
+    });
+
     /**
      * Controller for multi select tree.
      */
@@ -164,8 +178,10 @@
                         var childNodes = getAllChildNodesFromNode(item, []);
                         for (var i = 0, len = childNodes.length; i < len; i++) {
                             childNodes[i].isFiltered = false;
+                            childNodes[i].filterKeyword = '';
                         }
                         item.isFiltered = false;
+                        item.filterKeyword = '';
 
                     });
                 }
@@ -185,14 +201,17 @@
              *
              * @param $event the click event
              */
-            $scope.clearFilter = function ($event,inputModel) {
+            $scope.clearFilter = function ($event, inputModel) {
                 $event.stopPropagation();
                 angular.forEach(inputModel, function (item) {
                     var childNodes = getAllChildNodesFromNode(item, []);
                     for (var i = 0, len = childNodes.length; i < len; i++) {
                         childNodes[i].isFiltered = false;
+                        childNodes[i].filterKeyword = '';
+
                     }
                     item.isFiltered = false;
+                    item.filterKeyword = '';
 
                 });
                 $scope.filterKeyword = '';
@@ -261,6 +280,7 @@
                 outputModel: '=?',
                 multiSelect: '=?',
                 isFiltered: '=?',
+                filterKeyword: '=?',
                 switchView: '=?',
                 switchViewLabel: '@',
                 switchViewCallback: '&',
@@ -291,7 +311,10 @@
                     var flag = true;
                     var filteredValues = [];
                     var childNodes = getAllChildNodesFromNode(item, []);
+                    item.filterKeyword = keyword;
+
                     for (var i = 0, len = childNodes.length; i < len; i++) {
+                        childNodes[i].filterKeyword = keyword;
                         if (childNodes[i].name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
                             item.isExpanded = true;
                             childNodes[i].isFiltered = false;
@@ -326,11 +349,14 @@
                     return childNodes;
                 }
                 scope.$watch('filterKeyword', function () {
+//                   / alert("---->" +scope.filterKeyword );
                     if (scope.filterKeyword !== "" && scope.filterKeyword !== undefined) {
                         angular.forEach(scope.inputModel, function (item) {
+                            item.filterKeyword = scope.filterKeyword;
+                            var isChildrenFilter = isChildrenFiltered(item, scope.filterKeyword);
                             if (item.name.toLowerCase().indexOf(scope.filterKeyword.toLowerCase()) !== -1) {
                                 item.isFiltered = false;
-                            } else if (!isChildrenFiltered(item, scope.filterKeyword)) {
+                            } else if (!isChildrenFilter) {
                                 item.isFiltered = false;
                             } else {
                                 item.isFiltered = true;

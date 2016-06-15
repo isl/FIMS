@@ -50,6 +50,22 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="actions"/>
         <div class="row context">
             <div class="col-sm-12 col-md-12 col-lg-12">
+                <xsl:choose>
+                    <xsl:when test="$ListOf='Org'"> 
+                        <h4 class="title">
+                            <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='AdminOrg']/label/text()"/>
+                            <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:value-of select="$translated"/>
+                        </h4>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <h4 class="title">
+                            <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='AdminUser']/label/text()"/>
+                            <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                            <xsl:value-of select="$translated"/>
+                        </h4>
+                    </xsl:otherwise>
+                </xsl:choose>
                 <table id="results">
                     <xsl:choose>
                         <xsl:when test="$ListOf!='Org'"> 

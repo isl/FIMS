@@ -58,6 +58,10 @@ This file is part of the FIMS webapp.
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                    <xsl:text> - </xsl:text>
                     <xsl:variable name="tag" select=" 'compare' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                   
                     <xsl:value-of select="$translated"/>
@@ -311,8 +315,8 @@ This file is part of the FIMS webapp.
             if(tmpIds.length==0){
             $row.remove();
             }else if(tmpIds.length==1){
-                if($compareButton.length>0){
-                $compareButton.remove();
+            if($compareButton.length>0){
+            $compareButton.remove();
             }
             }
             });    
@@ -328,8 +332,8 @@ This file is part of the FIMS webapp.
             if(tmpIds.length==0){
             $row.remove();
             }else if(tmpIds.length==1){
-                if($compareButton.length>0){
-                $compareButton.remove();
+            if($compareButton.length>0){
+            $compareButton.remove();
             }
             }
             });

@@ -49,7 +49,7 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="page"/>
     </xsl:template>
     <xsl:template name="context">
-        <div class="row">
+        <div class="row actionsRow">
             <div class="col-sm-9 col-md-9 col-lg-9 actionsMenu">
                 <ul class="nav nav-tabs">
                     <li>
@@ -79,6 +79,10 @@ This file is part of the FIMS webapp.
             <div class="col-sm-12 col-md-12 col-lg-12">
                 
                 <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                    <xsl:text> - </xsl:text>
                     <xsl:variable name="tag" select=" 'Metafrasi' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                       
                     <xsl:value-of select="$translated"/>

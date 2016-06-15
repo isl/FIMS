@@ -54,7 +54,12 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="actions"/>
         <div class="row context">
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <xsl:if test="$DocStatus!=''">    
+                <xsl:if test="$DocStatus!=''">
+                    <h4 class="title">
+                        <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id=$EntityType]/label/text()"/>
+                        <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                        <xsl:value-of select="$translated"/>        
+                    </h4>    
                     <h5 class="subtitle">
                         <b>
                             <xsl:variable name="tag" select=" 'tableContent' "/>

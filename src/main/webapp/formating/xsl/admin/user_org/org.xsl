@@ -55,8 +55,11 @@ This file is part of the FIMS webapp.
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='AdminOrg']/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>
+                    <xsl:text> - </xsl:text>
                     <xsl:variable name="tag">
-
                         <xsl:choose>
                             <xsl:when test="$AdminAction='insert'">
                                 <xsl:value-of select=" 'Eisagwgi' "/>

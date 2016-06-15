@@ -70,6 +70,10 @@ This file is part of the FIMS webapp.
   
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='SysAdminVocs']/submenu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                    <xsl:text> - </xsl:text>
                     <xsl:value-of select="$VocFileName"/>        
                 </h4>
                 <div  id="fileType" style="display:none;"> 
@@ -110,6 +114,10 @@ This file is part of the FIMS webapp.
             <div class="row">            
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <h4 class="title">
+                        <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='SysAdminVocs']/submenu[@id=$EntityType]/label/text()"/>
+                        <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                        <xsl:value-of select="$translated"/>        
+                        <xsl:text> - </xsl:text>
                         <xsl:value-of select="$VocFileName"/>        
                     </h4>
                     <h5 class="subtitle">

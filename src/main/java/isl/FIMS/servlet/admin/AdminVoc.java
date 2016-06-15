@@ -316,7 +316,11 @@ public class AdminVoc extends AdminBasicServlet {
                     int checkEmptyFields = 0;
                     int[] newTrans = new int[langs.length];
                     for (int i = 0; i < langs.length; i++) {
-                        int trans_id = Integer.parseInt(request.getParameter("trans_" + langs[i]));
+                        String temp = request.getParameter("trans_" + langs[i]);
+                        if(temp.equals("")){
+                            temp = "0";
+                        }
+                        int trans_id = Integer.parseInt(temp);
                         newTrans[i] = trans_id;
                         if (trans_id == 0) {
                             checkEmptyFields++;

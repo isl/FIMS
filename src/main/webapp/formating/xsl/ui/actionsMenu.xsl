@@ -42,7 +42,7 @@ This file is part of the FIMS webapp.
         <xsl:variable name="DocStatus" select="//context/DocStatus"/>
         <xsl:variable name="TargetCol" select="//context/TargetCol"/>
         <xsl:variable name="root" select="//context/query/Root"/>
-        <div class="row">
+        <div class="row actionsRow">
             <div class="col-sm-7 col-md-8 col-lg-9 actionsMenu">
                 <ul class="nav nav-tabs">
                     <xsl:for-each select="//actions/menugroup[menu//actionPerType[@id=$EntityType]/userRights=$user and @id!='Anazitisi']">
@@ -70,7 +70,7 @@ This file is part of the FIMS webapp.
                                             <xsl:variable name="tag" select="./label"/>
                                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                             <xsl:value-of select="$translated"/>
-                                            <span class="caret moreCaret"></span> 
+                                            <span class="caret"></span> 
                                         </a>
                                         <xsl:variable name="menusNum" select="count(./menu[submenu/actionPerType[@id=$EntityType]/userRights=$user])"/>
 

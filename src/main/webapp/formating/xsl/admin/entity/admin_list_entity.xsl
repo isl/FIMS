@@ -60,41 +60,48 @@ This file is part of the FIMS webapp.
         <xsl:call-template name="actions"/>
         <div class="row context">
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <xsl:if test="$DocStatus!=''">    
-                    <xsl:variable name="systemName" select="//context/systemName/text()"/>
-
-                    <h5 class="subtitle">
-                        <b>
-                            <xsl:variable name="tag" select=" 'tableContent' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                            <xsl:value-of select="$translated"/>:
-                            <xsl:text></xsl:text>
-                            <xsl:choose>
-                                <xsl:when test="$DocStatus='published'">
-                                    <xsl:variable name="tag" select=" 'ProboliDimosieumenwn' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                    <xsl:value-of select="$translated"/>
-                                </xsl:when>
-                                <xsl:when test="$DocStatus='unpublished'">
-                                    <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                    <xsl:value-of select="$translated"/>
-                                </xsl:when>
-                                <xsl:when test="$DocStatus='allunpublished' and $systemName='3M'">
-                                    <xsl:variable name="tag" select=" 'myMappings' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                    <xsl:value-of select="$translated"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:variable name="tag" select=" $DocStatus "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                    <xsl:value-of select="$translated"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                <xsl:variable name="systemName" select="//context/systemName/text()"/>
+                <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                </h4>
+                <h5 class="subtitle">
+                    <b>
+                        <xsl:variable name="tag" select=" 'tableContent' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                        <xsl:value-of select="$translated"/>:
+                        <xsl:text></xsl:text>
+                        <xsl:choose>
+                            <xsl:when test="$DocStatus='published'">
+                                <xsl:variable name="tag" select=" 'ProboliDimosieumenwn' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>
+                            </xsl:when>
+                            <xsl:when test="$DocStatus='unpublished'">
+                                <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>
+                            </xsl:when>
+                            <xsl:when test="$DocStatus='allunpublished' and $systemName='3M'">
+                                <xsl:variable name="tag" select=" 'myMappings' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>
+                            </xsl:when>
+                            <xsl:when test="$DocStatus='' or $DocStatus='all'">
+                                <xsl:variable name="tag" select=" 'Ola' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:variable name="tag" select=" $DocStatus "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                             
-                        </b>
-                    </h5>  
-                </xsl:if>
+                    </b>
+                </h5>  
                 <table id="results">
                     <thead>
                         <tr class="contentHeadText">

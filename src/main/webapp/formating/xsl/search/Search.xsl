@@ -33,6 +33,7 @@ This file is part of the FIMS webapp.
 <xsl:stylesheet xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" version="2.0">
     <xsl:variable name="tableStyle" select="concat('tableStyle',$lang)"/>
     <xsl:variable name="EntityCategory" select="//context/EntityCategory"/>
+    <xsl:variable name="EntityType" select="//context/EntityType"/>
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
     <xsl:include href="../ui/page.xsl"/>
     <xsl:include href="../utils/utils.xsl"/>
@@ -46,13 +47,14 @@ This file is part of the FIMS webapp.
         <script type="text/javascript" src="formating/javascript/chosen_plugin/chosen.jquery.min.js"></script>      
         <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-        
+
         <link rel="stylesheet" href="formating/css/angular-multi-select-tree-0.1.0.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script type="text/javascript" src="formating/javascript/angular/app.js"></script>
         <script type="text/javascript" src="formating/javascript/angular/angular-multi-select-tree-0.1.0.js"></script>
         <script type="text/javascript" src="formating/javascript/angular/angular-multi-select-tree-0.1.0.tpl.js"></script>
-        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.min.js"/>
+
         <script type="text/javascript">
 
             $(document).ready(function () {
@@ -95,6 +97,10 @@ This file is part of the FIMS webapp.
         <div id="test" class="row" ng-app="searchApp" ng-controller="searchAppCtrl">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                    <xsl:text> - </xsl:text>
                     <xsl:variable name="tag" select=" 'sunthethAnazhthsh' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                     <xsl:value-of select="$translated"/>

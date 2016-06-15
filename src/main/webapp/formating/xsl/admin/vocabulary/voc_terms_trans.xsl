@@ -62,6 +62,10 @@ This file is part of the FIMS webapp.
             
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h4 class="title">
+                    <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='SysAdminVocs']/submenu[@id=$EntityType]/label/text()"/>
+                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                    <xsl:value-of select="$translated"/>        
+                    <xsl:text> - </xsl:text>
                     <xsl:value-of select="$VocFileName"/>        
                 </h4>
                 <div  id="fileType" style="display:none;"> 
@@ -107,6 +111,10 @@ This file is part of the FIMS webapp.
             <div class="row">            
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <h4 class="title">
+                        <xsl:variable name="tag" select="//leftmenu/menugroup/menu[@id='SysAdminVocs']/submenu[@id=$EntityType]/label/text()"/>
+                        <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                        <xsl:value-of select="$translated"/>        
+                        <xsl:text> - </xsl:text>
                         <xsl:value-of select="$VocFileName"/>        
                     </h4>
                     <h5 class="subtitle">
@@ -141,7 +149,7 @@ This file is part of the FIMS webapp.
                                     <xsl:variable name="tag" select=" 'Epilogi' "/>
                                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                     <select  data-placeholder="{$translated}" class="chosen" style="width:45%;" name="trans_{./Lang}">                             
-                                        <option value="0"></option> 
+                                        <option value=""></option> 
                                         <xsl:for-each select="./Όρος">
                                             <option value="{./@id}">
                                                 <xsl:if test=" ./@id = $TermSelected ">
@@ -175,10 +183,6 @@ This file is part of the FIMS webapp.
             $('.context').css('display','none'); 
             }
             jQuery(".chosen").select2();
-            if('<xsl:value-of select="$AdminAction"/>'=="edit_trans" || '<xsl:value-of select="$AdminAction"/>'=="insert_trans"){                   
-            var elemID= document.getElementById('addNewTerm');    
-            elemID.style.visibility='visible'; 
-            }
             });
         </script>
        

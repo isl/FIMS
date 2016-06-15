@@ -133,7 +133,7 @@ This file is part of the FIMS webapp.
                                 <xsl:when test="$result != ''"> 
                                     <xsl:variable name="tag" select=" 'ViewDependencies' "/>
                                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <a class="btn btn-default .btn-sm displayButton" href="#" onclick="javascript: $('#displayRow').remove(); toggleVisibility(document.getElementById('dependants'));">
+                                    <a class="btn btn-default .btn-sm displayButton" href="#" onclick="javascript: $('#displayRow').remove(); toggleVisibility(document.getElementsByClassName('dependants'));">
                                         <xsl:value-of select="$translated"/>
                                     </a>
                                 </xsl:when>
