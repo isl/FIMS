@@ -33,7 +33,6 @@ import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.entity.Config;
 import static isl.FIMS.utils.ParseXMLFile.parseFile;
 import isl.FIMS.utils.Utils;
-import isl.dbms.DBMSException;
 import isl.dms.DMSException;
 import isl.dms.file.DMSFile;
 import isl.dms.file.DMSGroup;
@@ -44,8 +43,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +58,10 @@ public class SignUp extends ApplicationBasicServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * 
+     * Gets the information about the user from the signup form, checks if the user already exist
+     * and subscribes the new user to the system. 
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -212,7 +212,12 @@ public class SignUp extends ApplicationBasicServlet {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Creates the header of the Login page 
+     * @param lang : the selected language 
+     * @return 
+     */
+    
     public String xmlStart(String lang) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<page  language=\"" + lang + "\">\n"

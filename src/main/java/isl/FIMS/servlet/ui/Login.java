@@ -41,8 +41,20 @@ import java.net.URLEncoder;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+/**
+ * Servlet used to check if the user is authorized in order to login to the system
+ * @author konsolak
+ */
 public class Login extends ApplicationBasicServlet {
 
+    /**
+     * Creates the header of the Login page 
+     * @param user : username
+     * @param title : title of the page
+     * @param lang : the selected language 
+     * @param mode 
+     * @return
+     */
     public String xmlStart(String user, String title, String lang, String mode) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<page user=\"" + user + "\" title=\"" + title + "\" language=\"" + lang + "\" mode=\"" + mode + "\">\n"
@@ -55,6 +67,13 @@ public class Login extends ApplicationBasicServlet {
                 + "</leftmenu>\n" + "<context>\n";
     }
 
+    /**
+     * Serves the get request to check if the user is authorized to login to the system
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -146,6 +165,13 @@ public class Login extends ApplicationBasicServlet {
         out.close();
     }
 
+    /**
+     * Serves the post request to check if the user is authorized to login to the system
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
