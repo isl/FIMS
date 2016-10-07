@@ -294,10 +294,13 @@ public class ImportXML extends ApplicationBasicServlet {
                                         }
                                         if (!dbSchemaFolder.equals("")) {
                                             if (externalDBFiles.contains(extFile)) {
-                                                DBCollection colSchema = new DBCollection(this.DBURI, dbSchemaFolder, this.DBuser, this.DBpassword);
-                                                DBFile dbFSchema = colSchema.createFile(uniqueName, "XMLDBFile");
-                                                dbFSchema.setXMLAsString(content);
-                                                dbFSchema.store();
+                                                try {
+                                                    DBCollection colSchema = new DBCollection(this.DBURI, dbSchemaFolder, this.DBuser, this.DBpassword);
+                                                    DBFile dbFSchema = colSchema.createFile(uniqueName, "XMLDBFile");
+                                                    dbFSchema.setXMLAsString(content);
+                                                    dbFSchema.store();
+                                                } catch (Exception e) {
+                                                }
                                             }
                                         }
                                         uploadFileUnique.renameTo(uploadFile);
