@@ -173,24 +173,22 @@ html,body{
 }
 
 #header{
-    margin-bottom: -17px;
+    height: 0px;
+    padding-left: 8%;
 }
+
 #content{
     background-color: white;
     min-height: 70%;
 }
 .headerDropDown{
-    float:right;
-    top:-140px;
-    right:16px;
-}
-#insideHeaderDrop{
-    left: -90px;
-}
-#outsideHeaderDrop{
-    left: -68px;
+    /*    float:right;
+        top:12px;
+        right:16px;*/
+    /*    top: 10px;*/
 
 }
+
 #searchDropDown{
     left:-130px;
 }
@@ -200,7 +198,14 @@ html,body{
     text-decoration:none;
     font-size: 12px;
 }
+.nav>li>a:hover {
+    text-decoration: none;
+    background-color: transparent!important;
+}
 
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color: transparent!important;
+}
 /* visited link */
 .headerDropDown a:visited {
     color: #565655;

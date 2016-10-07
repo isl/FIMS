@@ -53,7 +53,7 @@ This file is part of the FIMS webapp.
                          
                     <xsl:choose>
                         <xsl:when test="$user!=''">
-                            <div class="row col-wrap" id="header">
+                            <div class="row col-wrap" >
                                 <xsl:call-template name="header"/>
                             </div>  
                             <div class="row col-wrap" id="content">
@@ -72,9 +72,7 @@ This file is part of the FIMS webapp.
                         </xsl:when>
                         <xsl:otherwise>
                             <div class="row" id="content">     
-                                <div id="header">
                                     <xsl:call-template name="header"/>
-                                </div>                   
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <xsl:call-template name="context"/>
                                 </div>

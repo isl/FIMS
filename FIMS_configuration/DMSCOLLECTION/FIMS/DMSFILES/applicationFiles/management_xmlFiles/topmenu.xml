@@ -29,11 +29,19 @@ This file is part of the FIMS webapp.
 -->
 
 <topmenu>
-    <menugroup type="top" id="1" img_src="formating/images/arrowDownWhite.png">
-        <menu id="Logout" href="Logout">logout</menu>
-        <!--menu id="Help" href="javascript:void(0)" onmouseover="toggle_visibility_Class('help','')">Help</menu-->
-        <menu id="Help" href="./Manuals/">Help</menu>
-        <menu id="changePass" href="ChangePass?action=toedit">changePass</menu>
-		<menu id="About" href="About">About</menu>
+    <menugroup type="top" id="1">
+        <menu id="manuals" img_src="formating/images/help.png">
+            <submenu id="help">
+                <action id="Help" href="./Manuals/">Help</action>
+                <action id="Help_all" href="./Manuals/">User_Manual</action>
+            </submenu>
+        </menu>
+        <menu id="settings" img_src="formating/images/user.png">
+            <submenu id="settings">
+                <action id="Logout" href="Logout">logout</action>
+                <action id="changePass" href="ChangePass?action=toedit">changePass</action>
+                <action id="About" href="About">About</action>
+            </submenu>
+        </menu>
     </menugroup>
 </topmenu>
