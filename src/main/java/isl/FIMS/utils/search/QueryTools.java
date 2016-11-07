@@ -636,58 +636,60 @@ public class QueryTools {
     private static ArrayList[] getListOfTags(String category, String lang) {
 
         ArrayList[] allList = new ArrayList[5];
-        DBFile nodesFile = new DBFile(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "LaAndLi/", category + ".xml", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+        try {
+            DBFile nodesFile = new DBFile(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "LaAndLi/", category + ".xml", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
 
-        String nodesQuery = "";
-        nodesQuery = "for $node in //node[@type='" + category + "']"
-                + " return"
-                + " <label>"
-                + " {$node/xpath}"
-                + " <lang>{$node/" + lang + "/string()}</lang>"
-                + " <dataType>{$node/dataType/string()}</dataType>"
-                + " <vocabulary>{$node/vocabulary/string()}</vocabulary>"
-                + " </label>";
+            String nodesQuery = "";
+            nodesQuery = "for $node in //node[@type='" + category + "']"
+                    + " return"
+                    + " <label>"
+                    + " {$node/xpath}"
+                    + " <lang>{$node/" + lang + "/string()}</lang>"
+                    + " <dataType>{$node/dataType/string()}</dataType>"
+                    + " <vocabulary>{$node/vocabulary/string()}</vocabulary>"
+                    + " </label>";
 
-        String[] nodes = nodesFile.queryString(nodesQuery);
-        ArrayList<String> xpaths = new ArrayList<String>();
-        ArrayList<String> labels = new ArrayList<String>();
-        ArrayList<String> dataTypes = new ArrayList<String>();
-        // ArrayList<String[]> vocabulary = new ArrayList<String[]>();
-        ArrayList<String> vocabulary = new ArrayList<String>();
-        DMSConfig vocConf = new DMSConfig(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "Vocabulary/", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+            String[] nodes = nodesFile.queryString(nodesQuery);
+            ArrayList<String> xpaths = new ArrayList<String>();
+            ArrayList<String> labels = new ArrayList<String>();
+            ArrayList<String> dataTypes = new ArrayList<String>();
+            // ArrayList<String[]> vocabulary = new ArrayList<String[]>();
+            ArrayList<String> vocabulary = new ArrayList<String>();
+            DMSConfig vocConf = new DMSConfig(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "Vocabulary/", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
 
-        for (int i = 0; i < nodes.length; i++) {
-            xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
-            labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
-            String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
-            if (!vocName.equals("")) {
-               // Vocabulary voc = new Vocabulary(vocName, lang, vocConf);
-                // String[] terms = voc.termValues();
-                //  vocabulary.add(terms);
-                vocabulary.add(vocName);
-            } else {
-                vocabulary.add("");
+            for (int i = 0; i < nodes.length; i++) {
+                xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
+                labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
+                String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
+                if (!vocName.equals("")) {
+                    // Vocabulary voc = new Vocabulary(vocName, lang, vocConf);
+                    // String[] terms = voc.termValues();
+                    //  vocabulary.add(terms);
+                    vocabulary.add(vocName);
+                } else {
+                    vocabulary.add("");
+                }
+
+                if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
+                    dataTypes.add("string");
+                } else {
+                    dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
+                }
             }
 
-            if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
-                dataTypes.add("string");
-            } else {
-                dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
+            ArrayList selectedInputs = new ArrayList();
+
+            for (int i = 0; i < xpaths.size(); i++) {
+                selectedInputs.add("0");
             }
+
+            allList[0] = xpaths;
+            allList[1] = labels;
+            allList[2] = dataTypes;
+            allList[3] = selectedInputs;
+            allList[4] = vocabulary;
+        } catch (Exception ex) {
         }
-
-        ArrayList selectedInputs = new ArrayList();
-
-        for (int i = 0; i < xpaths.size(); i++) {
-            selectedInputs.add("0");
-        }
-
-        allList[0] = xpaths;
-        allList[1] = labels;
-        allList[2] = dataTypes;
-        allList[3] = selectedInputs;
-        allList[4] = vocabulary;
-
         return allList;
 
     }
@@ -695,34 +697,36 @@ public class QueryTools {
     private static StringBuffer getSelectedTags(String[] inputs, ArrayList<String> xpaths) {
 
         StringBuffer selectedTags = new StringBuffer("");
-        if (inputs.length > 0) {
-            for (String input : inputs) {
-                selectedTags.append("<selectedTags>\n");
-                ArrayList selectedInputs = new ArrayList();
+        if (xpaths != null) {
+            if (inputs.length > 0) {
+                for (String input : inputs) {
+                    selectedTags.append("<selectedTags>\n");
+                    ArrayList selectedInputs = new ArrayList();
 
-                for (int i = 0; i < xpaths.size(); i++) {
-                    String xpath = xpaths.get(i);
+                    for (int i = 0; i < xpaths.size(); i++) {
+                        String xpath = xpaths.get(i);
 
-                    if (input.trim().equals("/" + xpath)) {
-                        selectedInputs.add("1");
-                    } else {
-                        selectedInputs.add("0");
+                        if (input.trim().equals("/" + xpath)) {
+                            selectedInputs.add("1");
+                        } else {
+                            selectedInputs.add("0");
+                        }
+
                     }
+                    selectedTags.append(selectedInputs);
+
+                    selectedTags.append("</selectedTags>");
 
                 }
-                selectedTags.append(selectedInputs);
-
-                selectedTags.append("</selectedTags>");
+            } else {
+                selectedTags.append("<selectedTags>\n");
+                ArrayList selectedInputs = new ArrayList();
+                for (int i = 0; i < xpaths.size(); i++) {
+                    selectedInputs.add("0");
+                }
+                selectedTags.append("</selectedTags>\n");
 
             }
-        } else {
-            selectedTags.append("<selectedTags>\n");
-            ArrayList selectedInputs = new ArrayList();
-            for (int i = 0; i < xpaths.size(); i++) {
-                selectedInputs.add("0");
-            }
-            selectedTags.append("</selectedTags>\n");
-
         }
 
         return selectedTags;
