@@ -180,6 +180,8 @@ html,body{
 #content{
     background-color: white;
     min-height: 70%;
+    display: flex;
+    flex-wrap: wrap;
 }
 .headerDropDown{
     /*    float:right;
@@ -273,6 +275,8 @@ html,body{
     padding-right: 0px; 
     padding-left: 0px;
     padding-bottom: 30px;
+    background-color: #F4F4F4;
+
 }
 
 #leftmenu .nav>li>a{
@@ -541,10 +545,10 @@ html,body{
 
 
 /* top row */
-.col .well{ 
+/*.col .well{ 
     margin-bottom: -99999px;
     padding-bottom: 99999px;  
-}
+}*/
 
 /* bottom row */
 .col-base{ 
@@ -553,15 +557,14 @@ html,body{
 
 
 
-
+/*
 .col-wrap{
     overflow: hidden; 
-}
+}*/
 
 
 #leftWell{
     background-image: none;
-    background-color: #F4F4F4;
     padding-left: 0;
     padding-right: 0;
     border: none;
