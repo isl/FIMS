@@ -68,20 +68,10 @@ This file is part of the FIMS webapp.
     
             });   
         </script>
-        <xsl:variable name="setClass">
-            <xsl:choose>                                          
-                <xsl:when test="$user!=''">
-                    <xsl:text>col-xs-11 col-sm-6 col-md-4 col-lg-4 col col-xs-offset-1 col-sm-offset-6 col-md-offset-8 col-lg-offset-8</xsl:text>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>col-xs-3 col-sm-3 col-md-3 col-lg-3 col col-xs-offset-9 col-sm-offset-9 col-md-offset-9 col-lg-offset-9</xsl:text>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>  
-  
-        <div class="{$setClass}" id="header">
+    
+        <div class="col-xs-12" id="header">
 
-            <ul class="nav navbar-nav" id="myNavHeader">
+            <ul class="nav navbar-nav nav navbar-right" id="myNavHeader">
       
                 <xsl:if test="$contactEmail!=''">
                     <li class="headerDropDown">
