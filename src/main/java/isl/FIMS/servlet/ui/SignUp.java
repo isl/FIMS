@@ -166,7 +166,7 @@ public class SignUp extends ApplicationBasicServlet {
                         Element emailContext = (Element) contextTag.getElementsByTagName("emailContext_SignUp").item(0);
                         String context = emailContext.getElementsByTagName(lang).item(0).getTextContent();
                         context = context.replaceFirst(":", ": " + username);
-                        context = context.replace("*", " " + ApplicationConfig.SYSTEM_ROOT);
+                        context = context.replace("*", " " + this.signUpEmailUrl);
                         context = context.replaceAll("\\?", "<br>");
                         if (context.contains("systemName")) {
                             context = context.replace("systemName", this.systemName);

@@ -51,8 +51,6 @@ import isl.dms.file.DMSFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ApplicationBasicServlet extends HttpServlet {
     //parameters from web.xml
@@ -91,6 +89,7 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected static String dbSchemaFolder = "";
     protected static String schemaVersion = "";
     protected static String systemVersion = "";
+    protected static String signUpEmailUrl = "";
 
     public static int thumbSize, normalSize;
 
@@ -124,6 +123,7 @@ public class ApplicationBasicServlet extends HttpServlet {
         this.emailAdress = getServletContext().getInitParameter("emailAdress");
         this.schemaVersion = getServletContext().getInitParameter("schemaVersion");
         this.systemVersion = getServletContext().getInitParameter("systemVersion");
+        this.signUpEmailUrl = getServletContext().getInitParameter("signUpEmailUrl");
 
         File export = new File(this.export_import_Folder);
         if (!export.exists()) {

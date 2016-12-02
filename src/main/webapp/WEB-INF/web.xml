@@ -192,6 +192,11 @@ This file is part of the FIMS webapp.
 		<param-name>signUp</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	 <context-param>
+        <description>It is the url sent at sign up email to get in the system. Sometimes it may be different than systemRoot url.</description>
+        <param-name>signUpEmailUrl</param-name>
+        <param-value>http://localhost:8084/FIMS</param-value>
+    </context-param>
 	<context-param>
 		<!--Option forget password-->
 		<param-name>forgetPass</param-name>
