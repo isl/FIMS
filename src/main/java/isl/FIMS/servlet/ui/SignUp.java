@@ -58,10 +58,10 @@ public class SignUp extends ApplicationBasicServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     * 
-     * Gets the information about the user from the signup form, checks if the user already exist
-     * and subscribes the new user to the system. 
-     * 
+     *
+     * Gets the information about the user from the signup form, checks if the
+     * user already exist and subscribes the new user to the system.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -70,6 +70,8 @@ public class SignUp extends ApplicationBasicServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+
         PrintWriter out = response.getWriter();
         String displayMsg = "";
         String type = "signup";
@@ -212,12 +214,14 @@ public class SignUp extends ApplicationBasicServlet {
             e.printStackTrace();
         }
     }
+
     /**
-     * Creates the header of the Login page 
-     * @param lang : the selected language 
-     * @return 
+     * Creates the header of the Login page
+     *
+     * @param lang : the selected language
+     * @return
      */
-    
+
     public String xmlStart(String lang) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<page  language=\"" + lang + "\">\n"
