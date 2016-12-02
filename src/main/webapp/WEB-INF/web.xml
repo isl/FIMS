@@ -315,6 +315,10 @@ This file is part of the FIMS webapp.
 		<url-pattern>/UploadBinFile</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/GetVersionsList</url-pattern>
+    </filter-mapping>
+	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/CreateVersion</url-pattern>
 	</filter-mapping>
@@ -327,13 +331,61 @@ This file is part of the FIMS webapp.
 		<url-pattern>/ExportRDF</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ExportSchema</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ExportTemplate</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ExportVersions</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ExportVocabulary</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ExportXML</url-pattern>
+    </filter-mapping>
+	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/CreateCopy</url-pattern>
 	</filter-mapping>
+	 <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/UnlockEntity</url-pattern>
+    </filter-mapping>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/About</url-pattern>
 	</filter-mapping>
+	 <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/FetchAudio</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/FetchBinFile</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ImportVocabulary</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/GetTerms</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ImportXML</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/ChangePass</url-pattern>
+    </filter-mapping>
 	<filter-mapping>
 		<filter-name>ValidateAction</filter-name>
 		<url-pattern>/AdminEntity</url-pattern>
