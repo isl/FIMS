@@ -305,7 +305,6 @@ public class AdminEntity extends AdminBasicServlet {
             this.error = false;
         } else if (action.equals("tosetrights")) {
             boolean isWritable = Boolean.valueOf(xmlE.queryString("//admin/write='" + username + "'")[0]);
-
             if (docOrg.equals(userOrg) && isWritable) {
                 String codeValue = "";
                 String mainCurrentName = "";
@@ -318,18 +317,13 @@ public class AdminEntity extends AdminBasicServlet {
                 xml.append("<MainCurrentName>").append(mainCurrentName).append("</MainCurrentName>\n");
 
                 try {
-                    String[] groupUsers = DMSUser.getUsersInGroup(docOrg, this.conf);
-                    String[] usernames = new String[groupUsers.length];
-                    for (int l = 0; l < groupUsers.length; l++) {
-                        if (!getRights(groupUsers[l]).equals("sysadmin") && !getRights(groupUsers[l]).equals("guest")) {
-                            usernames[l] = groupUsers[l];
+                    DMSFile df = new DMSFile(this.conf.USERS_FILE, this.conf);
+                    String q = "/DMS/users/user[groups/group/text()='" + docOrg + "' and actions/*/name()!='sysadmin' and actions/*/name()!='guest']/@username/string()";
+                    String[] usernames = df.queryString(q);
 
-                        } else {
-                            usernames[l] = "";
-                        }
-                    }
                     String[] editors = xmlE.getValuesOfAdminProperty("write");
                     Arrays.sort(editors);
+
                     for (int u = 0; u < usernames.length; u++) {
                         if (!usernames[u].equals("") && usernames[u] != null) {
                             boolean canWrite = (Arrays.binarySearch(editors, usernames[u]) >= 0) ? true : false;
