@@ -210,6 +210,19 @@ public class XMLEntity extends ApplicationBasicServlet {
             this.dbFile.xUpdate("//admin/" + property, value);
         }
     }
+    
+     /**
+     * Sets the value of an admin attribute. Admin properties are in the 'admin
+     * part' of a file. This method is used when 'admin part' is kept inside the
+     * file represented by this <code>XMLEntity</code>.
+     *
+     * @param property the name of the admin property
+     * @param value the value to set
+     */
+    public void setAdminAttribyte(String property, String attribute, String value) {
+        //should not check, but demand to exist...temporary allow
+        this.dbFile.xAddAttribute("//admin/"+property, attribute, value);
+    }
 
     /**
      * Checks if an admin property has a particular value. Admin properties are

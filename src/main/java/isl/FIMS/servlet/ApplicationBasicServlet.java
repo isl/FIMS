@@ -57,7 +57,7 @@ public class ApplicationBasicServlet extends HttpServlet {
 
     protected String systemWebRoot;
     public static String DBURI, DBuser, DBpassword, DB_REST_URL, systemDbCollection;
-    protected static String  systemUploads, versionDbCollection;
+    protected static String systemUploads, versionDbCollection;
     public static String adminDbCollection, URI_Reference_Path;
     public static String[] entityTypes, systemLangs, dbSchemaPath;
     public static String[] uploadAttributes;
@@ -330,9 +330,13 @@ public class ApplicationBasicServlet extends HttpServlet {
         xmlE.setAdminProperty("creator", username);
         xmlE.setAdminProperty("versions/versionUser", username);
         xmlE.setAdminProperty("versions/versionId", "1");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
         Date date = new Date();
         xmlE.setAdminProperty("versions/versionDate", dateFormat.format(date));
+        xmlE.setAdminProperty("lastModified", dateFormat.format(date));
+        xmlE.setAdminAttribyte("lastModified", "time", timeFormat.format(date));
         xmlE.setAdminProperty("saved", "yes");
         xmlE.setAdminProperty("locked", "no");
         if (GetEntityCategory.getEntityCategory(type).equals("primary")) {

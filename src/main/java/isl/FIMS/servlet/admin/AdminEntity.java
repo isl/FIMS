@@ -170,24 +170,30 @@ public class AdminEntity extends AdminBasicServlet {
                             }
                             q += "]";
                             String res[] = dbf.queryString(q);
-                            String target = "";
+                            String target = "<target>\n";
                             String namespace = "";
                             for (String r : res) {
                                 r = r.replaceAll(" id=\".*?\"", "");
                                 String target_schema = (r.split("</target_schema>")[0]).split("<target_info>")[1] + "</target_schema>";
-                                namespace += (r.split("</target_schema>")[1]).split("</target_info>")[0];
-                                target += "<target_info>" + target_schema + "\n<target_collection/>\n" + "</target_info>";
+                                namespace += "<namespaces>\n" + (r.split("</target_schema>")[1]).split("</target_info>")[0] + "</namespaces>\n";
+                                target += "<target_info>\n" + target_schema + "\n" + namespace + "\n" + "</target_info>\n";
+                                namespace = "";
                             }
-                            xmlE.xInsertAfter("//info/source_info", target);
-                            xmlE.xAppend("//namespaces", namespace);
+                            target += "<target_collection/>\n</target>";
+                            xmlE.xInsertAfter("//info/source", target);
+                            //   xmlE.xAppend("//namespaces", namespace);
                         } else {
-                            String target = " <target_info>\n"
-                                    + "            <target_schema type=\"\" version=\"\"></target_schema>\n"
-                                    + "            <target_collection/>\n"
-                                    + "        </target_info>";
-                            String namespace = "<namespace prefix=\"\" uri=\"\"/>";
-                            xmlE.xInsertAfter("//info/source_info", target);
-                            xmlE.xAppend("//namespaces", namespace);
+                            String target = "<target>\n"
+                                    + " <target_info>\n"
+                                    + "    <target_schema type=\"\" version=\"\"></target_schema>\n"
+                                    + " <namespaces>\n"
+                                    + "                <namespace prefix=\"\" uri=\"\"/>\n"
+                                    + " </namespaces>\n"
+                                    + "    </target_info>\n"
+                                    + "  <target_collection/>\n"
+                                    + "</target>";
+
+                            xmlE.xInsertAfter("//info/source", target);
                         }
                     }
                     this.displayMsg = Messages.ACTION_SUCCESS;
@@ -197,6 +203,8 @@ public class AdminEntity extends AdminBasicServlet {
 
                     this.error = false;
                 } catch (Exception e) {
+                    e.printStackTrace();
+                    // System.out.println("errot"  +e.getMessage());
                     this.displayMsg = Messages.wentWorng;
                 }
             }

@@ -162,6 +162,12 @@ This file is part of the FIMS webapp.
             <sv>About</sv>
             <nl>About</nl>
         </About>
+          <short_ins>
+            <en>Quick Start Guide</en>
+        </short_ins>
+        <manual>
+            <en>Manual</en>
+        </manual>
     </topmenu>
     <leftmenu>
         <Contract>
@@ -829,7 +835,7 @@ This file is part of the FIMS webapp.
         </SelectFile>
         <SelectTXTFile>
             <gr>Επιλέξτε το .txt αρχείο που περιέχει τους όρους που θέλετε να εισάγετε:</gr>
-            <en>Select the .text file containing the terms you want to import:</en>
+            <en>Select the .txt file containing the terms you want to import:</en>
             <fr>Sélectionnez le fichier. txt contenant les termes que vous souhaitez importer:</fr>
             <it>Selezionare il file. Txt contenente i termini che si desidera importare:</it>
             <ar>حدد الملف الذي يحتوي على النص حيث تريد استيرادها.:</ar>
@@ -1718,7 +1724,7 @@ This file is part of the FIMS webapp.
             <nl>E-mail</nl>
         </email>
         <EMPTY_FIELD_CodeValue>
-            <gr>Δε συμπληρώσατε το πεδίο: ΤιμήΚωδικού</gr>
+            <gr>Δε συμπληρώσατε το πεδίο: Τιμή Κωδικού</gr>
             <en>Empty field: Code Value</en>
             <fr>Champ vide :  Valeur de code</fr>
             <it>Non è stato compilato il campo: Valore codice</it>
@@ -3880,7 +3886,7 @@ This file is part of the FIMS webapp.
             <nl>Vul uw email adres om uw wachtwoord opnieuw in te stellen:</nl>
         </EmailPrompt>
         <NotValidEmail>
-            <gr>Το email δεν είναι έγκυρος.</gr>
+            <gr>Το email δεν είναι έγκυρο.</gr>
             <en>You have entered an invalid email address!</en>
             <fr>Vous avez entré une adresse email valide!</fr>
             <it>Hai inserito un indirizzo email valido!</it>
@@ -4423,12 +4429,17 @@ This file is part of the FIMS webapp.
         <tel>
             <gr>Τηλέφωνο</gr>
             <en>Telephone</en>
+            
             <fr>Telephone</fr>
             <it>Telephone</it>
             <ar>Telephone</ar>
             <sv>Telephone</sv>
             <nl>Telephone</nl>
         </tel>
+        <lastModified>
+            <gr>Τελευταία Τροποποίηση</gr>
+            <en>Last Modified</en>
+        </lastModified>
     </context>
     <footer>
         <text1>
