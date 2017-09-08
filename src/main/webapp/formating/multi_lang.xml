@@ -162,7 +162,7 @@ This file is part of the FIMS webapp.
             <sv>About</sv>
             <nl>About</nl>
         </About>
-          <short_ins>
+        <short_ins>
             <en>Quick Start Guide</en>
         </short_ins>
         <manual>
@@ -4440,6 +4440,15 @@ This file is part of the FIMS webapp.
             <gr>Τελευταία Τροποποίηση</gr>
             <en>Last Modified</en>
         </lastModified>
+        <configEditor>
+            <gr>Διαμόρφωση προτύπου</gr>
+            <en>Configure template</en>
+            <fr>Configurer le modèle</fr>
+            <it>Configurare il modello</it>
+            <sv>Konfigurera mall</sv>
+            <nl>Sjabloon configureren</nl>
+            <ar>تكوين القالب</ar>
+        </configEditor>
     </context>
     <footer>
         <text1>
