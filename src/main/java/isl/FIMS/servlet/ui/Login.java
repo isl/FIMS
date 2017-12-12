@@ -29,7 +29,9 @@ package isl.FIMS.servlet.ui;
 
 import isl.FIMS.utils.ApplicationConfig;
 import isl.FIMS.servlet.ApplicationBasicServlet;
+import isl.FIMS.utils.Messages;
 import isl.dbms.DBCollection;
+import isl.dbms.DBMSException;
 import isl.dms.DMSException;
 import isl.dms.file.DMSFile;
 import isl.dms.file.DMSUser;
@@ -190,6 +192,7 @@ public class Login extends ApplicationBasicServlet {
         String status = "";
         String signUp = getServletContext().getInitParameter("signUp");
         String forgetPass = getServletContext().getInitParameter("forgetPass");
+        HttpSession session = request.getSession(true);
 
         boolean isUserValid = false;
         try {
@@ -197,9 +200,14 @@ public class Login extends ApplicationBasicServlet {
 
         } catch (DMSException e) {
             e.printStackTrace();
+        } catch (DBMSException ex) {
+            String errorMsg = Messages.wentWorng;
+            session.setAttribute("errorMsg", errorMsg);
+            //session.invalidate();
+            response.sendRedirect("Login?error=1");
+            return;
         }
 
-        HttpSession session = request.getSession(true);
         if (isUserValid == true) {
             String lang = request.getParameter("lang");
             if (lang == null) {

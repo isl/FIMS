@@ -33,6 +33,7 @@ import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.entity.Config;
 import static isl.FIMS.utils.ParseXMLFile.parseFile;
 import isl.FIMS.utils.Utils;
+import isl.dbms.DBMSException;
 import isl.dms.DMSException;
 import isl.dms.file.DMSFile;
 import isl.dms.file.DMSGroup;
@@ -46,6 +47,7 @@ import java.util.Hashtable;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -178,8 +180,22 @@ public class SignUp extends ApplicationBasicServlet {
 
                     }
                 } catch (EntryExistException ex) {
+                    ex.printStackTrace();
+
                     displayMsg += Messages.USER_EXIST;
                 } catch (DMSException ex) {
+                    ex.printStackTrace();
+
+                    displayMsg += Messages.wentWorng;
+                } catch (DBMSException ex) {
+                    ex.printStackTrace();
+                    displayMsg += Messages.wentWorng;
+                } catch (DOMException ex) {
+                    ex.printStackTrace();
+                    displayMsg += Messages.wentWorng;
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    displayMsg += Messages.wentWorng;
                 }
             }
         }
@@ -221,7 +237,6 @@ public class SignUp extends ApplicationBasicServlet {
      * @param lang : the selected language
      * @return
      */
-
     public String xmlStart(String lang) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<page  language=\"" + lang + "\">\n"
