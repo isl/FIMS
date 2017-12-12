@@ -118,8 +118,8 @@ public class Storage extends ApplicationBasicServlet {
             File BackupFolder = new File(eXistBackups + backupName);
 
             if (BackupFolder.exists()) {
-                File imageBackup = new File(BackupFolder.getAbsolutePath() + "/Archive");
-                File uploads = new File(this.systemUploads + "Archive");
+                File imageBackup = new File(BackupFolder.getAbsolutePath() + "/uploads");
+                File uploads = new File(this.systemUploads );
 
                 if (!imageBackup.exists()) {
                     imageBackup.mkdirs();
@@ -173,8 +173,8 @@ public class Storage extends ApplicationBasicServlet {
             directory = new File(eXistBackups + file + this.systemDbCollection + "__contents__.xml");
             Col.restore(this.DBuser, this.DBpassword, null, directory, this.DBURI, this.systemDbCollection);
             //restore images
-            File imageBackup = new File(eXistBackups + file + "/Archive");
-            File uploads = new File(this.systemUploads + "Archive");
+            File imageBackup = new File(eXistBackups + file + "/uploads");
+            File uploads = new File(this.systemUploads);
 
             if (!imageBackup.exists()) {
                 imageBackup.mkdirs();
