@@ -206,7 +206,7 @@ This file is part of the FIMS webapp.
             <sv>Tidslinje</sv>
             <nl>Tijdlijn</nl>	
         </Timeline>   
-          
+
         <DigitalPhoto>
             <gr>Ψηφιακές Φωτογραφίες</gr>
             <en>Digital Photos</en>
@@ -216,7 +216,7 @@ This file is part of the FIMS webapp.
             <sv>Digitala Bilder</sv>
             <nl>Digitale Foto's</nl>			
         </DigitalPhoto>
-        
+
         <DigitalArchive>
             <gr>Ψηφιακά Αρχεία</gr>
             <en>Digital Archives</en>
@@ -668,7 +668,7 @@ This file is part of the FIMS webapp.
         <mappings>
             <en>Mappings</en>
         </mappings>
-        
+
         <documentation_entities>
             <gr>Τεκμηρίωση</gr>
             <en>Documentation</en>
@@ -714,6 +714,81 @@ This file is part of the FIMS webapp.
         <manual>
             <en>Manual</en>
         </manual>
+        <SampleMapping>
+            <en>Sample Mappings</en>
+        </SampleMapping>
+
+        <!--Ancient Theaters-->
+        <DionysiacArtist>
+            <gr>Τεχνίτης Διονύσου</gr>
+            <en>Dionysiac Artist</en>
+        </DionysiacArtist>
+        <GuildArtists>
+            <gr>Κοινό Τεχνιτών</gr>
+            <en>Guild of Artists</en>
+        </GuildArtists>
+        <Festivals>
+            <gr>Εορτή</gr>
+            <en>Festivals</en>
+        </Festivals>
+        
+        <FestivalCelebration>
+            <gr>Τέλεση Εορτής</gr>
+            <en>Festivals by date of celebration</en>
+        </FestivalCelebration>        
+        <Celebration>
+            <gr>Εορτασμός</gr>
+            <en>Celebration</en>
+        </Celebration>       
+        <Contest>
+            <gr>Αγών</gr>
+            <en>Contest</en>
+        </Contest>
+        <Performance>
+            <gr>Παράσταση</gr>
+            <en>Performance</en>
+        </Performance>
+        
+        <DramaticMonument>
+            <gr>Δραματικό Μνημείο</gr>
+            <en>Dramatic Monument</en>
+        </DramaticMonument>
+        <ArchitecturalMonument>
+            <gr>Αρχιτεκτονικό Μνημείο</gr>
+            <en>Architectural Monument</en>
+        </ArchitecturalMonument>
+        <HistoricalPerson>
+            <gr>Ιστορικά Πρόσωπά</gr>
+            <en>Historic Persons</en>
+        </HistoricalPerson>
+        
+        <MythicalFigure>
+            <gr>Μυθικές Μορφές</gr>
+            <en>Mythical Figures</en>
+        </MythicalFigure>
+        
+        <Work>
+            <gr>Έργο</gr>
+            <en>Work</en>
+        </Work>
+        <Essay>
+            <gr>Δοκίμιο-Μελέτη</gr>
+            <en>Έργο</en>
+        </Essay>
+        <Bibliography>
+            <gr>Βιβλιογραφία</gr>
+            <en>Biblography</en>
+        </Bibliography>
+        <MultimediaFile>
+            <gr>Εικονογραφικό υλικό</gr>
+            <en>Multimedia Files</en>
+        </MultimediaFile>
+        <Image>
+            <gr>Πολυμεσικό υλικό</gr>
+            <en>Images</en>
+        </Image>
+        <!--end of Ancient Theaters-->
+
     </leftmenu>
     <context>
         <AudienceLevel>
@@ -1957,6 +2032,10 @@ This file is part of the FIMS webapp.
             <sv>Namn</sv>
             <nl>Volledige naam</nl>
         </Ονοματεπώνυμο>
+        <NameOutput>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </NameOutput>
         <Genikes>
             <gr>Δημόσιες</gr>
             <en>Public</en>
@@ -2183,6 +2262,77 @@ This file is part of the FIMS webapp.
             <sv>Titel</sv>
             <nl>Titel</nl>
         </PrimaryInsertFieldTimeline>
+        <!-- ancient theater=-->
+        <PrimaryInsertFieldDionysiacArtist>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldDionysiacArtist>
+        <PrimaryInsertFieldGuildArtists>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldGuildArtists>
+        <PrimaryInsertFieldFestival>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldFestival>
+        <PrimaryInsertFieldFestivalCelebration>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldFestivalCelebration>
+        <PrimaryInsertFieldCelebration>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldCelebration>
+        <PrimaryInsertFieldContest>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldContest>
+        <PrimaryInsertFieldPerformance>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldPerformance>
+        <PrimaryInsertFieldWork>
+            <gr>Τίτλος</gr>
+            <en>Title</en>
+        </PrimaryInsertFieldWork>
+        
+        <PrimaryInsertFieldMythicalFigure>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldMythicalFigure>
+        <PrimaryInsertFieldHistoricalPerson>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldHistoricalPerson>
+        <PrimaryInsertFieldArchitecturalMonument>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldArchitecturalMonument>
+        <PrimaryInsertFieldDramaticMonument>
+            <gr>Όνομα</gr>
+            <en>Name</en>
+        </PrimaryInsertFieldDramaticMonument>
+        
+        <PrimaryInsertFieldEssay>
+            <gr>Τίτλος</gr>
+            <en>Title</en>
+        </PrimaryInsertFieldEssay>
+              
+        <PrimaryInsertFieldBibliography>
+            <gr>Τίτλος</gr>
+            <en>Title</en>
+        </PrimaryInsertFieldBibliography>
+        
+        <PrimaryInsertFieldImage>
+            <gr>Τίτλος</gr>
+            <en>Title</en>
+        </PrimaryInsertFieldImage>
+        <PrimaryInsertFieldMultimediaFile>
+            <gr>Τίτλος</gr>
+            <en>Title</en>
+        </PrimaryInsertFieldMultimediaFile>
+        <!-- end of ancient theater=-->
+
         <ΚύριαΤρέχουσαΟνομασίαAP>
             <gr>Κύρια Τρέχουσα Ονομασία</gr>
             <en>Main Current Name</en>
@@ -4015,6 +4165,15 @@ This file is part of the FIMS webapp.
             <sv>Titel</sv>
             <nl>Titel</nl>
         </PrimaryInsertFieldMapping>
+        <PrimaryInsertFieldSampleMapping>
+            <gr>Τίτλος</gr>
+            <en>Title</en>
+            <fr>Titre</fr>
+            <it>Titolo</it>
+            <ar>العنوان</ar>
+            <sv>Titel</sv>
+            <nl>Titel</nl>
+        </PrimaryInsertFieldSampleMapping>
         <oldPassword>
             <gr>Τρέχων Κωδικός</gr>
             <en>Current Password</en>
@@ -4165,7 +4324,7 @@ This file is part of the FIMS webapp.
             <sv>Hej,? Användare: har begärt publishment av XML med ID.</sv>
             <nl>Hallo,? Gebruiker: heeft de huwelijksafkondiging van de XML met ID gevraagd:.</nl>
         </emailContext_PendingRequest>
-        
+
         <!--Storage messages-->
         <succ_Backup_Message>
             <gr>Η δημιουργία αντιγράφου συστήματος πραγματοποιήθηκε με επιτυχία!</gr>
@@ -4293,7 +4452,7 @@ This file is part of the FIMS webapp.
             <sv>Select two files to compare</sv>
             <nl>Select two files to compare</nl>
         </SelectCompareFiles>
-        
+
         <Graph_Representation>
             <en>Analysis</en>
         </Graph_Representation>
@@ -4429,7 +4588,7 @@ This file is part of the FIMS webapp.
         <tel>
             <gr>Τηλέφωνο</gr>
             <en>Telephone</en>
-            
+
             <fr>Telephone</fr>
             <it>Telephone</it>
             <ar>Telephone</ar>
@@ -4449,6 +4608,7 @@ This file is part of the FIMS webapp.
             <nl>Sjabloon configureren</nl>
             <ar>تكوين القالب</ar>
         </configEditor>
+
     </context>
     <footer>
         <text1>

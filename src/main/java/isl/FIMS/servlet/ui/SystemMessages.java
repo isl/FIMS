@@ -80,12 +80,13 @@ public class SystemMessages extends ApplicationBasicServlet {
         }
         if (displayMsg == null) {
             displayMsg = Messages.DOC_UNLOCKING;
+        } else {
+            displayMsg = displayMsg.replace("<br/>", "\n");
         }
 
         StringBuffer xml = new StringBuffer(this.xmlStart(this.topmenu, username, this.pageTitle, this.lang, "", request));
         xml.append("<Display>").append(displayMsg).append("</Display>\n");
         xml.append("<Time>").append(time).append("</Time>\n");
-
         String xsl = conf.POPUP_DISPLAY_XSL;
         if (feXMLEditor.equals("yes")) {
             if (displayMsg.equals("HAS_DEPENDANTS")) {
