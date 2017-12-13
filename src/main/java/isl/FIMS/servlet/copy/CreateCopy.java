@@ -50,9 +50,8 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateCopy extends ApplicationBasicServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -65,7 +64,7 @@ public class CreateCopy extends ApplicationBasicServlet {
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         this.initVars(request);
-                        String username = getUsername(request);
+        String username = getUsername(request);
 
         String displayMsg = "";
         String type = request.getParameter("type");
@@ -76,10 +75,10 @@ public class CreateCopy extends ApplicationBasicServlet {
 
         XMLEntity xmlE = new XMLEntity(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, fileId);
 
-        String newId = initInsertFile(type,true)[0];
+        String newId = initInsertFile(type, true)[0];
         newId = newId.split(type)[1];
         XMLEntity xmlNew = new XMLEntity(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, type + newId);
-        this.initAdminPart(xmlNew, newId,username);
+        this.initAdminPart(xmlNew, newId, username);
         String collName = UtilsQueries.getpath(this.DBURI, this.systemDbCollection + type, this.DBuser, this.DBpassword, type, newId);
         DBFile dbF = new DBFile(this.DBURI, collName, type + newId + ".xml", this.DBuser, this.DBpassword);
         String adminPart = dbF.queryString("//admin")[0];
@@ -104,6 +103,8 @@ public class CreateCopy extends ApplicationBasicServlet {
         xml.append("<codeValue>").append(uriValue).append("</codeValue>\n");
         String xsl = conf.DISPLAY_XSL;
         xml.append("<Display>").append(displayMsg).append("</Display>\n");
+        xml.append("<backPages>").append("ListEntity?type=" + type).append("</backPages>\n");
+
         xml.append(this.xmlEnd());
         try {
             XMLTransform xmlTrans = new XMLTransform(xml.toString());
@@ -117,8 +118,7 @@ public class CreateCopy extends ApplicationBasicServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -132,8 +132,7 @@ public class CreateCopy extends ApplicationBasicServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

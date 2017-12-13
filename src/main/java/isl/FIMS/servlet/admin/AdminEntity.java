@@ -199,7 +199,7 @@ public class AdminEntity extends AdminBasicServlet {
                     this.displayMsg = Messages.ACTION_SUCCESS;
                     this.displayMsg += Messages.NL + Messages.NL + Messages.URI_ID;
                     xml.append("<codeValue>").append(codeValue).append("</codeValue>\n");
-                    xml.append("<backPages>").append('2').append("</backPages>\n");
+                    xml.append("<backPages>").append("ListEntity?type=" + type+"&amp;status=allunpublished").append("</backPages>\n");
 
                     this.error = false;
                 } catch (Exception e) {
@@ -373,7 +373,7 @@ public class AdminEntity extends AdminBasicServlet {
                     e.printStackTrace();
                 }
                 this.displayMsg = Messages.ACTION_SUCCESS;
-                xml.append("<backPages>").append('2').append("</backPages>\n");
+                xml.append("<backPages>").append("ListEntity?type=" + type+"&amp;status=allunpublished").append("</backPages>\n");
 
             } else {
                 this.displayMsg = Messages.ACCESS_DENIED;

@@ -55,6 +55,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +70,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
@@ -334,7 +337,7 @@ public class ImportXML extends ApplicationBasicServlet {
                     displayMsg += Messages.NL + Messages.NL + Messages.URI_ID;
                     String uriValue = "";
                     xml.append("<Display>").append(displayMsg).append("</Display>\n");
-                    xml.append("<backPages>").append('2').append("</backPages>\n");
+                    xml.append("<backPages>").append("ListEntity?type=" + type).append("</backPages>\n");
 
                     for (String saveId : savedIDs) {
                         uriValue = this.URI_Reference_Path + uri_name + "/" + saveId + Messages.NL;
@@ -447,7 +450,10 @@ public class ImportXML extends ApplicationBasicServlet {
         admin.appendChild(uriId);
         if (!uriPath.equals("")) {
             try {
-                XPath xPath = XPathFactory.newInstance().newXPath();
+                XPath xPath = XPathFactory.newInstance(
+                        XPathFactory.DEFAULT_OBJECT_MODEL_URI,
+                        "net.sf.saxon.xpath.XPathFactoryImpl",
+                        ClassLoader.getSystemClassLoader()).newXPath();
                 NodeList nodes = (NodeList) xPath.evaluate(uriPath,
                         doc.getDocumentElement(), XPathConstants.NODESET);
                 Node oldChild = nodes.item(0);
@@ -456,6 +462,8 @@ public class ImportXML extends ApplicationBasicServlet {
                 }
             } catch (XPathExpressionException ex) {
                 ex.printStackTrace();
+            } catch (XPathFactoryConfigurationException ex) {
+                Logger.getLogger(ImportXML.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

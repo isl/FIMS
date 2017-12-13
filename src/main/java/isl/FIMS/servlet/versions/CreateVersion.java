@@ -135,7 +135,7 @@ public class CreateVersion extends ApplicationBasicServlet {
                 xsl = conf.DISPLAY_XSL;
                 displayMsg = Messages.ACTION_SUCCESS;
                 xml.append("<EntityType>").append(type).append("</EntityType>\n");
-                xml.append("<backPages>").append('2').append("</backPages>\n");
+                xml.append("<backPages>").append("ListEntity?type=" + type).append("</backPages>\n");
                 xml.append("<Display>").append(displayMsg).append("</Display>\n");
 
             }

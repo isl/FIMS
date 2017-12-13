@@ -103,7 +103,7 @@ This file is part of the FIMS webapp.
                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                             <xsl:choose>
                                 <xsl:when test="$Display='ACTION_SUCCESS'">
-                                    <a class="btn btn-default .btn-sm displayButton" href="javascript:window.history.go(-2);">
+                                    <a class="btn btn-default .btn-sm displayButton" href="{//context/backPages}">
                                         <xsl:value-of select="$translated"/>
                                     </a>
                                 </xsl:when>

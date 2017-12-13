@@ -236,7 +236,7 @@ public class TranslateServlet extends ApplicationBasicServlet {
                 xmlE.translateFrom(fromXmlE, translationConf);
 
                 xmlE.setAdminProperty("locked", "no");
-                xml.append("<backPages>").append('2').append("</backPages>\n");
+                    xml.append("<backPages>").append("ListEntity?type=" + type).append("</backPages>\n");
                 displayMsg = Messages.ACTION_SUCCESS;
 
             } else {
