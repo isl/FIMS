@@ -779,14 +779,14 @@ This file is part of the FIMS webapp.
             <gr>Βιβλιογραφία</gr>
             <en>Biblography</en>
         </Bibliography>
-        <MultimediaFile>
-            <gr>Εικονογραφικό υλικό</gr>
-            <en>Multimedia Files</en>
-        </MultimediaFile>
-        <Image>
-            <gr>Πολυμεσικό υλικό</gr>
-            <en>Images</en>
-        </Image>
+        <Source>
+            <gr>Πηγή</gr>
+            <en>Source</en>
+        </Source>
+        <ArchivalMaterial>
+            <gr>Αρχειακό Υλικό</gr>
+            <en>Archival Material</en>
+        </ArchivalMaterial>
         <!--end of Ancient Theaters-->
 
     </leftmenu>
@@ -2323,14 +2323,14 @@ This file is part of the FIMS webapp.
             <en>Title</en>
         </PrimaryInsertFieldBibliography>
         
-        <PrimaryInsertFieldImage>
+        <PrimaryInsertFieldArchivalMaterial>
             <gr>Τίτλος</gr>
             <en>Title</en>
-        </PrimaryInsertFieldImage>
-        <PrimaryInsertFieldMultimediaFile>
+        </PrimaryInsertFieldArchivalMaterial>
+        <PrimaryInsertFieldSource>
             <gr>Τίτλος</gr>
             <en>Title</en>
-        </PrimaryInsertFieldMultimediaFile>
+        </PrimaryInsertFieldSource>
         <!-- end of ancient theater=-->
 
         <ΚύριαΤρέχουσαΟνομασίαAP>

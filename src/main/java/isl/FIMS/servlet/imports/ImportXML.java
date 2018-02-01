@@ -139,6 +139,8 @@ public class ImportXML extends ApplicationBasicServlet {
             String uploadPath = currentDir;
             int xmlCount = 0;
             String[] id = null;
+            boolean insertEntityFound = false;
+
             try {
                 // parses the request's content to extract file data
                 List formItems = upload.parseRequest(request);
@@ -164,16 +166,16 @@ public class ImportXML extends ApplicationBasicServlet {
                             Document doc = ParseXMLFile.parseFile(file.getPath());
                             String xmlContent = doc.getDocumentElement().getTextContent();
                             String uri_name = "";
+                            String rootxpath = "";
                             try {
                                 uri_name = DMSTag.valueOf("uri_name", "target", type, this.conf)[0];
+                                rootxpath = DMSTag.valueOf("rootxpath", "target", type, this.conf)[0];
                             } catch (DMSException ex) {
                                 ex.printStackTrace();
                             }
+                            rootxpath = rootxpath.split("/")[1];
                             String uriValue = this.URI_Reference_Path + uri_name + "/";
-                            boolean insertEntity = false;
-                            if (xmlContent.contains(uriValue) || file.getName().contains(type)) {
-                                insertEntity = true;
-                            }
+
                             Element root = doc.getDocumentElement();
                             Node admin = Utils.removeNode(root, "admin", true);
 
@@ -190,12 +192,28 @@ public class ImportXML extends ApplicationBasicServlet {
                             StringWriter writer = new StringWriter();
                             transformer.transform(new DOMSource(doc), new StreamResult(writer));
                             String xmlString = writer.getBuffer().toString().replaceAll("\r", "");
+                            boolean insertEntity = false;
+                            boolean isValid = false;
+                            if (xmlContent.contains(uriValue) || file.getName().contains(type)) {
+                                insertEntity = true;
+                            }
+                            if (root.getNodeName().equals(rootxpath)) {
+                                isValid = sch.validate(xmlString);
+                                if (isValid) {
+                                    insertEntity = true;
+                                } else { //it might be the entity and not valid but also an sample xml that starts with the root element
+                                    if (xmlContent.contains(uriValue) || file.getName().contains(type)) {
+                                        insertEntity = true;
+                                    }
+                                }
 
+                            }
                             //without admin
-                            boolean isValid = sch.validate(xmlString);
+
                             if ((!isValid && insertEntity)) {
                                 notValidMXL.put(file.getName(), null);
                             } else if (insertEntity) {
+                                insertEntityFound = true;
                                 id = initInsertFile(type, false);
                                 doc = createAdminPart(id[0], type, doc, username);
                                 writer = new StringWriter();
@@ -318,6 +336,10 @@ public class ImportXML extends ApplicationBasicServlet {
                                     dbF.remove();
                                 }
 
+                            } else {
+                                displayMsg = Messages.NOT_VALID_IMPORT;
+                                xsl = conf.DISPLAY_XSL;
+
                             }
                         }
 
@@ -331,7 +353,7 @@ public class ImportXML extends ApplicationBasicServlet {
                     uri_name = DMSTag.valueOf("uri_name", "target", type, this.conf)[0];
                 } catch (DMSException ex) {
                 }
-                if (notValidMXL.size() == 0) {
+                if (notValidMXL.size() == 0 && insertEntityFound) {
                     xsl = conf.DISPLAY_XSL;
                     displayMsg = Messages.ACTION_SUCCESS;
                     displayMsg += Messages.NL + Messages.NL + Messages.URI_ID;
@@ -347,7 +369,7 @@ public class ImportXML extends ApplicationBasicServlet {
 
                 } else if (notValidMXL.size() >= 1) {
                     xsl = ApplicationConfig.SYSTEM_ROOT + "formating/xsl/import/ImportXML.xsl";
-
+                    displayMsg = "";
                     Iterator it = notValidMXL.keySet().iterator();
                     while (it.hasNext()) {
 
