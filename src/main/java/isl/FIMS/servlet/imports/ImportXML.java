@@ -194,9 +194,7 @@ public class ImportXML extends ApplicationBasicServlet {
                             String xmlString = writer.getBuffer().toString().replaceAll("\r", "");
                             boolean insertEntity = false;
                             boolean isValid = false;
-                            if (xmlContent.contains(uriValue) || file.getName().contains(type)) {
-                                insertEntity = true;
-                            }
+                        
                             if (root.getNodeName().equals(rootxpath)) {
                                 isValid = sch.validate(xmlString);
                                 if (isValid) {
