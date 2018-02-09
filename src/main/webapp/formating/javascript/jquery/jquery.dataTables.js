@@ -32,12 +32,10 @@
         if (typeof define === 'function' && define.amd) {
             // Define as an AMD module if possible
             define('datatables', ['jquery'], factory);
-        }
-        else if (typeof exports === 'object') {
+        } else if (typeof exports === 'object') {
             // Node/CommonJS
             module.exports = factory(require('jquery'));
-        }
-        else if (jQuery && !jQuery.fn.dataTable) {
+        } else if (jQuery && !jQuery.fn.dataTable) {
             // Define using browser globals otherwise
             // Prevent multiple instantiations if the script is loaded twice
             factory(jQuery);
@@ -186,8 +184,7 @@
                         out.push(a[i][ prop ][ prop2 ]);
                     }
                 }
-            }
-            else {
+            } else {
                 for (; i < ien; i++) {
                     if (a[i]) {
                         out.push(a[i][ prop ]);
@@ -214,8 +211,7 @@
                         out.push(a[ order[i] ][ prop ][ prop2 ]);
                     }
                 }
-            }
-            else {
+            } else {
                 for (; i < ien; i++) {
                     out.push(a[ order[i] ][ prop ]);
                 }
@@ -233,8 +229,7 @@
             if (start === undefined) {
                 start = 0;
                 end = len;
-            }
-            else {
+            } else {
                 end = start;
                 start = len;
             }
@@ -371,8 +366,7 @@
                         $.extend(true, user[hungarianKey], user[key]);
 
                         _fnCamelToHungarian(src[hungarianKey], user[hungarianKey], force);
-                    }
-                    else {
+                    } else {
                         user[hungarianKey] = user[ key ];
                     }
                 }
@@ -708,18 +702,15 @@
             {
                 oCol.sSortingClass = oClasses.sSortableNone;
                 oCol.sSortingClassJUI = "";
-            }
-            else if (bAsc && !bDesc)
+            } else if (bAsc && !bDesc)
             {
                 oCol.sSortingClass = oClasses.sSortableAsc;
                 oCol.sSortingClassJUI = oClasses.sSortJUIAscAllowed;
-            }
-            else if (!bAsc && bDesc)
+            } else if (!bAsc && bDesc)
             {
                 oCol.sSortingClass = oClasses.sSortableDesc;
                 oCol.sSortingClassJUI = oClasses.sSortJUIDescAllowed;
-            }
-            else
+            } else
             {
                 oCol.sSortingClass = oClasses.sSortable;
                 oCol.sSortingClassJUI = oClasses.sSortJUI;
@@ -846,8 +837,7 @@
 
                 if (!col.sType && col._sManualType) {
                     col.sType = col._sManualType;
-                }
-                else if (!col.sType) {
+                } else if (!col.sType) {
                     for (j = 0, jen = types.length; j < jen; j++) {
                         for (k = 0, ken = data.length; k < ken; k++) {
                             // Use a cache array so we only need to get the type data
@@ -937,13 +927,11 @@
 
                             /* Integer, basic index */
                             fn(aTargets[j], def);
-                        }
-                        else if (typeof aTargets[j] === 'number' && aTargets[j] < 0)
+                        } else if (typeof aTargets[j] === 'number' && aTargets[j] < 0)
                         {
                             /* Negative integer, right to left column counting */
                             fn(columns.length + aTargets[j], def);
-                        }
-                        else if (typeof aTargets[j] === 'string')
+                        } else if (typeof aTargets[j] === 'string')
                         {
                             /* Class name matching on TH element */
                             for (k = 0, kLen = columns.length; k < kLen; k++)
@@ -1107,8 +1095,7 @@
             /* When the data source is null, we can use default column data */
             if ((cellData === rowData || cellData === null) && defaultContent !== null) {
                 cellData = defaultContent;
-            }
-            else if (typeof cellData === 'function') {
+            } else if (typeof cellData === 'function') {
                 // If the data source is a function, then we run it and use the return,
                 // executing in the scope of the data object (for instances)
                 return cellData.call(rowData);
@@ -1184,21 +1171,18 @@
                             t(data, type, row, meta) :
                             data;
                 };
-            }
-            else if (mSource === null)
+            } else if (mSource === null)
             {
                 /* Give an empty string for rendering / sorting etc */
                 return function (data) { // type, row and meta also passed, but not used
                     return data;
                 };
-            }
-            else if (typeof mSource === 'function')
+            } else if (typeof mSource === 'function')
             {
                 return function (data, type, row, meta) {
                     return mSource(data, type, row, meta);
                 };
-            }
-            else if (typeof mSource === 'string' && (mSource.indexOf('.') !== -1 ||
+            } else if (typeof mSource === 'string' && (mSource.indexOf('.') !== -1 ||
                     mSource.indexOf('[') !== -1 || mSource.indexOf('(') !== -1))
             {
                 /* If there is a . in the source string then the data source is in a
@@ -1248,8 +1232,7 @@
                                 // The inner call to fetchData has already traversed through the remainder
                                 // of the source requested, so we exit from the loop
                                 break;
-                            }
-                            else if (funcNotation)
+                            } else if (funcNotation)
                             {
                                 // Function call
                                 a[i] = a[i].replace(__reFn, '');
@@ -1271,8 +1254,7 @@
                 return function (data, type) { // row and meta also passed, but not used
                     return fetchData(data, type, mSource);
                 };
-            }
-            else
+            } else
             {
                 /* Array or flat object mapping */
                 return function (data, type) { // row and meta also passed, but not used
@@ -1299,20 +1281,17 @@
                  * for `mRender` which is read only.
                  */
                 return _fnSetObjectDataFn(mSource._);
-            }
-            else if (mSource === null)
+            } else if (mSource === null)
             {
                 /* Nothing to do when the data source is null */
                 return function () {
                 };
-            }
-            else if (typeof mSource === 'function')
+            } else if (typeof mSource === 'function')
             {
                 return function (data, val, meta) {
                     mSource(data, 'set', val, meta);
                 };
-            }
-            else if (typeof mSource === 'string' && (mSource.indexOf('.') !== -1 ||
+            } else if (typeof mSource === 'string' && (mSource.indexOf('.') !== -1 ||
                     mSource.indexOf('[') !== -1 || mSource.indexOf('(') !== -1))
             {
                 /* Like the get, we need to get data from a nested object */
@@ -1348,8 +1327,7 @@
                             // The inner call to setData has already traversed through the remainder
                             // of the source and has set the data, thus we can exit here
                             return;
-                        }
-                        else if (funcNotation)
+                        } else if (funcNotation)
                         {
                             // Function call
                             a[i] = a[i].replace(__reFn, '');
@@ -1370,8 +1348,7 @@
                     {
                         // Function call
                         data = data[ aLast.replace(__reFn, '') ](val);
-                    }
-                    else
+                    } else
                     {
                         // If array notation is used, we just want to strip it and use the property name
                         // and assign the value. If it isn't used, then we get the result we want anyway
@@ -1382,8 +1359,7 @@
                 return function (data, val) { // meta is also passed in, but not used
                     return setData(data, val, mSource);
                 };
-            }
-            else
+            } else
             {
                 /* Array or flat object mapping */
                 return function (data, val) { // meta is also passed in, but not used
@@ -1434,8 +1410,7 @@
                 if (a[i] == iTarget)
                 {
                     iTargetIndex = i;
-                }
-                else if (a[i] > iTarget)
+                } else if (a[i] > iTarget)
                 {
                     a[i]--;
                 }
@@ -1486,16 +1461,14 @@
                         settings, row, colIdx, colIdx === undefined ? undefined : row._aData
                         )
                         .data;
-            }
-            else {
+            } else {
                 // Reading from data object, update the DOM
                 var cells = row.anCells;
 
                 if (cells) {
                     if (colIdx !== undefined) {
                         cellWrite(cells[colIdx], colIdx);
-                    }
-                    else {
+                    } else {
                         for (i = 0, ien = cells.length; i < ien; i++) {
                             cellWrite(cells[i], i);
                         }
@@ -1513,8 +1486,7 @@
             var cols = settings.aoColumns;
             if (colIdx !== undefined) {
                 cols[ colIdx ].sType = null;
-            }
-            else {
+            } else {
                 for (i = 0, ien = cols.length; i < ien; i++) {
                     cols[i].sType = null;
                 }
@@ -1579,8 +1551,7 @@
                         attr(col.mData.sort, cell);
                         attr(col.mData.type, cell);
                         attr(col.mData.filter, cell);
-                    }
-                    else {
+                    } else {
                         // Depending on the `data` option for the columns the data can
                         // be read to either an object or an array.
                         if (objectRead) {
@@ -1589,8 +1560,7 @@
                                 col._setter = _fnSetObjectDataFn(col.mData);
                             }
                             col._setter(d, contents);
-                        }
-                        else {
+                        } else {
                             d[i] = contents;
                         }
                     }
@@ -1611,8 +1581,7 @@
 
                     td = td.nextSibling;
                 }
-            }
-            else {
+            } else {
                 // Existing row object passed in
                 tds = row.anCells;
 
@@ -1684,8 +1653,7 @@
                     if (oCol.bVisible && !nTrIn)
                     {
                         nTr.appendChild(nTd);
-                    }
-                    else if (!oCol.bVisible && nTrIn)
+                    } else if (!oCol.bVisible && nTrIn)
                     {
                         nTd.parentNode.removeChild(nTd);
                     }
@@ -1979,12 +1947,10 @@
                 oSettings.bDeferLoading = false;
                 oSettings.iDraw++;
                 _fnProcessingDisplay(oSettings, false);
-            }
-            else if (!bServerSide)
+            } else if (!bServerSide)
             {
                 oSettings.iDraw++;
-            }
-            else if (!oSettings.bDestroying && !_fnAjaxUpdate(oSettings))
+            } else if (!oSettings.bDestroying && !_fnAjaxUpdate(oSettings))
             {
                 return;
             }
@@ -2025,16 +1991,14 @@
                     anRows.push(nRow);
                     iRowCount++;
                 }
-            }
-            else
+            } else
             {
                 /* Table is empty - create a row with an empty message in it */
                 var sZero = oLang.sZeroRecords;
                 if (oSettings.iDraw == 1 && _fnDataSource(oSettings) == 'ajax')
                 {
                     sZero = oLang.sLoadingRecords;
-                }
-                else if (oLang.sEmptyTable && oSettings.fnRecordsTotal() === 0)
+                } else if (oLang.sEmptyTable && oSettings.fnRecordsTotal() === 0)
                 {
                     sZero = oLang.sEmptyTable;
                 }
@@ -2089,8 +2053,7 @@
 
             if (filter) {
                 _fnFilterComplete(settings, settings.oPreviousSearch);
-            }
-            else {
+            } else {
                 // No filtering, so we want to just use the display master
                 settings.aiDisplay = settings.aiDisplayMaster.slice();
             }
@@ -2160,8 +2123,7 @@
                         if (sAttr == "H")
                         {
                             sAttr = classes.sJUIHeader;
-                        }
-                        else if (sAttr == "F")
+                        } else if (sAttr == "F")
                         {
                             sAttr = classes.sJUIFooter;
                         }
@@ -2174,12 +2136,10 @@
                             var aSplit = sAttr.split('.');
                             nNewNode.id = aSplit[0].substr(1, aSplit[0].length - 1);
                             nNewNode.className = aSplit[1];
-                        }
-                        else if (sAttr.charAt(0) == "#")
+                        } else if (sAttr.charAt(0) == "#")
                         {
                             nNewNode.id = sAttr.substr(1, sAttr.length - 1);
-                        }
-                        else
+                        } else
                         {
                             nNewNode.className = sAttr;
                         }
@@ -2189,8 +2149,7 @@
 
                     insert.append(nNewNode);
                     insert = $(nNewNode);
-                }
-                else if (cOption == '>')
+                } else if (cOption == '>')
                 {
                     /* End container div */
                     insert = insert.parent();
@@ -2200,33 +2159,27 @@
                 {
                     /* Length */
                     featureNode = _fnFeatureHtmlLength(oSettings);
-                }
-                else if (cOption == 'f' && features.bFilter)
+                } else if (cOption == 'f' && features.bFilter)
                 {
                     /* Filter */
                     featureNode = _fnFeatureHtmlFilter(oSettings);
-                }
-                else if (cOption == 'r' && features.bProcessing)
+                } else if (cOption == 'r' && features.bProcessing)
                 {
                     /* pRocessing */
                     featureNode = _fnFeatureHtmlProcessing(oSettings);
-                }
-                else if (cOption == 't')
+                } else if (cOption == 't')
                 {
                     /* Table */
                     featureNode = _fnFeatureHtmlTable(oSettings);
-                }
-                else if (cOption == 'i' && features.bInfo)
+                } else if (cOption == 'i' && features.bInfo)
                 {
                     /* Info */
                     featureNode = _fnFeatureHtmlInfo(oSettings);
-                }
-                else if (cOption == 'p' && features.bPaginate)
+                } else if (cOption == 'p' && features.bPaginate)
                 {
                     /* Pagination */
                     featureNode = _fnFeatureHtmlPaginate(oSettings);
-                }
-                else if (DataTable.ext.feature.length !== 0)
+                } else if (DataTable.ext.feature.length !== 0)
                 {
                     /* Plug-in features */
                     var aoFeatures = DataTable.ext.feature;
@@ -2405,8 +2358,7 @@
                             tmp[ name ] = [];
                         }
                         tmp[ name ].push(val.value);
-                    }
-                    else {
+                    } else {
                         tmp[val.name] = val.value;
                     }
                 });
@@ -2455,8 +2407,7 @@
 
                     if (error == "parsererror") {
                         log(oSettings, 0, 'Invalid JSON response', 1);
-                    }
-                    else if (xhr.readyState === 4) {
+                    } else if (xhr.readyState === 4) {
                         log(oSettings, 0, 'Ajax error', 7);
                     }
 
@@ -2481,20 +2432,17 @@
                         fn,
                         oSettings
                         );
-            }
-            else if (oSettings.sAjaxSource || typeof ajax === 'string')
+            } else if (oSettings.sAjaxSource || typeof ajax === 'string')
             {
                 // DataTables 1.9- compatibility
                 oSettings.jqXHR = $.ajax($.extend(baseAjax, {
                     url: ajax || oSettings.sAjaxSource
                 }));
-            }
-            else if ($.isFunction(ajax))
+            } else if ($.isFunction(ajax))
             {
                 // Is a function - let the caller define what needs to be done
                 oSettings.jqXHR = ajax.call(instance, data, fn, oSettings);
-            }
-            else
+            } else
             {
                 // Object to extend the base settings
                 oSettings.jqXHR = $.ajax($.extend(baseAjax, ajax));
@@ -2796,8 +2744,7 @@
                         if (jqFilter[0] !== document.activeElement) {
                             jqFilter.val(previousSearch.sSearch);
                         }
-                    }
-                    catch (e) {
+                    } catch (e) {
                     }
                 }
             });
@@ -2849,8 +2796,7 @@
 
                 /* Custom filtering */
                 _fnFilterCustom(oSettings);
-            }
-            else
+            } else
             {
                 fnSaveFilter(oInput);
             }
@@ -2951,8 +2897,7 @@
             // If the input is blank - we just want the full data set
             if (input.length <= 0) {
                 settings.aiDisplay = displayMaster.slice();
-            }
-            else {
+            } else {
                 // New search - start from the master array
                 if (invalidated ||
                         force ||
@@ -3065,8 +3010,7 @@
                             if (typeof cellData !== 'string' && cellData.toString) {
                                 cellData = cellData.toString();
                             }
-                        }
-                        else {
+                        } else {
                             cellData = '';
                         }
 
@@ -3306,8 +3250,7 @@
                         _fnProcessingDisplay(settings, false);
                         _fnInitComplete(settings, json);
                     }, settings);
-                }
-                else {
+                } else {
                     _fnProcessingDisplay(settings, false);
                     _fnInitComplete(settings);
                 }
@@ -3454,8 +3397,7 @@
                                         settings, features.p[i], i, buttons, page, pages
                                         );
                             }
-                        }
-                        else {
+                        } else {
                             plugin.fnUpdate(settings, redraw);
                         }
                     },
@@ -3486,8 +3428,7 @@
             if (records === 0 || len === -1)
             {
                 start = 0;
-            }
-            else if (typeof action === "number")
+            } else if (typeof action === "number")
             {
                 start = action * len;
 
@@ -3495,12 +3436,10 @@
                 {
                     start = 0;
                 }
-            }
-            else if (action == "first")
+            } else if (action == "first")
             {
                 start = 0;
-            }
-            else if (action == "previous")
+            } else if (action == "previous")
             {
                 start = len >= 0 ?
                         start - len :
@@ -3510,19 +3449,16 @@
                 {
                     start = 0;
                 }
-            }
-            else if (action == "next")
+            } else if (action == "next")
             {
                 if (start + len < records)
                 {
                     start += len;
                 }
-            }
-            else if (action == "last")
+            } else if (action == "last")
             {
                 start = Math.floor((records - 1) / len) * len;
-            }
-            else
+            } else
             {
                 _fnLog(settings, 0, "Unknown paging action: " + action, 5);
             }
@@ -3854,23 +3790,20 @@
                         ) {
                     tableStyle.width = _fnStringToCss(table.outerWidth() - barWidth);
                 }
-            }
-            else
+            } else
             {
                 // x scrolling
                 if (scrollXInner !== "") {
                     // x scroll inner has been given - use it
                     tableStyle.width = _fnStringToCss(scrollXInner);
-                }
-                else if (sanityWidth == divBody.width() && divBody.height() < table.height()) {
+                } else if (sanityWidth == divBody.width() && divBody.height() < table.height()) {
                     // There is y-scrolling - try to take account of the y scroll bar
                     tableStyle.width = _fnStringToCss(sanityWidth - barWidth);
                     if (table.outerWidth() > sanityWidth - barWidth) {
                         // Not possible to take account of it
                         tableStyle.width = _fnStringToCss(sanityWidth);
                     }
-                }
-                else {
+                } else {
                     // When all else fails
                     tableStyle.width = _fnStringToCss(sanityWidth);
                 }
@@ -3959,8 +3892,7 @@
                 if (scrollX === "" || scrollXInner !== "") {
                     _fnLog(settings, 1, 'Possible column misalignment', 6);
                 }
-            }
-            else
+            } else
             {
                 correction = '100%';
             }
@@ -4049,8 +3981,7 @@
                     if (nNode1.nodeType === 1) {
                         if (an2) {
                             fn(nNode1, nNode2, index);
-                        }
-                        else {
+                        } else {
                             fn(nNode1, index);
                         }
 
@@ -4115,8 +4046,7 @@
                 for (i = 0; i < columnCount; i++) {
                     columns[i].sWidth = _fnStringToCss(headerCells.eq(i).width());
                 }
-            }
-            else
+            } else
             {
                 // Otherwise construct a single row table with the widest node in the
                 // data, assign any user defined widths, then insert it into the DOM and
@@ -4166,18 +4096,15 @@
                 // is. This results in slightly different, but I think correct behaviour
                 if (scrollX && scrollXInner) {
                     tmpTable.width(scrollXInner);
-                }
-                else if (scrollX) {
+                } else if (scrollX) {
                     tmpTable.css('width', 'auto');
 
                     if (tmpTable.width() < tableContainer.offsetWidth) {
                         tmpTable.width(tableContainer.offsetWidth);
                     }
-                }
-                else if (scrollY) {
+                } else if (scrollY) {
                     tmpTable.width(tableContainer.offsetWidth);
-                }
-                else if (tableWidthAttr) {
+                } else if (tableWidthAttr) {
                     tmpTable.width(tableWidthAttr);
                 }
 
@@ -4267,8 +4194,7 @@
                         last = undefined;
                         fn.apply(that, args);
                     }, frequency);
-                }
-                else {
+                } else {
                     last = now;
                     fn.apply(that, args);
                 }
@@ -4455,8 +4381,7 @@
                         if (a.length && !$.isArray(a[0])) {
                             // 1D array
                             nestedSort.push(a);
-                        }
-                        else {
+                        } else {
                             // 2D array
                             nestedSort.push.apply(nestedSort, a);
                         }
@@ -4601,8 +4526,7 @@
                         y = aiOrig[b];
                         return x < y ? -1 : x > y ? 1 : 0;
                     });
-                }
-                else {
+                } else {
                     // Depreciated - remove in 1.11 (providing a plug-in option)
                     // Not all sort types have formatting methods, so we have to call their sorting
                     // methods.
@@ -4664,8 +4588,7 @@
                     if (aSort.length > 0 && aSort[0].col == i) {
                         th.setAttribute('aria-sort', aSort[0].dir == "asc" ? "ascending" : "descending");
                         nextSort = asSorting[ aSort[0].index + 1 ] || asSorting[0];
-                    }
-                    else {
+                    } else {
                         nextSort = asSorting[0];
                     }
 
@@ -4673,8 +4596,7 @@
                             oAria.sSortAscending :
                             oAria.sSortDescending
                             );
-                }
-                else {
+                } else {
                     label = sTitle;
                 }
 
@@ -4728,27 +4650,23 @@
 
                     if (nextSortIdx === null) {
                         sorting.splice(sortIdx, 1);
-                    }
-                    else {
+                    } else {
                         sorting[sortIdx][1] = asSorting[ nextSortIdx ];
                         sorting[sortIdx]._idx = nextSortIdx;
                     }
-                }
-                else {
+                } else {
                     // No sort on this column yet
                     sorting.push([colIdx, asSorting[0], 0]);
                     sorting[sorting.length - 1]._idx = 0;
                 }
-            }
-            else if (sorting.length && sorting[0][0] == colIdx) {
+            } else if (sorting.length && sorting[0][0] == colIdx) {
                 // Single column - already sorting on this column, modify the sort
                 nextSortIdx = next(sorting[0]);
 
                 sorting.length = 1;
                 sorting[0][1] = asSorting[ nextSortIdx ];
                 sorting[0]._idx = nextSortIdx;
-            }
-            else {
+            } else {
                 // Single column - sort only on this column
                 sorting.length = 0;
                 sorting.push([colIdx, asSorting[0]]);
@@ -4797,8 +4715,7 @@
                             _fnProcessingDisplay(settings, false);
                         }
                     }, 0);
-                }
-                else {
+                } else {
                     _fnSortListener(settings, colIdx, e.shiftKey, callback);
                 }
             });
@@ -5035,15 +4952,12 @@
 
                 if (type == 'alert') {
                     alert(msg);
-                }
-                else if (type == 'throw') {
+                } else if (type == 'throw') {
                     throw new Error(msg);
-                }
-                else if (typeof type == 'function') {
+                } else if (typeof type == 'function') {
                     type(settings, tn, msg);
                 }
-            }
-            else if (window.console && console.log) {
+            } else if (window.console && console.log) {
                 console.log(msg);
             }
         }
@@ -5063,8 +4977,7 @@
                 $.each(name, function (i, val) {
                     if ($.isArray(val)) {
                         _fnMap(ret, src, val[0], val[1]);
-                    }
-                    else {
+                    } else {
                         _fnMap(ret, src, val);
                     }
                 });
@@ -5112,11 +5025,9 @@
                             out[prop] = {};
                         }
                         $.extend(true, out[prop], val);
-                    }
-                    else if (breakRefs && prop !== 'data' && prop !== 'aaData' && $.isArray(val)) {
+                    } else if (breakRefs && prop !== 'data' && prop !== 'aaData' && $.isArray(val)) {
                         out[prop] = val.slice();
-                    }
-                    else {
+                    } else {
                         out[prop] = val;
                     }
                 }
@@ -5242,8 +5153,7 @@
                 // Specific renderer for this type. If available use it, otherwise use
                 // the default.
                 return host[renderer[type]] || host._;
-            }
-            else if (typeof renderer === 'string') {
+            } else if (typeof renderer === 'string') {
                 // Common renderer - if there is one available for this type use it,
                 // otherwise use the default
                 return host[renderer] || host._;
@@ -5266,8 +5176,7 @@
         {
             if (settings.oFeatures.bServerSide) {
                 return 'ssp';
-            }
-            else if (settings.ajax || settings.sAjaxSource) {
+            } else if (settings.ajax || settings.sAjaxSource) {
                 return 'ajax';
             }
             return 'dom';
@@ -5475,8 +5384,7 @@
 
                 if (bRedraw === undefined || bRedraw) {
                     api.draw(false);
-                }
-                else if (scroll.sX !== "" || scroll.sY !== "") {
+                } else if (scroll.sX !== "" || scroll.sY !== "") {
                     /* If not redrawing, but scrolling, we want to apply the new column sizes anyway */
                     _fnScrollDraw(settings);
                 }
@@ -5643,8 +5551,7 @@
 
                 if (iColumn === null || iColumn === undefined) {
                     api.search(sInput, bRegex, bSmart, bCaseInsensitive);
-                }
-                else {
+                } else {
                     api.column(iColumn).search(sInput, bRegex, bSmart, bCaseInsensitive);
                 }
 
@@ -5768,8 +5675,7 @@
 
                 if (nodeName == 'TR') {
                     return api.row(node).index();
-                }
-                else if (nodeName == 'TD' || nodeName == 'TH') {
+                } else if (nodeName == 'TD' || nodeName == 'TH') {
                     var cell = api.cell(node).index();
 
                     return [
@@ -5996,8 +5902,7 @@
 
                 if (iColumn === undefined || iColumn === null) {
                     api.row(mRow).data(mData);
-                }
-                else {
+                } else {
                     api.cell(mRow, iColumn).data(mData);
                 }
 
@@ -6100,13 +6005,11 @@
                         if (emptyInit || bRetrieve)
                         {
                             return s.oInstance;
-                        }
-                        else if (bDestroy)
+                        } else if (bDestroy)
                         {
                             s.oInstance.fnDestroy();
                             break;
-                        }
-                        else
+                        } else
                         {
                             _fnLog(s, 0, 'Cannot reinitialise DataTable', 3);
                             return;
@@ -6246,12 +6149,10 @@
 
                     if (!oSettings.renderer) {
                         oSettings.renderer = 'jqueryui';
-                    }
-                    else if ($.isPlainObject(oSettings.renderer) && !oSettings.renderer.header) {
+                    } else if ($.isPlainObject(oSettings.renderer) && !oSettings.renderer.header) {
                         oSettings.renderer.header = 'jqueryui';
                     }
-                }
-                else
+                } else
                 {
                     $.extend(oClasses, DataTable.ext.classes, oInit.oClasses);
                 }
@@ -6350,8 +6251,7 @@
                     {
                         aoColumnsInit.push(null);
                     }
-                }
-                else
+                } else
                 {
                     aoColumnsInit = oInit.aoColumns;
                 }
@@ -6489,8 +6389,7 @@
 
                 if (tfoot.length === 0 || tfoot.children().length === 0) {
                     $this.addClass(oClasses.sNoFooter);
-                }
-                else if (tfoot.length > 0) {
+                } else if (tfoot.length > 0) {
                     oSettings.nTFoot = tfoot[0];
                     _fnDetectHeader(oSettings.aoFooter, oSettings.nTFoot);
                 }
@@ -6502,8 +6401,7 @@
                     {
                         _fnAddData(oSettings, oInit.aaData[ i ]);
                     }
-                }
-                else if (oSettings.bDeferLoading || _fnDataSource(oSettings) == 'dom')
+                } else if (oSettings.bDeferLoading || _fnDataSource(oSettings) == 'dom')
                 {
                     /* Grab the data from the page - only do this when deferred loading or no Ajax
                      * source since there is no point in reading the DOM data if we are then going
@@ -6610,24 +6508,19 @@
 
             if (!mixed) {
                 return [];
-            }
-            else if (mixed.nTable && mixed.oApi) {
+            } else if (mixed.nTable && mixed.oApi) {
                 // DataTables settings object
                 return [mixed];
-            }
-            else if (mixed.nodeName && mixed.nodeName.toLowerCase() === 'table') {
+            } else if (mixed.nodeName && mixed.nodeName.toLowerCase() === 'table') {
                 // Table node
                 idx = $.inArray(mixed, tables);
                 return idx !== -1 ? [settings[idx]] : null;
-            }
-            else if (mixed && typeof mixed.settings === 'function') {
+            } else if (mixed && typeof mixed.settings === 'function') {
                 return mixed.settings().toArray();
-            }
-            else if (typeof mixed === 'string') {
+            } else if (typeof mixed === 'string') {
                 // jQuery selector
                 jq = $(mixed);
-            }
-            else if (mixed instanceof $) {
+            } else if (mixed instanceof $) {
                 // jQuery object (also DataTables instance)
                 jq = mixed;
             }
@@ -6715,8 +6608,7 @@
                 for (var i = 0, ien = context.length; i < ien; i++) {
                     ctxSettings(context[i]);
                 }
-            }
-            else {
+            } else {
                 ctxSettings(context);
             }
 
@@ -6764,7 +6656,7 @@
                 }
 
                 return this;
-           },
+            },
             eq: function (idx)
             {
                 var ctx = this.context;
@@ -6772,15 +6664,14 @@
                 return ctx.length > idx ?
                         new _Api(ctx[idx], this[idx]) :
                         null;
-           },
+            },
             filter: function (fn)
             {
                 var a = [];
 
                 if (__arrayProto.filter) {
                     a = __arrayProto.filter.call(this, fn, this);
-                }
-                else {
+                } else {
                     // Compatibility for browsers without EMCA-252-5 (JS 1.6)
                     for (var i = 0, ien = this.length; i < ien; i++) {
                         if (fn.call(this, this[i], i, this)) {
@@ -6790,12 +6681,12 @@
                 }
 
                 return new _Api(this.context, a);
-           },
+            },
             flatten: function ()
             {
                 var a = [];
                 return new _Api(this.context, a.concat.apply(a, this.toArray()));
-           },
+            },
             join: __arrayProto.join,
             indexOf: __arrayProto.indexOf || function (obj, start)
             {
@@ -6832,16 +6723,14 @@
                         if (ret !== undefined) {
                             a.push(ret);
                         }
-                    }
-                    else if (type === 'columns' || type === 'rows') {
+                    } else if (type === 'columns' || type === 'rows') {
                         // this has same length as context - one entry for each table
                         ret = fn.call(apiInst, context[i], this[i], i);
 
                         if (ret !== undefined) {
                             a.push(ret);
                         }
-                    }
-                    else if (type === 'column' || type === 'column-rows' || type === 'row' || type === 'cell') {
+                    } else if (type === 'column' || type === 'column-rows' || type === 'row' || type === 'cell') {
                         // columns and rows share the same structure.
                         // 'this' is an array of column indexes for each context
                         items = this[i];
@@ -6855,8 +6744,7 @@
 
                             if (type === 'cell') {
                                 ret = fn.call(apiInst, context[i], item.row, item.column, i, j);
-                            }
-                            else {
+                            } else {
                                 ret = fn.call(apiInst, context[i], item, i, j, rows);
                             }
 
@@ -6876,21 +6764,20 @@
                     return api;
                 }
                 return this;
-           },
+            },
             lastIndexOf: __arrayProto.lastIndexOf || function (obj, start)
             {
                 // Bit cheeky...
                 return this.indexOf.apply(this.toArray.reverse(), arguments);
-           },
-            length:0,
+            },
+            length: 0,
             map: function (fn)
             {
                 var a = [];
 
                 if (__arrayProto.map) {
                     a = __arrayProto.map.call(this, fn, this);
-                }
-                else {
+                } else {
                     // Compatibility for browsers without EMCA-252-5 (JS 1.6)
                     for (var i = 0, ien = this.length; i < ien; i++) {
                         a.push(fn.call(this, this[i], i));
@@ -6898,7 +6785,7 @@
                 }
 
                 return new _Api(this.context, a);
-           },
+            },
             pluck: function (prop)
             {
                 return this.map(function (el) {
@@ -6911,11 +6798,11 @@
             reduce: __arrayProto.reduce || function (fn, init)
             {
                 return _fnReduce(this, fn, init, 0, this.length, 1);
-           },
+            },
             reduceRight: __arrayProto.reduceRight || function (fn, init)
             {
                 return _fnReduce(this, fn, init, this.length - 1, -1, -1);
-           },
+            },
             reverse: __arrayProto.reverse,
             // Object with rows, columns and opts
             selector: null,
@@ -6927,19 +6814,19 @@
             toArray: function ()
             {
                 return __arrayProto.slice.call(this);
-           },
+            },
             to$: function ()
             {
                 return $(this);
-           },
+            },
             toJQuery: function ()
             {
                 return $(this);
-           },
+            },
             unique: function ()
             {
                 return new _Api(this.context, _unique(this));
-           },
+            },
             unshift: __arrayProto.unshift
         };
 
@@ -7059,8 +6946,7 @@
 
                 if (i === ien - 1) {
                     src.val = val;
-                }
-                else {
+                } else {
                     struct = method ?
                             src.methodExt :
                             src.propExt;
@@ -7078,8 +6964,7 @@
                 if (ret === this) {
                     // Returned item is the API instance that was passed in, return it
                     return this;
-                }
-                else if (ret instanceof _Api) {
+                } else if (ret instanceof _Api) {
                     // New API instance returned, want the value from the first item
                     // in the returned array for the singular result.
                     return ret.length ?
@@ -7315,8 +7200,7 @@
         var __reload = function (settings, holdPosition, callback) {
             if (_fnDataSource(settings) == 'ssp') {
                 _fnReDraw(settings, holdPosition);
-            }
-            else {
+            } else {
                 // Trigger xhr
                 _fnProcessingDisplay(settings, true);
 
@@ -7426,8 +7310,7 @@
             return this.iterator('table', function (settings) {
                 if ($.isPlainObject(settings.ajax)) {
                     settings.ajax.url = url;
-                }
-                else {
+                } else {
                     settings.ajax = url;
                 }
                 // No need to consider sAjaxSource here since DataTables gives priority
@@ -7549,16 +7432,14 @@
                 return search === 'removed' ?
                         [] :
                         _range(0, displayMaster.length);
-            }
-            else if (page == 'current') {
+            } else if (page == 'current') {
                 // Current page implies that order=current and fitler=applied, since it is
                 // fairly senseless otherwise, regardless of what order and search actually
                 // are
                 for (i = settings._iDisplayStart, ien = settings.fnDisplayEnd(); i < ien; i++) {
                     a.push(displayFiltered[i]);
                 }
-            }
-            else if (order == 'current' || order == 'applied') {
+            } else if (order == 'current' || order == 'applied') {
                 a = search == 'none' ?
                         displayMaster.slice() : // no search
                         search == 'applied' ?
@@ -7566,13 +7447,11 @@
                         $.map(displayMaster, function (el, i) { // removed search
                             return $.inArray(el, displayFiltered) === -1 ? el : null;
                         });
-            }
-            else if (order == 'index' || order == 'original') {
+            } else if (order == 'index' || order == 'original') {
                 for (i = 0, ien = settings.aoData.length; i < ien; i++) {
                     if (search == 'none') {
                         a.push(i);
-                    }
-                    else { // applied | removed
+                    } else { // applied | removed
                         tmp = $.inArray(i, displayFiltered);
 
                         if ((tmp === -1 && search == 'removed') ||
@@ -7618,8 +7497,7 @@
                 if (selInt !== null && $.inArray(selInt, rows) !== -1) {
                     // Selector - integer
                     return [selInt];
-                }
-                else if (!sel) {
+                } else if (!sel) {
                     // Selector - none
                     return rows;
                 }
@@ -7665,8 +7543,7 @@
             // argument shifting
             if (selector === undefined) {
                 selector = '';
-            }
-            else if ($.isPlainObject(selector)) {
+            } else if ($.isPlainObject(selector)) {
                 opts = selector;
                 selector = '';
             }
@@ -7755,8 +7632,7 @@
 
                     if (row.nodeName && row.nodeName.toUpperCase() === 'TR') {
                         out.push(_fnAddTr(settings, row)[0]);
-                    }
-                    else {
+                    } else {
                         out.push(_fnAddData(settings, row));
                     }
                 }
@@ -7842,14 +7718,13 @@
                 // to add the correct number of columns etc
                 if (r.nodeName && r.nodeName.toLowerCase() === 'tr') {
                     rows.push(r);
-                }
-                else {
+                } else {
                     // Otherwise create a row with a wrapper
                     var created = $('<tr><td/></tr>').addClass(k);
                     $('td', created)
                             .addClass(k)
                             .html(r)
-                            [0].colSpan = _fnVisbleColumns(ctx);
+                    [0].colSpan = _fnVisbleColumns(ctx);
 
                     rows.push(created[0]);
                 }
@@ -7859,8 +7734,7 @@
                 for (var i = 0, ien = data.length; i < ien; i++) {
                     addRow(data[i], klass);
                 }
-            }
-            else {
+            } else {
                 addRow(data, klass);
             }
 
@@ -7905,8 +7779,7 @@
 
                     if (show) {
                         row._details.insertAfter(row.nTr);
-                    }
-                    else {
+                    } else {
                         row._details.detach();
                     }
 
@@ -7995,16 +7868,13 @@
                 return ctx.length && this.length ?
                         ctx[0].aoData[ this[0] ]._details :
                         undefined;
-            }
-            else if (data === true) {
+            } else if (data === true) {
                 // show
                 this.child.show();
-            }
-            else if (data === false) {
+            } else if (data === false) {
                 // remove
                 __details_remove(this);
-            }
-            else if (ctx.length && this.length) {
+            } else if (ctx.length && this.length) {
                 // set
                 __details_add(ctx[0], ctx[0].aoData[ this[0] ], data, klass);
             }
@@ -8143,8 +8013,7 @@
                                 return name === match[1] ? i : null;
                             });
                     }
-                }
-                else {
+                } else {
                     // jQuery selector on the TH elements for the columns
                     return $(nodes)
                             .filter(s)
@@ -8189,8 +8058,7 @@
                         tr.insertBefore(cells[ column ], cells[ insertBefore ] || null);
                     }
                 }
-            }
-            else {
+            } else {
                 // Remove column
                 $(_pluck(settings.aoData, 'anCells', column)).detach();
             }
@@ -8223,8 +8091,7 @@
             // argument shifting
             if (selector === undefined) {
                 selector = '';
-            }
-            else if ($.isPlainObject(selector)) {
+            } else if ($.isPlainObject(selector)) {
                 opts = selector;
                 selector = '';
             }
@@ -8342,8 +8209,7 @@
 
                 if (type === 'fromVisible' || type === 'toData') {
                     return _fnVisibleToColumnIndex(ctx, idx);
-                }
-                else if (type === 'fromData' || type === 'toVisible') {
+                } else if (type === 'fromData' || type === 'toVisible') {
                     return _fnColumnIndexToVisible(ctx, idx);
                 }
             }
@@ -8390,8 +8256,7 @@
                                 if (s(o, _fnGetCellData(settings, row, j), host.anCells[j])) {
                                     a.push(o);
                                 }
-                            }
-                            else {
+                            } else {
                                 // Selector - all
                                 a.push(o);
                             }
@@ -8431,8 +8296,7 @@
                 if (typeof rowSelector.row !== undefined) {
                     opts = columnSelector;
                     columnSelector = null;
-                }
-                else {
+                } else {
                     opts = rowSelector;
                     rowSelector = null;
                 }
@@ -8598,8 +8462,7 @@
             if (typeof order === 'number') {
                 // Simple column / direction passed in
                 order = [[order, dir]];
-            }
-            else if (!$.isArray(order[0])) {
+            } else if (!$.isArray(order[0])) {
                 // Arguments passed in (list of 1D arrays)
                 order = Array.prototype.slice.call(arguments);
             }
@@ -10250,7 +10113,7 @@
                         /\B(?=(\d{3})+(?!\d))/g,
                         this.oLanguage.sThousands
                         );
-           },
+            },
             /**
              * This function is called on every 'draw' event, and allows you to
              * dynamically modify the header row. This can be used to calculate and
@@ -10473,7 +10336,7 @@
                             );
                 } catch (e) {
                 }
-           },
+            },
             /**
              * Callback which allows modification of the saved state prior to loading that state.
              * This callback is called when the table is loading state from the stored data, but
@@ -10569,7 +10432,7 @@
                             );
                 } catch (e) {
                 }
-           },
+            },
             /**
              * Callback which allows modification of the state to be saved. Called when the table
              * has changed state a new state save is required. This method allows modification of
@@ -10691,7 +10554,7 @@
              *      } );
              *    } )
              */
-            "iDisplayStart":0,
+            "iDisplayStart": 0,
             /**
              * By default DataTables allows keyboard navigation of the table (sorting, paging,
              * and filtering) by adding a `tabindex` attribute to the required elements. This
@@ -10712,7 +10575,7 @@
              *      } );
              *    } );
              */
-            "iTabIndex":0,
+            "iTabIndex": 0,
             /**
              * Classes that DataTables assigns to the various components and features
              * that it adds to the HTML table. This allows classes to be configured
@@ -11201,7 +11064,7 @@
                  *    } );
                  */
                 "sZeroRecords": "No matching records found"
-           },
+            },
             /**
              * This parameter allows you to have define the global filtering state at
              * initialisation time. As an object the `search` parameter must be
@@ -12420,7 +12283,7 @@
                  *  @type boolean
                  */
                 "bStateSave": null
-           },
+            },
             /**
              * Scrolling settings for a table.
              *  @namespace
@@ -12501,7 +12364,7 @@
                  *  @default false
                  */
                 "bScrollbarLeft": false
-           },
+            },
             "ajax": null,
             /**
              * Array referencing the nodes which are used for the features. The
@@ -13027,8 +12890,7 @@
                     return paginate === false || len === -1 ?
                             start + records :
                             Math.min(start + len, this._iRecordsDisplay);
-                }
-                else {
+                } else {
                     return !paginate || calc > records || len === -1 ?
                             records :
                             calc;
@@ -13250,7 +13112,7 @@
                  *  @default null
                  */
                 ajax: null
-           },
+            },
             /**
              * Pagination plug-in methods.
              * 
@@ -13300,7 +13162,7 @@
             renderer: {
                 pageButton: {},
                 header: {}
-           },
+            },
             /**
              * Ordering plug-ins - custom data source
              * 
@@ -13503,7 +13365,7 @@
              * @type int
              * @private
              */
-            _unique:0,
+            _unique: 0,
             //
             // Depreciated
             // The following properties are retained for backwards compatiblity only.
@@ -13522,7 +13384,7 @@
              *  @type int
              *  @deprecated Since v1.10
              */
-            iApiIndex:0,
+            iApiIndex: 0,
             /**
              * jQuery UI class container
              *  @type object
@@ -13670,18 +13532,15 @@
 
             if (pages <= buttons) {
                 numbers = _range(0, pages);
-            }
-            else if (page <= half) {
+            } else if (page <= half) {
                 numbers = _range(0, buttons - 2);
                 numbers.push('ellipsis');
                 numbers.push(pages - 1);
-            }
-            else if (page >= pages - 1 - half) {
+            } else if (page >= pages - 1 - half) {
                 numbers = _range(pages - (buttons - 2), pages);
                 numbers.splice(0, 0, 'ellipsis'); // no unshift in ie6
                 numbers.splice(0, 0, 0);
-            }
-            else {
+            } else {
                 numbers = _range(page - 1, page + 2);
                 numbers.push('ellipsis');
                 numbers.push(pages - 1);
@@ -13733,8 +13592,7 @@
                                 var inner = $('<' + (button.DT_el || 'div') + '/>')
                                         .appendTo(container);
                                 attach(inner, button);
-                            }
-                            else {
+                            } else {
                                 btnDisplay = '';
                                 btnClass = '';
 
@@ -13808,8 +13666,7 @@
                         // accessibility. So we want to restore focus once the draw has
                         // completed
                         activeEl = $(document.activeElement).data('dt-idx');
-                    }
-                    catch (e) {
+                    } catch (e) {
                     }
 
                     attach($(host).empty(), buttons);
@@ -13951,15 +13808,15 @@
                             return __numericReplace(d, decimalPlace, _re_html, _re_formatted_numeric);
                         }
                     },
-            function (key, fn) {
-                // Add the ordering method
-                _ext.type.order[ key + decimalPlace + '-pre' ] = fn;
+                    function (key, fn) {
+                        // Add the ordering method
+                        _ext.type.order[ key + decimalPlace + '-pre' ] = fn;
 
-                // For HTML types add a search formatter that will strip the HTML
-                if (key.match(/^html\-/)) {
-                    _ext.type.search[ key + decimalPlace ] = _ext.type.search.html;
-                }
-            }
+                        // For HTML types add a search formatter that will strip the HTML
+                        if (key.match(/^html\-/)) {
+                            _ext.type.search[ key + decimalPlace ] = _ext.type.search.html;
+                        }
+                    }
             );
         }
 
@@ -14457,11 +14314,19 @@
             var curr = $(this);
             var href = item.getAttribute('href');
             var hasID = item.getAttribute('id');
-            var hasLang = (href.indexOf("lang=") > -1);
+            var hasLang;
+            if(href === 'javascript:void(0)'){
+                href = null;
+                item.removeAttribute('href');
+            }
+            if (href) {
+                hasLang = (href.indexOf("lang=") > -1);
+            }
+
             if (hasLang) {
                 href = href.replace("lang=", "lang=" + lang);
             }
-            if (href != "" && (hasID == "" || hasID == null)) {
+            if (href != "" && href!==null && (hasID == "" || hasID == null)) {
                 href = href.replace("file=", "file=" + fileName);
                 item.setAttribute("href", href);
             }

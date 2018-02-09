@@ -72,8 +72,20 @@ This file is part of the FIMS webapp.
                 <xsl:variable name = "tag" select = " 'backupMsg'" />
                 var backupMsg = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>';
                 var lang = '<xsl:value-of select="$lang"/>';
+                <xsl:variable name = "tag" select = " 'selectRow'" />
+                var selectRow = '<xsl:value-of select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>'
                 $(document).ready(function(){
-              
+                $(".actionsMenu >.nav>li>a").click(function() {
+                if($( this ).attr("onclick")===''){
+                alert( selectRow);
+                }
+                });
+                $(".moreDropDown a").not(":first").click(function(e) {
+                if($( this ).attr("onclick")===''|| $( this ).attr("href")==='' || $( this ).attr("href")==='#'){
+                alert( selectRow);
+                e.preventDefault();
+                }
+                });
 
                 jQuery.browser = {};
                 (function () {

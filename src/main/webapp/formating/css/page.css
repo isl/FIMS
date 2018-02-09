@@ -105,7 +105,7 @@ This file is part of the FIMS webapp.
     color: #606C2C;         /* adjust as needed */
     font-size: x-small;
 }
-// Till here
+/* Till here */
 
 tr#resultRow td a img{
     font-weight: bold; 
@@ -336,6 +336,8 @@ html,body{
     padding-right: 10px;
     padding-left: 0px;
     padding-top: 0px;
+	cursor: pointer;
+
 }
 .actionsMenu >.nav>li>a:focus{
     border-color: #ffffff;
@@ -350,6 +352,8 @@ html,body{
 .moreDropDown a {
     color: #565655;
     text-decoration:none;
+	cursor: pointer;
+		 
 }
 
 /* unvisited link */

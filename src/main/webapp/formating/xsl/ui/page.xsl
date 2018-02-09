@@ -111,7 +111,8 @@ This file is part of the FIMS webapp.
             if(file!=""){
             onclick=onclick.replace("file=","file="+file)
             }
-            $current.attr('href',"javascript:void(0)");
+            //$current.attr('href',"javascript:void(0)");
+            $current.attr('onclick',onclick);
             $item.onclick=function(){
             popUp(onclick, id, 900, 700);
             }
