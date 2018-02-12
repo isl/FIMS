@@ -675,15 +675,19 @@ public class QueryTools {
                 } else {
                     vocabulary.add("");
                 }
+                String pathType = "string";
                 ArrayList<Element> elements = sch.getElements(xpath);
-                Element el = elements.get(0);
-                String pathType = el.getType();
+                if (!elements.isEmpty()) {
+                    Element el = elements.get(0);
+                    pathType = el.getType();
+                }
 
 //                if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
 //                    dataTypes.add("string");
 //                } else {
 //                    dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
 //                }
+//                System.out.println("pathType " + el.getType());
                 if (pathType.equals("string") || pathType.equals("")) {
                     dataTypes.add("string");
                 } else if (pathType.equals("date") || pathType.equals("time_span")) {
@@ -700,13 +704,14 @@ public class QueryTools {
             for (int i = 0; i < xpaths.size(); i++) {
                 selectedInputs.add("0");
             }
-       
+      
             allList[0] = xpaths;
             allList[1] = labels;
             allList[2] = dataTypes;
             allList[3] = selectedInputs;
             allList[4] = vocabulary;
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return allList;
 
