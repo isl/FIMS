@@ -79,7 +79,7 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected static String emailAdress;
     //  protected  String username;
     protected static String pageTitle = "PageTitle";
-    protected static String schemaFolder;
+    public static String schemaFolder;
     protected static String[] editorWebapp;
     protected static String defaultLang = "";
     protected static String defaultEntity = "";

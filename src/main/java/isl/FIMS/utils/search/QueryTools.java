@@ -40,10 +40,14 @@ import isl.dms.file.DMSTag;
 import isl.dms.file.DMSUser;
 import isl.dms.file.DMSXQuery;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import schemareader.Element;
+import schemareader.SchemaFile;
 
 public class QueryTools {
 
@@ -656,8 +660,10 @@ public class QueryTools {
             // ArrayList<String[]> vocabulary = new ArrayList<String[]>();
             ArrayList<String> vocabulary = new ArrayList<String>();
             DMSConfig vocConf = new DMSConfig(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "Vocabulary/", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+            SchemaFile sch = new SchemaFile(ApplicationBasicServlet.schemaFolder + category + ".xsd");
 
             for (int i = 0; i < nodes.length; i++) {
+                String xpath = getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)");
                 xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
                 labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
                 String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
@@ -669,11 +675,23 @@ public class QueryTools {
                 } else {
                     vocabulary.add("");
                 }
+                ArrayList<Element> elements = sch.getElements(xpath);
+                Element el = elements.get(0);
+                String pathType = el.getType();
 
-                if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
+//                if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
+//                    dataTypes.add("string");
+//                } else {
+//                    dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
+//                }
+                if (pathType.equals("string") || pathType.equals("")) {
                     dataTypes.add("string");
+                } else if (pathType.equals("date") || pathType.equals("time_span")) {
+                    dataTypes.add("time");
+                } else if (pathType.equals("integer") || pathType.equals("decimal") || pathType.equals("int")) {
+                    dataTypes.add("math");
                 } else {
-                    dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
+                    dataTypes.add("string");
                 }
             }
 
@@ -682,7 +700,7 @@ public class QueryTools {
             for (int i = 0; i < xpaths.size(); i++) {
                 selectedInputs.add("0");
             }
-
+       
             allList[0] = xpaths;
             allList[1] = labels;
             allList[2] = dataTypes;
