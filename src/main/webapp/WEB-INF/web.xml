@@ -192,11 +192,11 @@ This file is part of the FIMS webapp.
 		<param-name>signUp</param-name>
 		<param-value>true</param-value>
 	</context-param>
-	 <context-param>
-        <description>It is the url sent at sign up email to get in the system. Sometimes it may be different than systemRoot url.</description>
-        <param-name>signUpEmailUrl</param-name>
-        <param-value>http://localhost:8084/FIMS</param-value>
-    </context-param>
+	<context-param>
+		<description>It is the url sent at sign up email to get in the system. Sometimes it may be different than systemRoot url.</description>
+		<param-name>signUpEmailUrl</param-name>
+		<param-value>http://localhost:8084/FIMS</param-value>
+	</context-param>
 	<context-param>
 		<!--Option forget password-->
 		<param-name>forgetPass</param-name>
@@ -237,6 +237,11 @@ This file is part of the FIMS webapp.
 		<param-name>systemVersion</param-name>
 		<param-value>2.0</param-value>
 	</context-param>
+	<context-param>
+		<description>publicationDate</description>
+		<param-name>publicationDate</param-name>
+		<param-value>2012</param-value>
+	</context-param>			
 	<!-- ====================FILTERS==================== -->
 	<context-param>
 		<param-name>threshold</param-name>
@@ -320,9 +325,9 @@ This file is part of the FIMS webapp.
 		<url-pattern>/UploadBinFile</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/GetVersionsList</url-pattern>
-    </filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/GetVersionsList</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/CreateVersion</url-pattern>
@@ -336,61 +341,61 @@ This file is part of the FIMS webapp.
 		<url-pattern>/ExportRDF</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ExportSchema</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ExportTemplate</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ExportVersions</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ExportVocabulary</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ExportXML</url-pattern>
-    </filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ExportSchema</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ExportTemplate</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ExportVersions</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ExportVocabulary</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ExportXML</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/CreateCopy</url-pattern>
 	</filter-mapping>
-	 <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/UnlockEntity</url-pattern>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/UnlockEntity</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/About</url-pattern>
 	</filter-mapping>
-	 <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/FetchAudio</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/FetchBinFile</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ImportVocabulary</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/GetTerms</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ImportXML</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/ChangePass</url-pattern>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/FetchAudio</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/FetchBinFile</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ImportVocabulary</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/GetTerms</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ImportXML</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/ChangePass</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>ValidateAction</filter-name>
 		<url-pattern>/AdminEntity</url-pattern>
@@ -630,6 +635,10 @@ This file is part of the FIMS webapp.
 		<servlet-name>GetTerms</servlet-name>
 		<servlet-class>isl.FIMS.servlet.search.GetTerms</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Privacy</servlet-name>
+		<servlet-class>isl.FIMS.servlet.ui.Privacy</servlet-class>
+	</servlet>	  
 	<servlet-mapping>
 		<servlet-name>AdminEntity</servlet-name>
 		<url-pattern>/AdminEntity</url-pattern>
@@ -793,6 +802,10 @@ This file is part of the FIMS webapp.
 		<servlet-name>GetTerms</servlet-name>
 		<url-pattern>/GetTerms</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Privacy</servlet-name>
+		<url-pattern>/Privacy</url-pattern>
+	</servlet-mapping>			  
 	<session-config>
 		<session-timeout>180</session-timeout>
 	</session-config>

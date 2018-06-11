@@ -720,42 +720,42 @@ This file is part of the FIMS webapp.
 
 		<!--Ancient Theaters-->
 		<DionysiacArtist>
-			<gr>Τεχνίτης Διονύσου</gr>
-			<en>Dionysiac Artist</en>
+			<gr>Τεχνίτες Διονύσου</gr>
+			<en>Dionysiac Artists</en>
 		</DionysiacArtist>
 		<GuildArtists>
-			<gr>Κοινό Τεχνιτών</gr>
-			<en>Guild of Artists</en>
+			<gr>Κοινά Τεχνιτών</gr>
+			<en>Guilds of Artists</en>
 		</GuildArtists>
 		<Festivals>
-			<gr>Εορτή</gr>
+			<gr>Εορτές</gr>
 			<en>Festivals</en>
 		</Festivals>
 
 		<FestivalCelebration>
-			<gr>Τέλεση Εορτής</gr>
-			<en>Festivals by date of celebration</en>
+			<gr>Τελέσεις Εορτών</gr>
+			<en>Festivals by Celebration Date</en>
 		</FestivalCelebration>        
 		<Celebration>
-			<gr>Εορτασμός</gr>
-			<en>Celebration</en>
+			<gr>Εορτασμοί</gr>
+			<en>Celebrations</en>
 		</Celebration>       
 		<Contest>
-			<gr>Αγών</gr>
-			<en>Contest</en>
+			<gr>Αγώνες</gr>
+			<en>Contests</en>
 		</Contest>
 		<Performance>
-			<gr>Παράσταση</gr>
-			<en>Performance</en>
+			<gr>Παραστάσεις</gr>
+			<en>Performances</en>
 		</Performance>
 
 		<DramaticMonument>
-			<gr>Δραματικό Μνημείο</gr>
-			<en>Dramatic Monument</en>
+			<gr>Δραματικά Μνημεία</gr>
+			<en>Dramatic Monuments</en>
 		</DramaticMonument>
 		<ArchitecturalMonument>
-			<gr>Αρχιτεκτονικό Μνημείο</gr>
-			<en>Architectural Monument</en>
+			<gr>Αρχιτεκτονικά Μνημεία</gr>
+			<en>Architectural Monuments</en>
 		</ArchitecturalMonument>
 		<HistoricalPerson>
 			<gr>Ιστορικά Πρόσωπά</gr>
@@ -768,36 +768,36 @@ This file is part of the FIMS webapp.
 		</MythicalFigure>
 
 		<Work>
-			<gr>Έργο</gr>
-			<en>Work</en>
+			<gr>Έργα</gr>
+			<en>Works</en>
 		</Work>
 		<Essay>
-			<gr>Δοκίμιο-Μελέτη</gr>
-			<en>Έργο</en>
+			<gr>Δοκίμια-Μελέτες</gr>
+			<en>Essays</en>
 		</Essay>
 		<Bibliography>
 			<gr>Βιβλιογραφία</gr>
 			<en>Biblography</en>
 		</Bibliography>
 		<Source>
-			<gr>Πηγή</gr>
-			<en>Source</en>
+			<gr>Πηγές</gr>
+			<en>Sources</en>
 		</Source>
 		<ArchivalMaterial>
 			<gr>Αρχειακό Υλικό</gr>
-			<en>Archival Material</en>
+			<en>Archival Materials</en>
 		</ArchivalMaterial>
 		<!--end of Ancient Theaters-->
 
 		<!--zominthos-labels -->
-		<ArcheologicalSite>
-			<gr>Αρχαιολογικός Χώρος</gr>
-			<en>Archeological Site</en>
-		</ArcheologicalSite>
-		<ArcheologicalBuilding>
+		<ArchaeologicalSite>
+			<gr>Αρχαιολογικός Χώρος/Θέση</gr>
+			<en>Archaeological Site</en>
+		</ArchaeologicalSite>
+		<ArchaeologicalBuilding>
 			<gr>Αρχαιολογικό Κτήριο</gr>
 			<en>Archeological Building</en>
-		</ArcheologicalBuilding>
+		</ArchaeologicalBuilding>
 		<Area>
 			<gr>Τομέας</gr>
 			<en>Area</en>
@@ -814,6 +814,30 @@ This file is part of the FIMS webapp.
 			<gr>Δομικά/Αρχιτεκτονικά Στοιχεία</gr>
 			<en>Structural/Architectural Elements</en>
 		</StructuralArchitecturalElement>
+		<FindObject>
+			<gr>Κινητά/Ευρήματα</gr>
+			<en>Finds</en>
+		</FindObject>
+		<ExcavationEvent>
+			<gr>Ανασκαφικά Γεγονότα</gr>
+			<en>Excavation Events</en>
+		</ExcavationEvent>
+		<Parallel>
+			<gr>Παράλληλα</gr>
+			<en>Parallel</en>
+		</Parallel>
+		<ExcavationArchive>
+			<gr>Αρχείο Ανασκαφής</gr>
+			<en>Excavation Archive</en>
+		</ExcavationArchive>
+		<ExcavationDigitalArchive>
+			<gr>Ψηφιακά Αρχεία Ανασκαφής</gr>
+			<en>Excavation Digital Archive</en>
+		</ExcavationDigitalArchive>
+		<ExcavationArchiveFile>
+			<gr>Φάκελοι Αρχείου Ανασκαφής</gr>
+			<en>Excavation Archive Files</en>
+		</ExcavationArchiveFile>
 		<!--end of zominthos labels -->
 
 	</leftmenu>
@@ -2067,6 +2091,14 @@ This file is part of the FIMS webapp.
 			<gr>Όνομα</gr>
 			<en>Denomination</en>
 		</Denomination>
+		<Room>
+			<gr>Χώρος</gr>
+			<en>Room</en>
+		</Room>
+		<ArchaeologicalBuilding>
+			<gr>Αρχαιολογικό Κτήριο</gr>
+			<en>Archaeological Building</en>
+		</ArchaeologicalBuilding>
 		<CurrentDenomination>
 			<gr>Τρέχουσα Ονομασία</gr>
 			<en>Current Denomination</en>
@@ -2225,6 +2257,166 @@ This file is part of the FIMS webapp.
 			<sv>Logga Form - Europeiskt centrum för bysantinska och Postbyzantine monument</sv>
 			<nl>Login Form - Het Europees Centrum van Byzantijnse en Post Byzantijnse Monumenten</nl>
 		</LoginPageTitle>
+		<GeopoliticalHierarchy>
+			<gr>Γεωπολιτική ιεραρχία</gr>
+			<en>Geopolitical Hierarchy</en>
+		</GeopoliticalHierarchy>
+		<author>
+			<gr>Συγγραφέας</gr>
+			<en>Author</en>
+		</author>
+		<abbreviation>
+			<gr>Συντομογραφία</gr>
+			<en>Abbreviation</en>
+		</abbreviation>
+		<publicationDate>
+			<gr>Χρονολογία έκδοσης</gr>
+			<en>Publication date</en>
+		</publicationDate>
+		<PotteryUnit>
+			<gr>Ομάδα Κεραμεικής</gr>
+			<en>Pottery Unit</en>
+		</PotteryUnit>
+		<Layer>
+			<gr>Στρώση</gr>
+			<en>Layer</en>
+		</Layer>
+		<poet>
+			<gr>Ποιητής</gr>
+			<en>Poet</en>
+		</poet>
+		<partOfTrilogyTetralogy>
+			<gr>Ένταξη σε τριλογία τετραλογία</gr>
+			<en>Part of trilogy - tetralogy</en>
+		</partOfTrilogyTetralogy>
+		<StructuralArchitecturalElementFind>
+			<gr>Δομικό/Αρχιτεκτονικό στοιχείο-Κινητό/Εύρημα </gr>
+			<en>Structural/Architectural Element-Find</en>
+		</StructuralArchitecturalElementFind>
+		<LocationName>
+			<gr>Τόπος/Τοπωνύμιο </gr>
+			<en>Location Name</en>
+		</LocationName>
+		<Location>
+			<gr>Τόπος</gr>
+			<en>Location</en>
+		</Location>
+		<BibliographyTitle>
+			<gr>Τίτλος Βιβλιογραφίας</gr>
+			<en>Bibliography Title</en>
+		</BibliographyTitle>
+		<Type>
+			<gr>Τύπος</gr>
+			<en>Type</en>
+		</Type>
+		<Kind>
+			<gr>Είδος</gr>
+			<en>Kind</en>
+		</Kind>
+		<CreationDate>
+			<gr>Ημερομηνία</gr>
+			<en>Creation Date</en>
+		</CreationDate>
+		<LinkToDigitalArchive>
+			<gr>Σύνδεση με Ψηφιακό Αρχείο</gr>
+			<en>Link to Digital Archive</en>
+		</LinkToDigitalArchive>
+		<DecorationSubject>
+			<gr>Θέμα Διακόσμησης</gr>
+			<en>Decoration Subject</en>
+		</DecorationSubject>
+		<DecorationStyleKind>
+			<gr>Είδος/Διακόσμησης Ρυθμού</gr>
+			<en>Decoration/Style Kind</en>
+		</DecorationStyleKind>		
+		<StructuralArchitecturalElements>
+			<gr>Δομικά/Αρχιτεκτονικά Στοιχεία</gr>
+			<en>Structural/Architectural Elements</en>
+		</StructuralArchitecturalElements>
+		<Materials>
+			<gr>Υλικά</gr>
+			<en>Materials</en>
+		</Materials>
+		<OtherNames>
+			<gr>Άλλα Ονόματα</gr>
+			<en>Other Names</en>
+		</OtherNames>
+		<OtherName>
+			<gr>Άλλη Ονομασία</gr>
+			<en>Other Name</en>
+		</OtherName>
+		<IncludedInArchiveFile>
+			<gr>Περιέχεται σε Αρχειακό Φάκελο</gr>
+			<en>Included in Archive File</en>
+		</IncludedInArchiveFile>
+		<venueArchitecturalMonument>
+			<gr>Χώρος διεξαγωγής-Θεατρικό οικοδόμημα</gr>
+			<en>Venue-Architectural Monument</en>
+		</venueArchitecturalMonument>
+		<venueOther>
+			<gr>Χώρος διεξαγωγής-Άλλος χώρος</gr>
+			<en>Venue-Other</en>
+		</venueOther>
+		<dateOfConduct>
+			<gr>Χρόνος διεξαγωγής</gr>
+			<en>Date</en>
+		</dateOfConduct>
+		<RoleCapacity>
+			<gr>Ρόλος - ιδιότητα</gr>
+			<en>Role - capacity</en>
+		</RoleCapacity>
+		<festival>
+			<gr>Εορτή</gr>
+			<en>Festival</en>
+		</festival>
+		<OfficialCharge>
+			<gr>Υπεύθυνος διοργάνωσης</gr>
+			<en>Official in charge</en>
+		</OfficialCharge>
+		<workTitle>
+			<gr>Τίτλος έργου</gr>
+			<en>Work Title</en>
+		</workTitle>
+		<Choregos>
+			<gr>Χορηγός</gr>
+			<en>Choregos</en>
+		</Choregos>
+		<Context>
+			<gr>Πλαίσιο ένταξης</gr>
+			<en>Context</en>
+		</Context>
+		<Speciality>
+			<gr>Ειδικότητα</gr>
+			<en>Speciality</en>
+		</Speciality>
+		<RelationGuildsOfArtists>
+			<gr>Σχέση με κοινό τεχνιτών</gr>
+			<en>Relation to guilds of artists</en>
+		</RelationGuildsOfArtists>
+		<Seat>
+			<gr>Έδρα</gr>
+			<en>Seat</en>
+		</Seat>
+		<ActivityPeriod>
+			<gr>Περίοδος δράσης</gr>
+			<en>Activity Period</en>
+		</ActivityPeriod>
+		<Architect>
+			<gr>Αρχιτέκτονας</gr>
+			<en>Architect</en>
+		</Architect>
+		<writeDate>
+			<gr>Χρονολογία συγγραφής</gr>
+			<en>Date</en>
+		</writeDate>
+		<creationPerson>
+			<gr>Δημιουργία/ Δημιουργός</gr>
+			<en>Creator</en>
+		</creationPerson>
+		<creationInstitutions>
+			<gr>Δημιουργίας Φορέας</gr>
+			<en>Institutions</en>
+		</creationInstitutions>
 		<PrimaryInsertFieldAP>
 			<gr>Κύρια Τρέχουσα Ονομασία</gr>
 			<en>Main Current Name</en>
@@ -2363,29 +2555,61 @@ This file is part of the FIMS webapp.
 			<en>Title</en>
 		</PrimaryInsertFieldArchivalMaterial>
 		<PrimaryInsertFieldSource>
-			<gr>Τίτλος</gr>
-			<en>Title</en>
+			<gr>Συντομογραφία</gr>
+			<en>Abbreviation</en>
 		</PrimaryInsertFieldSource>
 		<!-- end of ancient theater=-->
 
 		<!-- zominthos labels-->
-		<PrimaryInsertFieldArcheologicalSite>
+		<PrimaryInsertFieldArchaeologicalSite>
 			<gr>Όνομα</gr>
 			<en>Denomination</en>
-		</PrimaryInsertFieldArcheologicalSite>
+		</PrimaryInsertFieldArchaeologicalSite>
 		<!--end of zominthos labels -->
-		<PrimaryInsertFieldArcheologicalBuilding>
+		<PrimaryInsertFieldArchaeologicalBuilding>
 			<gr>Όνομα</gr>
 			<en>Denomination</en>
-		</PrimaryInsertFieldArcheologicalBuilding>
+		</PrimaryInsertFieldArchaeologicalBuilding>
 		<PrimaryInsertFieldRoom>
 			<gr>Όνομα</gr>
 			<en>Denomination</en>
 		</PrimaryInsertFieldRoom>
+		<PrimaryInsertFieldArea>
+			<gr>Όνομα</gr>
+			<en>Denomination</en>
+		</PrimaryInsertFieldArea>
+		<PrimaryInsertFieldPotteryUnit>
+			<gr>Όνομα</gr>
+			<en>Denomination</en>
+		</PrimaryInsertFieldPotteryUnit>
+		<PrimaryInsertFieldExcavationEvent>
+			<gr>Όνομα</gr>
+			<en>Denomination</en>
+		</PrimaryInsertFieldExcavationEvent>
 		<PrimaryInsertFieldStructuralArchitecturalElement>
-			<gr>Τρέχουσα Ονομασία</gr>
-			<en>Current Denomination</en>
+			<gr>Ονομασία</gr>
+			<en>Denomination</en>
 		</PrimaryInsertFieldStructuralArchitecturalElement>
+		<PrimaryInsertFieldFindObject>
+			<gr>Ονομασία</gr>
+			<en>Denomination</en>
+		</PrimaryInsertFieldFindObject>
+		<PrimaryInsertFieldEvent>
+			<gr>Ονομασία</gr>
+			<en>Appellation</en>
+		</PrimaryInsertFieldEvent>
+		<PrimaryInsertFieldExcavationArchive>
+			<gr>Τίτλος</gr>
+			<en>Title</en>
+		</PrimaryInsertFieldExcavationArchive>
+		<PrimaryInsertFieldExcavationArchiveFile>
+			<gr>Τίτλος</gr>
+			<en>Title</en>
+		</PrimaryInsertFieldExcavationArchiveFile>
+		<PrimaryInsertFieldDigitalArchive>
+			<gr>Τίτλος</gr>
+			<en>Title</en>
+		</PrimaryInsertFieldDigitalArchive>
 		<!-- end of zominthos labels-->
 
 		<ΚύριαΤρέχουσαΟνομασίαAP>
@@ -4664,8 +4888,8 @@ This file is part of the FIMS webapp.
 		<ar>تكوين القالب</ar>
 	</configEditor>
 	<selectRow>
-		<gr>Επιλέξτε πρώτα μία γραμμή από τον πίνακα και στη συνέχεα πατήστε εδώ.</gr>
-		<en>Select a row from the table and then click here.</en>
+		<gr>Επιλέξτε πρώτα μία γραμμή από τον πίνακα.</gr>
+		<en>You must select a row from the table first.</en>
 	</selectRow>
 </context>
 <footer>

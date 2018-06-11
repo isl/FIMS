@@ -34,9 +34,9 @@ This file is part of the FIMS webapp.
     <xsl:template name="footer">
         <xsl:variable name="espaLogo" select="//context/espaLogo/text()"/>
 
-        <div class="row">
+<!--        <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2 footerCopy">
-                <img style="float:left;" class="img-responsive" src="formating/images/copyright.png"></img>
+                <img style="float:left;"  src="formating/images/copyright.png"></img>
                 <p class="footerText">
                     <xsl:variable name="tag" select=" 'text2' "/>
                     <xsl:variable name="translated" select="$locale/footer/*[name()=$tag]/*[name()=$lang]"/>
@@ -50,7 +50,7 @@ This file is part of the FIMS webapp.
             </div>
             <xsl:if test="$locale/footer/*[name()='text5']/*[name()=$lang]!=''">  
                 <div class="col-xs-4 col-sm-4  col-md-2 col-lg-2 footerCopy">               
-                    <img style="float:left;" class="img-responsive" src="formating/images/creativeCommons.png"></img>
+                    <img style="float:left;"  src="formating/images/creativeCommons.png"></img>
                     <p class="footerText">
                         <xsl:variable name="tag" select=" 'text5' "/>
                         <xsl:variable name="translated" select="$locale/footer/*[name()=$tag]/*[name()=$lang]"/>
@@ -59,83 +59,83 @@ This file is part of the FIMS webapp.
                 </div>
           
             </xsl:if>
-        </div>
+        </div>-->
         <div class="row">
-            <xsl:choose>
-                <xsl:when test="$espaLogo='true'">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-4 ">
-                        <xsl:choose>
-                            <xsl:when test="$lang!='en' and $lang!='gr'">
-                                <img class="img-responsive" src="formating/images/espa_en.png"></img>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <img class="img-responsive" src="{ concat('formating/images/espa_', $lang, '.png') }"></img>
-                            </xsl:otherwise>
-                        </xsl:choose>                         
-                    </div> 
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xs-offset-1  col-md-offset-1 col-lg-offset-1" id="forth_img_col">
-                        <xsl:choose>
-                            <xsl:when test="$lang!='en' and $lang!='gr'">
-                                <a href="http://www.ics.forth.gr/"  target="_blank">
-                                    <img class="img-responsive" id="forthImg" src="formating/images/forth_en.png"></img>
-                                </a>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <a href="http://www.ics.forth.gr/" target="_blank">
-                                    <img class="img-responsive" id="forthImg" src="{ concat('formating/images/forth_', $lang, '.png') }"></img>
-                                </a>
-                            </xsl:otherwise>
-                        </xsl:choose>                         
-                    </div>
-                </xsl:when>
-                <xsl:otherwise>                    
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xs-offset-3 col-md-offset-5 col-lg-offset-5">
-                        <xsl:choose>
-                            <xsl:when test="$lang!='en' and $lang!='gr'">
-                                <a href="http://www.ics.forth.gr/" target="_blank">
-                                    <img class="img-responsive" id="forthImg" src="formating/images/forth_en.png"></img>
-                                </a>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <a href="http://www.ics.forth.gr/" target="_blank">
-                                    <img class="img-responsive" id="forthImg" src="{ concat('formating/images/forth_', $lang, '.png') }"></img>
-                                </a>
-                            </xsl:otherwise>
-                        </xsl:choose>                         
-                    </div>
-                </xsl:otherwise>
-            </xsl:choose>
+            <div class="col-md-12 text-center" style="margin-top:5px;margin-bottom:5px;">
+           
+                <xsl:choose>
+                    <xsl:when test="$lang!='en' and $lang!='gr'">
+                        <a href="http://www.ics.forth.gr/" target="_blank">
+                            <img  id="forthImg" src="formating/images/forth_en.png"></img>
+                        </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <a href="http://www.ics.forth.gr/" target="_blank">
+                            <img  id="forthImg" src="{ concat('formating/images/forth_', $lang, '.png') }"></img>
+                        </a>
+                    </xsl:otherwise>
+                </xsl:choose>                         
              
                                      
                     
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <xsl:choose>
                     <xsl:when test="$lang!='en' and $lang!='gr'">
                         <a href="http://www.ics.forth.gr/isl" target="_blank">
-                            <img class="img-responsive" src="formating/images/isl_en.png"></img>
+                            <img  src="formating/images/isl_en.png"></img>
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
                         <a href="http://www.ics.forth.gr/isl" target="_blank">
-                            <img class="img-responsive" src="{ concat('formating/images/isl_', $lang, '.png') }"></img>
+                            <img  src="{ concat('formating/images/isl_', $lang, '.png') }"></img>
                         </a>
                     </xsl:otherwise>
                 </xsl:choose>                         
-            </div>
-             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <xsl:choose>
                     <xsl:when test="$lang!='en' and $lang!='gr'">
                         <a href="https://www.ics.forth.gr/isl/index_main.php?l=e&amp;c=252" target="_blank">
-                            <img class="img-responsive" src="formating/images/cci_en.png"></img>
+                            <img  src="formating/images/cci_en.png"></img>
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
                         <a href="https://www.ics.forth.gr/isl/index_main.php?c=252" target="_blank">
-                            <img class="img-responsive" src="{ concat('formating/images/cci_', $lang, '.png') }"></img>
+                            <img  src="{ concat('formating/images/cci_', $lang, '.png') }"></img>
                         </a>
                     </xsl:otherwise>
                 </xsl:choose>                         
             </div>
         </div>
+        <div class="row" style="height:40px;    background-color: black;">
+            <div class="col-md-12 text-center" style="margin-top:13px;font-size:12px;color:white;">
+                <a  style="color:white;text-decoration:none;" target="_blank"   href="Privacy?action=conditions&amp;lang={$lang}">Conditions Of Use</a>
+                |
+                <a  target="_blank" style="padding-left:0px!important;color:white;text-decoration:none;" href="Privacy?action=privacy&amp;lang={$lang}">Privacy Policy</a>
+                | © 
+                <!--                <img style="margin-top:-2px;" src="formating/images/copyright.png"/>-->
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="//context/publicationDate"/>
+                <xsl:text>-</xsl:text>
+                <span id="year"></span>
+                <xsl:text> </xsl:text>
+                <script>$("#year").html((new Date()).getFullYear());</script>
+                <a  target="_blank" style="font-size:12px;padding-left:0px!important;color:white;text-decoration:none;" href="http://www.ics.forth.gr/isl">FORTH-ICS</a>
+                |
+                <xsl:text> Licensed under the EUPL</xsl:text>
+            </div>
+        </div>
+        <xsl:if test="$espaLogo='true'">
+            <div class="row">
+                <div class="col-md-12 text-center" style="background-color:white;padding-top:7px;padding-bottom:7px;">
+      
+                    <xsl:choose>
+                        <xsl:when test="$lang!='en' and $lang!='gr'">
+                            <img  src="formating/images/espa_en.png"></img>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <img  src="{ concat('formating/images/espa_', $lang, '.png') }"></img>
+                        </xsl:otherwise>
+                    </xsl:choose>  
+                </div>
+            </div> 
+        </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

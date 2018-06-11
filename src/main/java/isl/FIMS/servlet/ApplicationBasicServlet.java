@@ -90,6 +90,7 @@ public class ApplicationBasicServlet extends HttpServlet {
     protected static String schemaVersion = "";
     protected static String systemVersion = "";
     protected static String signUpEmailUrl = "";
+    protected static String publicationDate = "";
 
     public static int thumbSize, normalSize;
 
@@ -124,6 +125,7 @@ public class ApplicationBasicServlet extends HttpServlet {
         this.schemaVersion = getServletContext().getInitParameter("schemaVersion");
         this.systemVersion = getServletContext().getInitParameter("systemVersion");
         this.signUpEmailUrl = getServletContext().getInitParameter("signUpEmailUrl");
+        this.publicationDate = getServletContext().getInitParameter("publicationDate");
 
         File export = new File(this.export_import_Folder);
         if (!export.exists()) {
@@ -225,8 +227,8 @@ public class ApplicationBasicServlet extends HttpServlet {
         String systemNameInfo = "<systemName>" + this.systemName + "</systemName>";
         String espaLogo = "<espaLogo>" + this.espaLogo + "</espaLogo>";
         String contactEmail = "<contactEmail>" + this.contactEmail + "</contactEmail>";
-
-        return contactEmail + "\n" + espaLogo + "\n" + systemNameInfo + "\n" + "\n</context>\n<footer/>\n</page>";
+        String pubDate = "<publicationDate>"+this.publicationDate+"</publicationDate>";
+        return contactEmail + "\n" + espaLogo + "\n" + systemNameInfo + "\n" + pubDate + "\n"+ "\n</context>\n<footer/>\n</page>";
     }
 
     public String getAction() {
