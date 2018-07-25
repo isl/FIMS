@@ -106,7 +106,7 @@ This file is part of the FIMS webapp.
         </div>
         <div class="row" style="height:40px;    background-color: black;">
             <div class="col-md-12 text-center" style="margin-top:13px;font-size:12px;color:white;">
-                <a  style="color:white;text-decoration:none;" target="_blank"   href="Privacy?action=conditions&amp;lang={$lang}">Conditions Of Use</a>
+                <a  style="color:white;text-decoration:none;" target="_blank"   href="Privacy?action=conditions&amp;lang={$lang}">Terms of Use</a>
                 |
                 <a  target="_blank" style="padding-left:0px!important;color:white;text-decoration:none;" href="Privacy?action=privacy&amp;lang={$lang}">Privacy Policy</a>
                 | © 
