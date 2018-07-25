@@ -80,13 +80,18 @@ This file is part of the FIMS webapp.
 
             if ($("#default").prop("checked") == true) {
             $('#outputTree').css('pointer-events', 'none');
+            $("#style").val("throughTrans");        
+
+
             }
 
             $('.outputOptions').change(function () {
             if ($("#default").prop("checked") == true) {
+            $("#style").val("throughTrans");
             $('#outputTree').css('pointer-events', 'none');
             } else {
             $('#outputTree').css('pointer-events', 'all');
+            $("#style").val("");
             }
             });
             
@@ -410,7 +415,7 @@ This file is part of the FIMS webapp.
                                                 <xsl:variable name="tag" select=" 'defaultOutput' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                 <xsl:value-of select="$translated"/>
-
+                                                <input type="hidden" name="style" value="" id="style"/>
                                                 <xsl:text> </xsl:text>                                           
                                                 <input class="outputOptions" type="radio" name="default" style="margin-left:5px;" checked="checked"/>
                                                 <xsl:variable name="tag" select=" 'changeOutput' "/>
@@ -422,6 +427,7 @@ This file is part of the FIMS webapp.
                                                 <xsl:variable name="tag" select=" 'defaultOutput' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                 <xsl:value-of select="$translated"/>
+                                                <input type="hidden" name="style" value="" id="style"/>
 
                                                 <xsl:text> </xsl:text>                                           
                                                 <input class="outputOptions" type="radio" name="default" style="margin-left:5px;"/>
