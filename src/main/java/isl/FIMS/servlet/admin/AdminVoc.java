@@ -152,7 +152,10 @@ public class AdminVoc extends AdminBasicServlet {
                         String sps_type = tmp.split(sps_id)[0];
                         String xpath = UtilsXPaths.getSearchXpathAtName(sps_type) + "/text()";
                         XMLEntity xmlD = new XMLEntity(this.DBURI, this.systemDbCollection + sps_type, this.DBuser, this.DBpassword, sps_type, sps_type + sps_id);
-                        String name = xmlD.queryString(xpath)[0];
+                        String name = "";
+                        if( xmlD.queryString(xpath).length>0){
+                            name = xmlD.queryString(xpath)[0];
+                        }
                         String uri_id = xmlD.queryString("fn:tokenize(//admin/uri_id/text(),'" + this.URI_Reference_Path + "')[last()]")[0];
                         resultsTag.append("<name>").append(name).append("</name>");
                         resultsTag.append("<uri_id>").append(uri_id).append("</uri_id>");
