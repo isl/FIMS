@@ -28,18 +28,30 @@ This file is part of the FIMS webapp.
 
 -->
 <types>
-	<time>
-		<operator nl="voor" sv="fore" en="before" fr="" gr="ΠΡΙΝ">time1</operator>
-		<operator nl="na" sv="efter" en="after" fr="" gr="ΜΕΤΑ">time2</operator>
-		<operator nl="gelijk" sv="lika" en="equal" fr="" gr="ΣΥΜΠΙΠΤΕΙ">time3</operator>
-		<operator nl="in de loop van" sv="under" en="during" fr="" gr="ΠΕΡΙΕΧΕΤΑΙ">time4</operator>
-		<operator nl="bevat" sv="innehaller" en="contains" fr="" gr="ΠΕΡΙΕΧΕΙ">time5</operator>
-		<operator nl="overlapt" sv="overlappar" en="overlaps" fr="" gr="ΤΟΜΗ">time6</operator>
-		<operator nl="recht overlapt" sv="hoger overlappar" en="right overlaps" fr="" gr="ΤΟΜΗ ΔΕΞΙΑ">time7</operator>
-		<operator nl="links overlapt" sv="vanstra overlappar" en="left overlaps" fr="" gr="ΤΟΜΗ ΑΡΙΣΤΕΡΑ">time8</operator>
-	</time>
-	<string>
-		<operator nl="bevat" sv="innehaller" en="contains" fr="contains" gr="ΠΕΡΙΕΧΕΙ">contains</operator>
-		<operator nl="=" sv="=" en="=" fr="=" gr="=">=</operator>
-	</string>
+    <time>
+        <operator nl="voor" sv="fore" en="before" fr="" gr="ΠΡΙΝ">time1</operator>
+        <operator nl="na" sv="efter" en="after" fr="" gr="ΜΕΤΑ">time2</operator>
+        <operator nl="gelijk" sv="lika" en="equal" fr="" gr="ΣΥΜΠΙΠΤΕΙ">time3</operator>
+        <operator nl="in de loop van" sv="under" en="during" fr="" gr="ΠΕΡΙΕΧΕΤΑΙ">time4</operator>
+        <operator nl="bevat" sv="innehaller" en="contains" fr="" gr="ΠΕΡΙΕΧΕΙ">time5</operator>
+        <operator nl="overlapt" sv="overlappar" en="overlaps" fr="" gr="ΤΟΜΗ">time6</operator>
+        <operator nl="recht overlapt" sv="hoger overlappar" en="right overlaps" fr="" gr="ΤΟΜΗ ΔΕΞΙΑ">time7</operator>
+        <operator nl="links overlapt" sv="vanstra overlappar" en="left overlaps" fr="" gr="ΤΟΜΗ ΑΡΙΣΤΕΡΑ">time8</operator>
+    </time>
+    <string>
+        <operator nl="bevat" sv="innehaller" en="contains" fr="contains" gr="ΠΕΡΙΕΧΕΙ">contains</operator>
+        <operator nl="=" sv="=" en="=" fr="=" gr="=">=</operator>
+    </string>
+    <math>
+        <operator nl="=" sv="=" en="=" fr="=" gr="=">math1</operator>
+        <operator nl="!=" sv="!=" en="!=" fr="!=" gr="!=">math2</operator>
+        <operator nl="&gt;" sv="&gt;" en="&gt;" fr="&gt;" gr="&gt;">math3</operator>
+        <operator nl="&gt;=" sv="&gt;=" en="&gt;=" fr="&gt;=" gr="&gt;=">math4</operator>
+        <operator nl="&lt;" sv="&lt;" en="&lt;" fr="&lt;" gr="&lt;">math5</operator>
+        <operator nl="&lt;=" sv="&lt;=" en="&lt;=" fr="&lt;=" gr="&lt;=">math6</operator>
+    </math>
+    <thesaurus>
+        <operator nl="bevat" sv="innehaller" en="contains the term" fr="contains" gr="ΠΕΡΙΕΧΕΙ ΤΟΝ ΟΡΟ">contains</operator>
+        <operator nl="bevat" sv="innehaller" en="contains narrow terms" fr="contains" gr="ΠΕΡΙΕΧΕΙ ΕΙΔΙΚΟΤΕΡΟΥΣ ΟΡΟΥΣ">containsNT</operator>
+    </thesaurus>
 </types>
