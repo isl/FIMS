@@ -58,6 +58,7 @@ public class SearchDelete extends BasicSearchServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
 
 		this.initVars(request);
         String username = getUsername(request);
@@ -67,7 +68,7 @@ public class SearchDelete extends BasicSearchServlet {
 		String xmlEnd = this.xmlEnd();
 
 		Hashtable params = this.getParams(request);
-		String xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf,this.dataCol);
+		String xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf,this.dataCol, session);
 
 		String mnemonicName = (String) params.get("mnemonicName");
 		if (mnemonicName == null || mnemonicName.equals("")){

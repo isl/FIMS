@@ -25,40 +25,90 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
     var labels = $("#labels").val();
     var dataTypes = $("#dataTypes").val();
     var vocs = $("#vocabularies").val();
+    var thes = $("#thesaurus").val();
+
     var lang = $("#lang").val();
 
-    xpaths = xpaths.split("[")[1];
-    xpaths = xpaths.split("]")[0];
-    xpaths = xpaths.split(",");
-    labels = labels.split("[")[1];
-    labels = labels.split("]")[0];
-    labels = labels.split(",");
-    dataTypes = dataTypes.split("[")[1];
-    dataTypes = dataTypes.split("]")[0];
-    dataTypes = dataTypes.split(",");
-
-    vocs = vocs.split("[")[1];
-    vocs = vocs.split("]")[0];
-    vocs = vocs.split(",");
+//    xpaths = xpaths.split("[")[1];
+//    xpaths = xpaths.split("]")[0];
+//    xpaths = xpaths.split(",");
+//    labels = labels.split("[")[1];
+//    labels = labels.split("]")[0];
+//    labels = labels.split(",");
+//    dataTypes = dataTypes.split("[")[1];
+//    dataTypes = dataTypes.split("]")[0];
+//    dataTypes = dataTypes.split(",");
+//
+//    vocs = vocs.split("[")[1];
+//    vocs = vocs.split("]")[0];
+//    vocs = vocs.split(",");
 
     var selectedInputs = $(".selectedInputs").val();
+    var type = $(".category").val();
+    if (!sessionStorage[type + ".xpaths"]) { //If first time or xpaths empty (length=2 []), ask server for info (all 4 tables)
+        xpaths = xpaths.split("[")[1];
+        xpaths = xpaths.split("]")[0];
+        xpaths = xpaths.split(",");
+        sessionStorage[type + ".xpaths"] = JSON.stringify(xpaths);
+    } else {
+        xpaths = JSON.parse(sessionStorage[type + ".xpaths"]);
+    }
+
+    if (!sessionStorage[type + ".labels"]) { //If first time or xpaths empty (length=2 []), ask server for info (all 4 tables)
+        labels = labels.split("[")[1];
+        labels = labels.split("]")[0];
+        labels = labels.split(",");
+        sessionStorage[type + ".labels"] = JSON.stringify(labels);
+
+    } else {
+        labels = JSON.parse(sessionStorage[type + ".labels"]);
+    }
+
+    if (!sessionStorage[type + ".dataTypes"]) { //If first time or xpaths empty (length=2 []), ask server for info (all 4 tables)
+        dataTypes = dataTypes.split("[")[1];
+        dataTypes = dataTypes.split("]")[0];
+        dataTypes = dataTypes.split(",");
+        sessionStorage[type + ".dataTypes"] = JSON.stringify(dataTypes);
+
+    } else {
+        dataTypes = JSON.parse(sessionStorage[type + ".dataTypes"]);
+    }
+
+    if (!sessionStorage[type + ".vocs"]) { //If first time or xpaths empty (length=2 []), ask server for info (all 4 tables)
+        vocs = vocs.split("[")[1];
+        vocs = vocs.split("]")[0];
+        vocs = vocs.split(",");
+        sessionStorage[type + ".vocs"] = JSON.stringify(vocs);
+    } else {
+        vocs = JSON.parse(sessionStorage[type + ".vocs"]);
+    }
+
+    if (!sessionStorage[type + ".thes"]) { //If first time or xpaths empty (length=2 []), ask server for info (all 4 tables)
+        thes = thes.split("[")[1];
+        thes = thes.split("]")[0];
+        thes = thes.split(",");
+        sessionStorage[type + ".thes"] = JSON.stringify(thes);
+    } else {
+        thes = JSON.parse(sessionStorage[type + ".thes"]);
+    }
     $scope.items = [];
     $('.selectedInputs').each(function (i) {
         var value = $(".value:eq(" + i + ")").val();
-
+        var selectedInput = $(this).val().trim();
 
         var objs = [];
         var showString = true;
         var showTime = false;
         var showMath = false;
         var showVoc = false;
+        var showThes = false;
 
         var objsOutput = [];
-        if (selectedInputs !== undefined) {
-            selectedInputs = $(this).val().split("[")[1];
-            selectedInputs = selectedInputs.split("]")[0];
-            selectedInputs = selectedInputs.split(",");
-        }
+//        if (selectedInputs !== undefined) {
+//            selectedInputs = $(this).val().split("[")[1];
+//            selectedInputs = selectedInputs.split("]")[0];
+//            selectedInputs = selectedInputs.split(",");
+//        }
 
 
         var previousDepth = 0;
@@ -66,6 +116,8 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
             var valueString = "";
             var valueTime = "";
             var valueVoc = "";
+            var valueThes = "";
+
             var valueMath = "";
 
             showVoc = false;
@@ -115,21 +167,31 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
             if (dataType === "string") {
                 showString = true;
                 showTime = false;
+                showThes = false;
                 showMath = false;
                 if (showVoc === false) {
                     valueString = value;
                 }
             } else if (dataType === "time") {
                 showString = false;
+                showThes = false;
                 showTime = true;
                 showMath = false;
                 valueTime = value;
             } else if (dataType === "math") {
                 showString = false;
+                showThes = false;
                 showTime = false;
                 showMath = true;
                 valueMath = value;
+            } else if (dataType === "thesaurus") {
+                showString = false;
+                showThes = true;
+                showTime = false;
+                showMath = false;
+                valueThes = value;
             }
+
 
 
 
@@ -141,9 +203,11 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                     dataType: dataType,
                     showString: showString,
                     showTime: showTime,
+                    showThes: showThes,
                     valueString: valueString,
                     valueTime: valueTime,
                     valueVoc: valueVoc,
+                    valueThes: valueThes,
                     showVoc: showVoc,
                     valueMath: valueMath,
                     showMath: showMath,
@@ -161,7 +225,7 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                 objsOutput[depth - 2].children.push(obj2Out);
                 objsOutput[depth - 1] = obj2Out;
                 if (selectedInputs !== undefined) {
-                    if (selectedInputs[i].trim() === "1") {
+                    if (selectedInput.trim() === "/" + xpath) {
                         obj2.selected = true;
                     }
                 }
@@ -185,9 +249,11 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                         dataType: dataType,
                         showString: showString,
                         showTime: showTime,
+                        showThes: showThes,
                         valueString: valueString,
                         valueTime: valueTime,
                         valueVoc: valueVoc,
+                        valueThes: valueThes,
                         showVoc: showVoc,
                         valueMath: valueMath,
                         showMath: showMath,
@@ -203,7 +269,7 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                     objs[0] = obj;
                     objsOutput[0] = objOut;
                     if (selectedInputs !== undefined) {
-                        if (selectedInputs[i].trim() === "1") {
+                        if (selectedInput.trim() === "/" + xpath) {
                             obj.selected = true;
                         }
                     }
@@ -221,9 +287,11 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                         dataType: dataType,
                         showString: showString,
                         showTime: showTime,
+                        showThes: showThes,
                         valueString: valueString,
                         valueTime: valueTime,
                         valueVoc: valueVoc,
+                        valueThes: valueThes,
                         showVoc: showVoc,
                         valueMath: valueMath,
                         showMath: showMath,
@@ -237,7 +305,7 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                         children: []
                     };
                     if (selectedInputs !== undefined) {
-                        if (selectedInputs[i].trim() === "1") {
+                        if (selectedInput.trim() === "/" + xpath) {
                             obj2.selected = true;
                         }
                     }
@@ -263,7 +331,9 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                     valueString: valueString,
                     valueTime: valueTime,
                     valueVoc: value,
+                    valueThes: valueThes,
                     showTime: showTime,
+                    showThes: showThes,
                     showVoc: showVoc,
                     valueMath: valueMath,
                     showMath: showMath,
@@ -277,7 +347,7 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                     children: []
                 };
                 if (selectedInputs !== undefined) {
-                    if (selectedInputs[i].trim() === "1") {
+                    if (selectedInput.trim() === "/" + xpath) {
                         obj2.selected = true;
                     }
                 }
@@ -328,19 +398,28 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
         if (dataType.trim() === "string" && isVocabulary === false) {
             item.showString = true;
             item.showTime = false;
+            item.showThes = false;
             item.showMath = false;
         } else if (dataType.trim() === "string" && isVocabulary === true) {
             item.showString = false;
             item.showTime = false;
+            item.showThes = false;
             item.showMath = false;
         } else if (dataType === "time") {
             item.showString = false;
             item.showTime = true;
+            item.showThes = false;
             item.showMath = false;
         } else if (dataType === "math") {
             item.showString = false;
+            item.showThes = false;
             item.showTime = false;
             item.showMath = true;
+        } else if (dataType === "thesaurus") {
+            item.showString = false;
+            item.showTime = false;
+            item.showThes = true;
+            item.showMath = false;
         }
 
     };
@@ -367,7 +446,7 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
                 childNodes[i].filterKeyword = "";
             }
             index.isFiltered = false;
-            index.filterKeyword ="";
+            index.filterKeyword = "";
         });
         $scope.items.push(angular.copy(item));
 
@@ -402,6 +481,30 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
         }
     };
 
+    $scope.showThes = function (value, item) {
+        if (value === undefined) {
+            return false;
+        } else {
+            if (value === true) {
+                var xpath = item.id;
+                if (item.term.length === 0) {
+                    var request = $.ajax({
+                        type: "post",
+                        url: "GetTerms?xpath=" + xpath + "&lang=" + lang + "&action=getXpathTerms",
+                        async: false
+                    });
+                    request.done(function (msg) {
+                        item.term = JSON.parse(JSON.stringify(msg.terms));
+                    });
+                    request.fail(function (textStatus) {
+                        alert("Request failed: " + textStatus);
+                    });
+                }
+            }
+            return value;
+        }
+    };
+
     $scope.showVoc = function (value, item) {
 
         if (value === undefined) {
@@ -409,11 +512,16 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
         } else {
             if (value === true) {
                 var voc = item.voc;
-
+                var xpath = item.id;
                 if (item.term.length === 0) {
+//                    var request = $.ajax({
+//                        type: "post",
+//                        url: "GetTerms?vocName=" + voc + "&lang=" + lang+"&action=getVocTerms",
+//                        async: false
+//                    });
                     var request = $.ajax({
                         type: "post",
-                        url: "GetTerms?vocName=" + voc + "&lang=" + lang,
+                        url: "GetTerms?xpath=" + xpath + "&lang=" + lang + "&action=getXpathTerms",
                         async: false
                     });
                     request.done(function (msg) {
@@ -452,7 +560,13 @@ app.controller('searchAppCtrl', function ($scope, getDepthFromPath, $http) {
         }
     };
 
-
+    $scope.thesSelected = function (term, value) {
+        if (term === value) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     $scope.clearAll = function (items) {
         $('.chzn-select').val('').trigger('liszt:updated');
         $('.searchString, .inputwidth').val('');

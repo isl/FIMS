@@ -75,7 +75,7 @@ public class Search extends BasicSearchServlet {
         String xmlMiddle = "";
 
         StringBuffer queriesNames = new StringBuffer("");
-
+        HttpSession session = request.getSession();
         String category = request.getParameter("category");
         int qId = 0;
         String qIdStr = request.getParameter("qid");
@@ -132,7 +132,7 @@ public class Search extends BasicSearchServlet {
             // from another page (SearchResults, SearchSave, SearchDelete).
             Hashtable params = this.getParams(request);
             // Get XML depending on our params, that depends on request.
-            xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
+            xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol,session);
         } else if (qId != 0) {
             // if there is the 'qid', it means we want a particular query.
             String qName = DMSXQuery.getNameOf(qId, userId, this.conf);
@@ -145,9 +145,9 @@ public class Search extends BasicSearchServlet {
             } catch (Exception e) {
             }
             query.addInfo("status", this.status);
-            xmlMiddle = QueryTools.getXML4SavedQuery(query, this.conf);
+            xmlMiddle = QueryTools.getXML4SavedQuery(query, this.conf,session);
         } else {
-            xmlMiddle = QueryTools.xml4InitialSearch(category, this.lang, this.status, this.conf);
+            xmlMiddle = QueryTools.xml4InitialSearch(category, this.lang, this.status, this.conf,session);
         }
 
         DBFile dataTypes = new DBFile(this.DBURI, this.adminDbCollection, this.dataTypesFile, this.DBuser, this.DBpassword);

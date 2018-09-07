@@ -46,6 +46,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -790,8 +794,8 @@ public class Utils extends ApplicationBasicServlet {
         if (mimes.length == 0) {
             return "Other";
         } else {
-            if (use!=null && use.length()>0 && mimes.length > 1) {
-                String mime = uploads.queryString("//mime[type/@use ='"+use+"' and type='" + file + "']/../name()")[0];
+            if (use != null && use.length() > 0 && mimes.length > 1) {
+                String mime = uploads.queryString("//mime[type/@use ='" + use + "' and type='" + file + "']/../name()")[0];
                 return mime;
             } else {
                 return mimes[0];
@@ -834,4 +838,35 @@ public class Utils extends ApplicationBasicServlet {
 
     }
 
+    public static String consumeService(String urlString) {
+        try {
+
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/xml");
+
+            conn.setRequestProperty("Encoding", "UTF-8");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + conn.getResponseCode());
+            }
+            String output = "";
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            output = org.apache.commons.io.IOUtils.toString(br);
+
+            conn.disconnect();
+            return output;
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return e.getMessage();
+
+        }
+    }
 }

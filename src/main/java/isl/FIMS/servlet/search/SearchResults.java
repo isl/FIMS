@@ -67,6 +67,7 @@ public class SearchResults extends BasicSearchServlet {
         String xmlStart = this.xmlStart(this.topmenu, username, "Search Results", this.lang, "", request);
         String xmlEnd = this.xmlEnd();
         StringBuffer xmlMiddle = new StringBuffer();
+        HttpSession session = request.getSession();
 
         String[] targets = request.getParameterValues("target");
         String style = request.getParameter("style");
@@ -84,7 +85,7 @@ public class SearchResults extends BasicSearchServlet {
 
             //Hashtable params = this.getParams(request);
             category = (String) params.get("category");
-            queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
+            queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol, session);
 
             xml.append(queryXML);
 
@@ -108,7 +109,7 @@ public class SearchResults extends BasicSearchServlet {
             DMSXQuery query = new DMSXQuery(qName, userId, this.conf);
             targets = query.getTargets();
             querySource = query.getInfo("source");
-            queryXML = QueryTools.getXML4SavedQuery(query, this.conf);
+            queryXML = QueryTools.getXML4SavedQuery(query, this.conf,session);
         } else if (request.getMethod().equals("GET")) {
             //wrong access
             response.sendRedirect("Search");
@@ -117,7 +118,7 @@ public class SearchResults extends BasicSearchServlet {
             //Hashtable params = this.getParams(request);
             category = (String) params.get("category");
             querySource = QueryTools.getQueryForSearchResults(params, this.conf, this.dataCol);
-            queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
+            queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol,session);
         }
         long start = System.currentTimeMillis();
         StringBuffer resultsTag = new StringBuffer("<results>\n");

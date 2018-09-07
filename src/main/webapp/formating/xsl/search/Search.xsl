@@ -117,6 +117,7 @@ This file is part of the FIMS webapp.
                     <input type="hidden" id="dataTypes" value="{//context/query/inputs/dataTypes}"/>
                     <input type="hidden" id="labels" value="{//context/query/inputs/labels}"/>
                     <input type="hidden" id="vocabularies" value="{//context/query/inputs/vocTags}"/>
+                    <input type="hidden" id="thesaurus" value="{//context/query/inputs/thesTags}"/>
 
 
                     <xsl:for-each select="//context/query/inputs/selectedTags">
@@ -227,7 +228,21 @@ This file is part of the FIMS webapp.
                                                                 </option>
                                                             </xsl:for-each>                                                   
                                                         </select>
-                                                        
+                                                        <select ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" class="time_inputoper"  name="inputoper">
+                                                            <xsl:for-each select="//types/thesaurus/operator">
+                                                                <xsl:variable name="oper" select="./text()"/>
+                                                                <option value="{$oper}">
+                                                                    <xsl:for-each select="//inputs/input/oper">                                                            
+                                                                        <xsl:if test="./text()=$oper">
+                                                                            <xsl:attribute name="selected">
+                                                                                <xsl:value-of select="selected"/>
+                                                                            </xsl:attribute>
+                                                                        </xsl:if>
+                                                                    </xsl:for-each>
+                                                                    <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                </option>
+                                                            </xsl:for-each>                                                   
+                                                        </select>
                                                         <select ng-show="showMath(item.selectedItem2[0].showMath)" ng-disabled="!showMath(item.selectedItem2[0].showMath)" class="time_inputoper"  name="inputoper">
                                                             <xsl:for-each select="//types/math/operator">
                                                                 <xsl:variable name="oper" select="./text()"/>
@@ -256,7 +271,11 @@ This file is part of the FIMS webapp.
                                                                 {{term}}
                                                             </option>
                                                         </select>   
-
+                                                        <select class="vocSelect" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes,item.selectedItem2[0])" name="inputvalue">
+                                                            <option ng-repeat="term in item.selectedItem2[0].term  track by $index"  ng-value="term" ng-selected="thesSelected(term,item.selectedItem2[0].valueThes)">
+                                                                {{term}}
+                                                            </option>
+                                                        </select>   
 
                                                     </td> 
                                                     <td  nowrap="nowrap">
@@ -615,7 +634,7 @@ This file is part of the FIMS webapp.
                                      
                                 </div>
                             </div>
-                            <input type="hidden" name="category" value="{//context/query/info/category}"/>
+                            <input class="category" type="hidden" name="category" value="{//context/query/info/category}"/>
                             <input type="hidden" name="status" value="{//context/query/info/status}"/>
                         </div>
                     </div>

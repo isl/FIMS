@@ -70,7 +70,9 @@ public class SearchSave extends BasicSearchServlet {
 
         mnemonicName = mnemonicName.replaceAll("'", "");
         mnemonicName = mnemonicName.replaceAll("\"", "");
-        String xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol);
+                HttpSession session = request.getSession();
+
+        String xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol,session);
 
         if (mnemonicName == null || mnemonicName.equals("")) {
             xml.append(xmlStart);

@@ -29,9 +29,11 @@ package isl.FIMS.utils.search;
 
 import timeprimitve.SISdate;
 import isl.FIMS.servlet.ApplicationBasicServlet;
+import isl.FIMS.utils.Utils;
 import isl.FIMS.utils.UtilsQueries;
 import isl.FIMS.utils.UtilsXPaths;
 import isl.FIMS.utils.Vocabulary;
+import isl.dbms.DBCollection;
 import isl.dbms.DBFile;
 import isl.dbms.DBMSException;
 import isl.dms.DMSConfig;
@@ -39,13 +41,20 @@ import isl.dms.DMSException;
 import isl.dms.file.DMSTag;
 import isl.dms.file.DMSUser;
 import isl.dms.file.DMSXQuery;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import javax.servlet.http.HttpSession;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import schemareader.Element;
 import schemareader.SchemaFile;
 
@@ -198,7 +207,7 @@ public class QueryTools {
     }
 
     //Builds XML representing query (XQueries-like format)
-    public static String getXML4ResultXsl(Hashtable params, DMSConfig conf, String dataCol) throws DMSException {
+    public static String getXML4ResultXsl(Hashtable params, DMSConfig conf, String dataCol, HttpSession session) throws DMSException {
         String qId = (String) params.get("qId");
         String category = (String) params.get("category");
         String lang = (String) params.get("lang");
@@ -231,11 +240,10 @@ public class QueryTools {
         }
         targetsTag.append("</targets>\n");
 
-        ArrayList[] all = getListOfTags(category, lang);
+        ArrayList[] all = getListOfTags(category, lang, session);
         ArrayList<String> xpaths = all[0];
 
-        StringBuffer selectedTags = getSelectedTags(inputs, xpaths);
-
+        //   StringBuffer selectedTags = getSelectedTags(inputs, xpaths);
         StringBuffer xpathsTags = new StringBuffer("<xpaths>\n");
         xpathsTags.append(all[0]);
         xpathsTags.append("</xpaths>\n");
@@ -262,6 +270,9 @@ public class QueryTools {
 //        }
         vocTags.append(all[4]);
         vocTags.append("</vocTags>\n");
+        StringBuffer thesTags = new StringBuffer("<thesTags>\n");
+        thesTags.append(all[5]);
+        thesTags.append("</thesTags>\n");
 
         StringBuffer input = new StringBuffer("");
 
@@ -292,8 +303,11 @@ public class QueryTools {
         inputsTag.append(xpathsTags);
         inputsTag.append(labelsTags);
         inputsTag.append(dataTypesTags);
-        inputsTag.append(selectedTags);
+        for (int j = 0; j < inputs.length; j++) {
+            inputsTag.append("<selectedTags>\n").append(inputs[j]).append("</selectedTags>\n");
+        }
         inputsTag.append(vocTags);
+        inputsTag.append(thesTags);
         inputsTag.append(input);
 
         inputsTag.append("</inputs>\n");
@@ -344,7 +358,7 @@ public class QueryTools {
         return ret.toString();
     }
 
-    public static String getXML4SavedQuery(DMSXQuery query, DMSConfig conf) throws DMSException {
+    public static String getXML4SavedQuery(DMSXQuery query, DMSConfig conf, HttpSession session) throws DMSException {
         String category = query.getInfo("category");
         String status = query.getInfo("status");
 
@@ -365,7 +379,7 @@ public class QueryTools {
         }
         targetsTag.append("</targets>\n");
 
-        ArrayList[] all = getListOfTags(category, conf.LANG);
+        ArrayList[] all = getListOfTags(category, conf.LANG, session);
         ArrayList<String> xpaths = all[0];
 
         StringBuffer xpathsTags = new StringBuffer("<xpaths>\n");
@@ -393,6 +407,10 @@ public class QueryTools {
         vocTags.append(all[4]);
         vocTags.append("</vocTags>\n");
 
+        StringBuffer thesTags = new StringBuffer("<thesTags>\n");
+        thesTags.append(all[5]);
+        thesTags.append("</thesTags>\n");
+
         StringBuffer input = new StringBuffer("");
         ArrayList<String> inputs = new ArrayList();
 
@@ -419,15 +437,19 @@ public class QueryTools {
             input.append("</input>\n");
 
         }
-        StringBuffer selectedTags = getSelectedTags(inputs.toArray(new String[inputs.size()]), xpaths);
+        //   StringBuffer selectedTags = getSelectedTags(inputs.toArray(new String[inputs.size()]), xpaths);
 
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
 
         inputsTag.append(xpathsTags);
         inputsTag.append(labelsTags);
         inputsTag.append(dataTypesTags);
-        inputsTag.append(selectedTags);
+        for (int i = 0; i < inputs.size(); i++) {
+            inputsTag.append("<selectedTags>\n").append(inputs.get(i)).append("</selectedTags>\n");
+        }
         inputsTag.append(vocTags);
+        inputsTag.append(thesTags);
+
         inputsTag.append(input);
 
         inputsTag.append("</inputs>\n");
@@ -457,7 +479,7 @@ public class QueryTools {
         return ret.toString();
     }
 
-    public static String xml4InitialSearch(String category, String lang, String status, DMSConfig conf) throws DMSException {
+    public static String xml4InitialSearch(String category, String lang, String status, DMSConfig conf, HttpSession session) throws DMSException {
         StringBuffer infoTag = new StringBuffer("<info>\n");
         infoTag.append("<operator>and</operator>\n");
         infoTag.append("<category>").append(category).append("</category>\n");
@@ -477,7 +499,7 @@ public class QueryTools {
         }
         targetsTag.append("</targets>\n");
 
-        StringBuffer inputsTag = getLaAndLiTags(category, lang);
+        StringBuffer inputsTag = getLaAndLiTags(category, lang, session);
         StringBuffer ret = buildXML(0, category, infoTag, targetsTag, inputsTag, new StringBuffer(""));
         return ret.toString();
     }
@@ -558,8 +580,42 @@ public class QueryTools {
                 newOper = " ($i" + input + "/text() <=" + value + ") ";
             }
             return newOper;
-        } else {
+        } else if (oper.equals("containsNT")) {
+            DBCollection laAndLiCol = new DBCollection(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "/LaAndLi", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+            String temp = input.replaceFirst("/", "");
+            String q = "//node[xpath/text()='" + temp + "']/facet";
+            String[] res = laAndLiCol.query(q);
+            String facetInfo = "";
+            if (res.length > 0) {
+                facetInfo = res[0];
+            }
+            org.w3c.dom.Element facetInfoE = Utils.getElement(facetInfo);
+            String userName = facetInfoE.getAttribute("username");
+            String themasUrl = facetInfoE.getAttribute("themasUrl");
+            String thesaurusName = facetInfoE.getAttribute("thesaurusName");
+            String urlEnd = "&external_user=" + userName + "&external_thesaurus=" + thesaurusName;
+            String serviceURL = "";
+            try {
+                serviceURL = themasUrl + "SearchResults_Terms?updateTermCriteria=parseCriteria&answerType=XMLSTREAM&pageFirstResult=SaveAll&input_term=name&op_term==&inputvalue_term=" + URLEncoder.encode(value, "UTF-8")
+                        + "&operator_term=or&output_term1=name&output_term1=rnt" + urlEnd;
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(QueryTools.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String themasServiceResponse = Utils.consumeService(serviceURL);
+            String condition = "  contains($i" + input + ", \'" + value + "\') ";
 
+            if (themasServiceResponse.length() > 0) {
+                org.w3c.dom.Element xml = Utils.getElement(themasServiceResponse);
+                NodeList nts = xml.getElementsByTagName("rnt");
+                for (int i = 0; i < nts.getLength(); i++) {
+                    if (!nts.item(i).getTextContent().equals("")) {
+
+                        condition += " or contains($i" + input + ", \'" + nts.item(i).getTextContent() + "\') ";
+                    }
+                }
+            }
+            return condition;
+        } else {
             return " " + oper + "($i" + input + ", \'" + value + "\') ";
         }
     }
@@ -592,9 +648,9 @@ public class QueryTools {
         return ResultString;
     }
 
-    private static StringBuffer getLaAndLiTags(String category, String lang) {
+    private static StringBuffer getLaAndLiTags(String category, String lang, HttpSession session) {
 
-        ArrayList[] allListTags = getListOfTags(category, lang);
+        ArrayList[] allListTags = getListOfTags(category, lang, session);
         StringBuffer xpathsTags = new StringBuffer("<xpaths>\n");
         xpathsTags.append(allListTags[0]);
         xpathsTags.append("</xpaths>\n");
@@ -624,6 +680,9 @@ public class QueryTools {
         vocTags.append(allListTags[4]);
         vocTags.append("</vocTags>\n");
 
+        StringBuffer thesTags = new StringBuffer("<thesTags>\n");
+        thesTags.append(allListTags[5]);
+        thesTags.append("</thesTags>\n");
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
 
         inputsTag.append(xpathsTags);
@@ -631,88 +690,100 @@ public class QueryTools {
         inputsTag.append(dataTypesTags);
         inputsTag.append(selectedTags);
         inputsTag.append(vocTags);
+        inputsTag.append(thesTags);
 
         inputsTag.append("</inputs>\n");
         return inputsTag;
 
     }
 
-    private static ArrayList[] getListOfTags(String category, String lang) {
+    private static ArrayList[] getListOfTags(String category, String lang, HttpSession session) {
 
-        ArrayList[] allList = new ArrayList[5];
+        ArrayList[] allList = new ArrayList[6];
+        ArrayList<String> xpaths = new ArrayList<String>();
+        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<String> dataTypes = new ArrayList<String>();
+        ArrayList selectedInputs = new ArrayList();
+        ArrayList<String> vocabulary = new ArrayList<String>();
+        ArrayList<String> thesaurus = new ArrayList<String>();
+
+        String existsXpath = (String) session.getAttribute(category + ".xpaths");
         try {
-            DBFile nodesFile = new DBFile(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "LaAndLi/", category + ".xml", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+            if (existsXpath == null) {
+                DBFile nodesFile = new DBFile(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "LaAndLi/", category + ".xml", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
 
-            String nodesQuery = "";
-            nodesQuery = "for $node in //node[@type='" + category + "']"
-                    + " return"
-                    + " <label>"
-                    + " {$node/xpath}"
-                    + " <lang>{$node/" + lang + "/string()}</lang>"
-                    + " <dataType>{$node/dataType/string()}</dataType>"
-                    + " <vocabulary>{$node/vocabulary/string()}</vocabulary>"
-                    + " </label>";
+                String nodesQuery = "";
+                nodesQuery = "for $node in //node[@type='" + category + "']"
+                        + " return"
+                        + " <label>"
+                        + " {$node/xpath}"
+                        + " <lang>{$node/" + lang + "/string()}</lang>"
+                        + " <dataType>{$node/dataType/string()}</dataType>"
+                        + " <vocabulary>{$node/vocabulary/string()}</vocabulary>"
+                        + " <thes>{$node/facet}</thes>"
+                        + " </label>";
 
-            String[] nodes = nodesFile.queryString(nodesQuery);
-            ArrayList<String> xpaths = new ArrayList<String>();
-            ArrayList<String> labels = new ArrayList<String>();
-            ArrayList<String> dataTypes = new ArrayList<String>();
-            // ArrayList<String[]> vocabulary = new ArrayList<String[]>();
-            ArrayList<String> vocabulary = new ArrayList<String>();
-            DMSConfig vocConf = new DMSConfig(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "Vocabulary/", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
-            SchemaFile sch = new SchemaFile(ApplicationBasicServlet.schemaFolder + category + ".xsd");
+                String[] nodes = nodesFile.queryString(nodesQuery);
 
-            for (int i = 0; i < nodes.length; i++) {
-                String xpath = getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)");
-                xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
-                labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
-                String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
-                if (!vocName.equals("")) {
-                    // Vocabulary voc = new Vocabulary(vocName, lang, vocConf);
-                    // String[] terms = voc.termValues();
-                    //  vocabulary.add(terms);
-                    vocabulary.add(vocName);
-                } else {
-                    vocabulary.add("");
-                }
-                String pathType = "string";
-                ArrayList<Element> elements = sch.getElements(xpath);
-                if (!elements.isEmpty()) {
-                    Element el = elements.get(0);
-                    pathType = el.getType();
-                }
+                // ArrayList<String[]> vocabulary = new ArrayList<String[]>();
+                DMSConfig vocConf = new DMSConfig(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "Vocabulary/", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
+                SchemaFile sch = new SchemaFile(ApplicationBasicServlet.schemaFolder + category + ".xsd");
+
+                for (int i = 0; i < nodes.length; i++) {
+                    String xpath = getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)");
+                    xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
+                    labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
+                    String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
+                    if (!vocName.equals("")) {
+                        // Vocabulary voc = new Vocabulary(vocName, lang, vocConf);
+                        // String[] terms = voc.termValues();
+                        //  vocabulary.add(terms);
+                        vocabulary.add(vocName);
+                    } else {
+                        vocabulary.add("");
+                    }
+                    if (nodes[i].contains("<facet")) {
+                        thesaurus.add("true");
+                    } else {
+                        thesaurus.add("false");
+                    }
+                    String pathType = "string";
+                    ArrayList<Element> elements = sch.getElements(xpath);
+                    if (!elements.isEmpty()) {
+                        Element el = elements.get(0);
+                        pathType = el.getType();
+                    }
 
 //                if (getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)").equals("")) {
 //                    dataTypes.add("string");
 //                } else {
 //                    dataTypes.add(getMatch(nodes[i], "(?<=<dataType>)[^<]+(?=</dataType>)"));
 //                }
-//                System.out.println("pathType " + el.getType());
-                if (pathType.equals("string") || pathType.equals("")) {
-                    dataTypes.add("string");
-                } else if (pathType.equals("date") || pathType.equals("time_span")) {
-                    dataTypes.add("time");
-                } else if (pathType.equals("integer") || pathType.equals("decimal") || pathType.equals("int")) {
-                    dataTypes.add("math");
-                } else {
-                    dataTypes.add("string");
+                    //System.out.println("pathType " + pathType);
+                    if (pathType.equals("string") || pathType.equals("")) {
+                        dataTypes.add("string");
+                    } else if (pathType.equals("date") || pathType.equals("time_span")) {
+                        dataTypes.add("time");
+                    } else if (pathType.equals("integer") || pathType.equals("decimal") || pathType.equals("int")) {
+                        dataTypes.add("math");
+                    } else if (pathType.equals("thesaurus")) {
+                        dataTypes.add("thesaurus");
+                    } else {
+                        dataTypes.add("string");
+                    }
                 }
+                session.setAttribute(category + ".xpaths", "true");
             }
-
-            ArrayList selectedInputs = new ArrayList();
-
-            for (int i = 0; i < xpaths.size(); i++) {
-                selectedInputs.add("0");
-            }
-      
-            allList[0] = xpaths;
-            allList[1] = labels;
-            allList[2] = dataTypes;
-            allList[3] = selectedInputs;
-            allList[4] = vocabulary;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        allList[0] = xpaths;
+        allList[1] = labels;
+        allList[2] = dataTypes;
+        allList[3] = selectedInputs;
+        allList[4] = vocabulary;
+        allList[5] = thesaurus;
+
         return allList;
 
     }
