@@ -872,7 +872,8 @@ public class Utils extends ApplicationBasicServlet {
 
         }
     }
-        public static String hashPassword(String password) {
+
+    public static String hashPassword(String password) {
         String hashword = null;
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -883,5 +884,16 @@ public class Utils extends ApplicationBasicServlet {
 // ignore
         }
         return hashword;
+    }
+
+    public static String replace_special_char(String toReplace) {
+
+        toReplace = toReplace.replace("&", "&amp;");
+        toReplace = toReplace.replace(">", "&gt;");
+        toReplace = toReplace.replace("<", "&lt;");
+        // toReplace=toReplace.replace("", "&l;");
+
+        return toReplace;
+
     }
 }

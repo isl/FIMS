@@ -160,6 +160,7 @@ public class Vocabulary {
      * @param term the value of the term.
      */
     private void addTerm(int id, String term) {
+        term = Utils.replace_special_char(term);
         String newTermQ = "<" + this.childName + " id=\"" + id + "\">" + term + "</" + this.childName + ">";
         this.vocFile.xAppend("/" + this.parentName + "", newTermQ);
     }

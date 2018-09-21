@@ -153,6 +153,7 @@ public class AdminEntity extends AdminBasicServlet {
                     xmlE.setAdminProperty("organization", docOrgId);
                     xmlE.setAdminProperty("lang", docLang);
                     String primaryPath = UtilsXPaths.getPrimaryEntitiesInsertPath(type);
+                    mainCurrentName = Utils.replace_special_char(mainCurrentName);
                     xmlE.xUpdate(primaryPath, mainCurrentName);
                     String uri_name = DMSTag.valueOf("uri_name", "target", type, this.conf)[0];
                     codeValue = this.URI_Reference_Path + uri_name + "/" + id;
