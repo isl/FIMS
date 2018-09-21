@@ -233,7 +233,8 @@ public class AdminOrg extends AdminBasicServlet {
                             String orgId = group.queryString("string(/DMS/groups/group[@groupname='" + groupname + "']/@id)")[0];
                             DMSUser user = null;
                             try {
-                                user = DMSUser.addUser(usernameInsert, password, this.conf);
+                                String hassPass = Utils.hashPassword(password);
+                                user = DMSUser.addUser(usernameInsert, hassPass, this.conf);
                                 if (df.exist("/DMS/users/user/info/email[./text()='" + email + "']")) {
                                     displayMsg += Messages.Email_EXIST + Messages.NL;
                                     user.remove();

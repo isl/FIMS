@@ -144,7 +144,8 @@ public class SignUp extends ApplicationBasicServlet {
                     if (df.exist("/DMS/users/user/info/email[./text()='" + email + "']")) {
                         displayMsg += Messages.Email_EXIST;
                     } else {
-                        user = DMSUser.addUser(username, password, this.conf);
+                        String hassPass = Utils.hashPassword(password);
+                        user = DMSUser.addUser(username, hassPass, this.conf);
                         user.setInfo("lastname", lastname);
                         user.setInfo("firstname", firstname);
                         user.setInfo("address", address);

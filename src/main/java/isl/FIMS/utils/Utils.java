@@ -46,10 +46,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -868,5 +871,17 @@ public class Utils extends ApplicationBasicServlet {
             return e.getMessage();
 
         }
+    }
+        public static String hashPassword(String password) {
+        String hashword = null;
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(password.getBytes());
+            BigInteger hash = new BigInteger(1, md5.digest());
+            hashword = hash.toString(16);
+        } catch (NoSuchAlgorithmException nsae) {
+// ignore
+        }
+        return hashword;
     }
 }

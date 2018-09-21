@@ -112,7 +112,8 @@ public class ForgetPass extends ApplicationBasicServlet {
                     // String host = "enigma.ics.forth.gr";
 
                     if (isSend) {
-                        dbUser.setPassword(newPass);
+                        String hassPass = Utils.hashPassword(newPass);
+                        dbUser.setPassword(hassPass);
                         displayMsg = "NewPassSend";
                         response.sendRedirect("Login");
                     } else {

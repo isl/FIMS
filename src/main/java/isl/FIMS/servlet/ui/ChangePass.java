@@ -29,6 +29,7 @@ package isl.FIMS.servlet.ui;
 
 import isl.FIMS.utils.Messages;
 import isl.FIMS.servlet.ApplicationBasicServlet;
+import isl.FIMS.utils.Utils;
 import isl.FIMS.utils.entity.Config;
 import isl.dms.DMSException;
 import isl.dms.file.DMSFile;
@@ -106,7 +107,7 @@ public class ChangePass extends ApplicationBasicServlet {
                 String address = request.getParameter("address");
                 String email = request.getParameter("email");
                 String oldPassword = request.getParameter("oldpassword");
-
+                String hassOldPass = Utils.hashPassword(oldPassword);
                 DMSUser user = null;
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -132,7 +133,7 @@ public class ChangePass extends ApplicationBasicServlet {
                 if (firstname.length() == 0) {
                     displayMsg += Messages.EMPTY_FIELD_FirstName + Messages.NL;
                 }
-                if (!oldPassword.equals(user.getPassword())) {
+                if (!hassOldPass.equals(user.getPassword())) {
                     displayMsg += Messages.PASSNPTMATCH + Messages.NL;
 
                 }
@@ -141,7 +142,8 @@ public class ChangePass extends ApplicationBasicServlet {
 
                     user.setUsername(usernameNew);
                     if (password.length() != 0) {
-                        user.setPassword(password);
+                        String hassPass = Utils.hashPassword(password);
+                        user.setPassword(hassPass);
                     }
 
                     user.setInfo("lastname", lastname);

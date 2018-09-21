@@ -30,6 +30,7 @@ package isl.FIMS.servlet.ui;
 import isl.FIMS.utils.ApplicationConfig;
 import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.Messages;
+import isl.FIMS.utils.Utils;
 import isl.dbms.DBCollection;
 import isl.dbms.DBMSException;
 import isl.dms.DMSException;
@@ -189,6 +190,7 @@ public class Login extends ApplicationBasicServlet {
 
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
+        String hassPass = Utils.hashPassword(password);
         String status = "";
         String signUp = getServletContext().getInitParameter("signUp");
         String forgetPass = getServletContext().getInitParameter("forgetPass");
@@ -196,7 +198,7 @@ public class Login extends ApplicationBasicServlet {
 
         boolean isUserValid = false;
         try {
-            isUserValid = DMSUser.checkUser(username, password, this.conf);
+            isUserValid = DMSUser.checkUser(username, hassPass, this.conf);
 
         } catch (DMSException e) {
             e.printStackTrace();

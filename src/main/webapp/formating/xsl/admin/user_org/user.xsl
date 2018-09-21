@@ -137,6 +137,8 @@ This file is part of the FIMS webapp.
                         <xsl:when test="$Role='sysadmin'">
                         </xsl:when>
                         <xsl:when test="$AdminMode='' and $Role='admin'">
+                            <input type="hidden" name="orgId" value="{$OrgId}"/>
+                            <input type="hidden" name="userrole" value="admin"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <div class="row">

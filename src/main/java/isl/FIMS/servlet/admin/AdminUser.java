@@ -28,6 +28,7 @@
 package isl.FIMS.servlet.admin;
 
 import isl.FIMS.utils.Messages;
+import isl.FIMS.utils.Utils;
 import isl.FIMS.utils.entity.Config;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -183,6 +184,7 @@ public class AdminUser extends AdminBasicServlet {
 
         } else if (this.action.equals("insert") || this.action.equals("edit")) {
             String orgId = request.getParameter("orgId");
+            System.out.println("orgId  " +orgId);
             //an den einai 'sys admin' kai 'balei' org diaforetiko tou org ston opoio anhkei
             if (!orgId.equals("0") && !orgId.equals(userOrg) && !mode.equals("sys")) {
                 this.displayMsg = Messages.ACCESS_DENIED;
@@ -236,7 +238,8 @@ public class AdminUser extends AdminBasicServlet {
                                     throw new EntryExistException("User already exists: " + email);
 
                                 } else {
-                                    user = DMSUser.addUser(usernameInsert, password, this.conf);
+                                    String hassPass = Utils.hashPassword(password);
+                                    user = DMSUser.addUser(usernameInsert, hassPass, this.conf);
                                     user.setInfo("lastname", lastname);
                                     user.setInfo("firstname", firstname);
                                     user.setInfo("address", address);
@@ -257,7 +260,8 @@ public class AdminUser extends AdminBasicServlet {
                                 throw new EntryExistException("User already exists: " + email);
                             } else {
                                 if (password.length() != 0) {
-                                    user.setPassword(password);
+                                    String hassPass = Utils.hashPassword(password);
+                                    user.setPassword(hassPass);
                                 }
                                 user.setInfo("lastname", lastname);
                                 user.setInfo("firstname", firstname);
@@ -274,6 +278,7 @@ public class AdminUser extends AdminBasicServlet {
                                 }
                                 //to idio kai gia to action [role]
                                 String rolePrev = user.getActions()[0];
+                                System.out.println(rolePrev +"  " +role );
                                 if (rolePrev.equals(role) == false) {
                                     user.removeAction(rolePrev);
                                     user.addAction(role, "normal");
