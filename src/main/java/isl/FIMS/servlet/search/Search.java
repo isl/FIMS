@@ -30,6 +30,7 @@ package isl.FIMS.servlet.search;
 import isl.FIMS.utils.search.QueryTools;
 import isl.FIMS.utils.search.Config;
 import isl.FIMS.utils.entity.GetEntityCategory;
+import isl.dbms.DBCollection;
 import isl.dbms.DBFile;
 import isl.dms.DMSException;
 import isl.dms.file.DMSGroup;
@@ -50,9 +51,8 @@ import javax.servlet.http.*;
 public class Search extends BasicSearchServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -99,7 +99,6 @@ public class Search extends BasicSearchServlet {
             queriesNames.append(">").append(DMSXQuery.getNameOf(savedQueryIds[i], userId, this.conf)).append("</savedQuery>\n");
         }
 
-
         for (int i = 0; i < personalQueries.length; i++) {
             queriesNames.append("<personalQueries id=\"").append(personalQueries[i]).append("\"");
             if (personalQueries[i] == qId) {
@@ -113,7 +112,7 @@ public class Search extends BasicSearchServlet {
             queriesNames.append("<publicQueries id=\"").append(publicQueries[i]).append("\"");
             if (publicQueries[i] == qId) {
                 queriesNames.append(" selected=\"yes\"");
-                if (this.userHasAction("sysadmin",username)) {
+                if (this.userHasAction("sysadmin", username)) {
                     personal = true;
                 }
 
@@ -121,8 +120,6 @@ public class Search extends BasicSearchServlet {
             queriesNames.append(">").append(DMSXQuery.getNameOfNoUser(publicQueries[i], this.conf)).append("</publicQueries>\n");
         }
         queriesNames.append("<isPersonal>").append(personal).append("</isPersonal>\n");
-
-
 
         // Something like flag, meaning that we came here
         // from another page (SearchResults, SearchSave, SearchDelete).
@@ -132,7 +129,7 @@ public class Search extends BasicSearchServlet {
             // from another page (SearchResults, SearchSave, SearchDelete).
             Hashtable params = this.getParams(request);
             // Get XML depending on our params, that depends on request.
-            xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol,session);
+            xmlMiddle = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol, session);
         } else if (qId != 0) {
             // if there is the 'qid', it means we want a particular query.
             String qName = DMSXQuery.getNameOf(qId, userId, this.conf);
@@ -145,11 +142,13 @@ public class Search extends BasicSearchServlet {
             } catch (Exception e) {
             }
             query.addInfo("status", this.status);
-            xmlMiddle = QueryTools.getXML4SavedQuery(query, this.conf,session);
+            xmlMiddle = QueryTools.getXML4SavedQuery(query, this.conf, session);
         } else {
-            xmlMiddle = QueryTools.xml4InitialSearch(category, this.lang, this.status, this.conf,session);
+            xmlMiddle = QueryTools.xml4InitialSearch(category, this.lang, this.status, this.conf, session);
         }
+        DBCollection queryCol = new DBCollection(this.DBURI, this.systemDbCollection + category + "/", this.DBuser, this.DBpassword);
 
+        String referencedBy = QueryTools.getReferecedByEntities(queryCol,category);
         DBFile dataTypes = new DBFile(this.DBURI, this.adminDbCollection, this.dataTypesFile, this.DBuser, this.DBpassword);
         String entityCategory = "secondary";
         StringBuffer statusType = null;
@@ -194,7 +193,7 @@ public class Search extends BasicSearchServlet {
             Map.Entry entry = (Map.Entry) it.next();
             if (!entry.getKey().equals(this.getUserGroup(username))) {
                 String[] usersInGroup = DMSGroup.getUsersOf((String) entry.getKey(), conf);
-                groupsInDB.append("<groups id='"+entry.getKey()+"'>");
+                groupsInDB.append("<groups id='" + entry.getKey() + "'>");
                 groupsInDB.append(entry.getValue());
                 groupsInDB.append("</groups>\n");
                 users.append("<group name='" + entry.getValue() + "'>");
@@ -211,11 +210,10 @@ public class Search extends BasicSearchServlet {
         }
         users.append("</Users>\n");
         groupsInDB.append("</Groups>\n");
-
-
         xml.append(xmlStart);
         xml.append(queriesNames);
         xml.append(xmlMiddle);
+        xml.append(referencedBy);
         xml.append(dataTypes.toString());
         xml.append("\n<EntityCategory>").append(entityCategory).append("</EntityCategory>");
         if (statusType != null) {
@@ -231,8 +229,7 @@ public class Search extends BasicSearchServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -254,8 +251,7 @@ public class Search extends BasicSearchServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

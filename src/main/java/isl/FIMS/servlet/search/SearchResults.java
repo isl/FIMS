@@ -120,6 +120,7 @@ public class SearchResults extends BasicSearchServlet {
             querySource = QueryTools.getQueryForSearchResults(params, this.conf, this.dataCol);
             queryXML = QueryTools.getXML4ResultXsl(params, this.conf, this.dataCol,session);
         }
+        System.out.println("q-> " +querySource);
         long start = System.currentTimeMillis();
         StringBuffer resultsTag = new StringBuffer("<results>\n");
 
@@ -164,7 +165,6 @@ public class SearchResults extends BasicSearchServlet {
         xml.append("<success return=\"1\"></success>\n");
         xml.append(dataTypes.toString());
         xml.append(xmlEnd);
-
         XMLTransform xmlTrans = new XMLTransform(xml.toString());
         String xsl = Config.SEARCH_RESULTS_XSL;
         xmlTrans.transform(out, xsl);

@@ -81,57 +81,6 @@ This file is part of the FIMS webapp.
                             </p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <p>
-                                <b>
-                                    <xsl:variable name="tag" select="'oldPassword'"/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <xsl:value-of select="$translated"/>*
-                                    <xsl:text>  </xsl:text>:
-                                </b>
-                            </p>
-                        </div>
-                        <div class="col-sm-8 col-md-8 col-lg-8">
-                            <p>
-                                <input class="inputwidth" type="password" name="oldpassword" required="true"/>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <p>
-                                <b>
-                                    <xsl:variable name="tag" select="'newPassword'"/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <xsl:value-of select="$translated"/>*
-                                    <xsl:text>  </xsl:text>:
-                                </b>
-                            </p>
-                        </div>
-                        <div class="col-sm-8 col-md-8 col-lg-8">
-                            <p>
-                                <input class="inputwidth" type="password" name="password" required="true"/>
-                            </p>
-                        </div>
-                    </div> 
-                          <div class="row">
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <p>
-                                <b>
-                                    <xsl:variable name="tag" select="'passwordV'"/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                    <xsl:value-of select="$translated"/>*
-                                    <xsl:text>  </xsl:text>:
-                                </b>
-                            </p>
-                        </div>
-                        <div class="col-sm-8 col-md-8 col-lg-8">
-                            <p>
-                                <input class="inputwidth" type="password" name="passwordV" required="true"/>
-                            </p>
-                        </div>
-                    </div>
                     <div class="row">                  
                         <div class="col-sm-4 col-md-4 col-lg-4">
                             <p>
@@ -199,19 +148,98 @@ This file is part of the FIMS webapp.
                             </p>
                         </div>
                     </div>
-                     <input type="hidden" name="lang" value="{$lang}"/>
+                    <div class="row extraSearch">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <xsl:variable name="tag" select=" 'changePass' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                            <h5 class="titleSearch">
+                                <a class="extraSearchaccordion-toggle" data-toggle="collapse" href="#collapseChangePass" aria-expanded="false" aria-controls="collapseChangePass">
+                                    <xsl:value-of select="$translated"/>
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="collapse" id="collapseChangePass">   
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'oldPassword'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>:
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <p>
+                                    <input class="inputwidth" type="password" name="oldpassword" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'newPassword'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>:
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <p>
+                                    <input class="inputwidth" type="password" name="password" required="true"/>
+                                </p>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                <p>
+                                    <b>
+                                        <xsl:variable name="tag" select="'passwordV'"/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                        <xsl:value-of select="$translated"/>*
+                                        <xsl:text>  </xsl:text>:
+                                    </b>
+                                </p>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-8">
+                                <p>
+                                    <input class="inputwidth" type="password" name="passwordV" required="true"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="lang" value="{$lang}"/>
                     <xsl:variable name="tag" select=" 'Oloklirwsi' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <button id="finishButton" class="btn btn-default .btn-sm" style="margin-top:10px;" type="submit">    
+                    <button id="finishButton" class="btn btn-default .btn-sm" style="margin-top:20px;" type="submit">    
                         <xsl:value-of select="$translated"/>
                     </button> 
                     <xsl:variable name="tag" select=" 'Cancel' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                    <a style="margin-top:10px;margin-left:10px;"  class="btn btn-default .btn-sm" href="javascript:window.history.go(-1);">
+                    <a style="margin-top:20px;margin-left:10px;"  class="btn btn-default .btn-sm" href="javascript:window.history.go(-1);">
                         <xsl:value-of select="$translated"/>
                     </a>
                 </form>
             </div>
         </div>
+        <script>
+            $("#finishButton").click(function() {
+            if(!$("#collapseChangePass").hasClass("in")){
+                $('input[name="oldpassword"]').removeAttr("required");
+                $('input[name="password"]').removeAttr("required");
+                $('input[name="passwordV"]').removeAttr("required");
+            }else{
+                $('input[name="oldpassword"]').attr("required", "true");
+                $('input[name="password"]').attr("required", "true");
+                 $('input[name="passwordV"]').attr("required", "true");
+            }
+            
+            });
+        </script>
     </xsl:template>
 </xsl:stylesheet>

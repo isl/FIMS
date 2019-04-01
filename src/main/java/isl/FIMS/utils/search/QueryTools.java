@@ -32,7 +32,6 @@ import isl.FIMS.servlet.ApplicationBasicServlet;
 import isl.FIMS.utils.Utils;
 import isl.FIMS.utils.UtilsQueries;
 import isl.FIMS.utils.UtilsXPaths;
-import isl.FIMS.utils.Vocabulary;
 import isl.dbms.DBCollection;
 import isl.dbms.DBFile;
 import isl.dbms.DBMSException;
@@ -44,16 +43,16 @@ import isl.dms.file.DMSXQuery;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Set;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.servlet.http.HttpSession;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import schemareader.Element;
 import schemareader.SchemaFile;
@@ -67,6 +66,7 @@ public class QueryTools {
         String[] inputs = (String[]) params.get("inputs");
         String[] inputsOpers = (String[]) params.get("inputsOpers");
         String[] inputsValues = (String[]) params.get("inputsValues");
+        String[] refByEntities = (String[]) params.get("refByEntities");
         String[] outputs = (String[]) params.get("outputs");
         String code = (String) params.get("code");
         String category = (String) params.get("category");
@@ -80,7 +80,6 @@ public class QueryTools {
             rootXPath = DMSTag.valueOf("rootxpath", "target", category, conf)[0];
         } catch (DBMSException e) {
         }
-
         if (userHasAction("sysadmin", username, conf)) {
             mode = "sys";
         }
@@ -138,33 +137,123 @@ public class QueryTools {
         }
 
         StringBuffer inQuerySource = new StringBuffer();
-        inQuerySource.append("return $i\n").append("return\n").append("<stats>\n").append("{for $j in 1 to count($results)\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
-        StringBuffer queryTargets = new StringBuffer();
+        inQuerySource.append("return $i\n").append("return\n").append("<stats>\n").append("{let $ids := distinct-values($results//id)").append("for $j in 1 to count($results)\n").append("let $current := $results[$j]\n").append("let $i := $results[$j]\n");
+        StringBuffer querychildTargets = new StringBuffer();
+        StringBuffer queryFor = new StringBuffer("for ");
+
         StringBuffer queryWhere = new StringBuffer();
         UtilsQueries u = new UtilsQueries();
-        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username, lang);
-        for (String target : targets) {
-            queryTargets.append(target).append(",");
+
+        HashMap<String, String> colToVariable = new <String, String>HashMap();
+        for (int i = 0; i < targets.length; i++) {
+            String target = targets[i];
+            if (i == 0) {
+                colToVariable.put(target, "i");
+            } else {
+                if (!colToVariable.containsKey(target)) {
+                    colToVariable.put(target, "c" + i);
+                }
+            }
         }
+        Iterator<String> entities = colToVariable.keySet().iterator();
+        StringBuffer queryRestrictLangSave = new StringBuffer("");
+
+        while (entities.hasNext()) {
+            String target = entities.next();
+            String variable = colToVariable.get(target);
+            queryFor.append("$" + variable + " in ");
+            queryFor.append("collection('").append(target + "/").append("'), ");
+            queryRestrictLangSave.append("and $").append(variable).append("//admin/saved='yes'\n");
+            queryRestrictLangSave.append("and $").append(variable).append("//admin/lang='" + lang + "'\n");
+        }
+        querychildTargets.append(targets[0]);
 
         try {
-            queryTargets.delete(queryTargets.lastIndexOf(","), queryTargets.length());
+            queryFor.delete(queryFor.lastIndexOf(","), queryFor.length());
         } catch (StringIndexOutOfBoundsException se) {
         }
-
+        queryWhere = u.getQueryConditionsForSearch(queryWhere, params, mode, username, lang);
+        queryWhere.append(queryRestrictLangSave);
         StringBuffer queryMiddle = new StringBuffer();
-
+        int countRefBy = 0;
         for (int i = 0; i < inputs.length; i++) {
-            inputsValues[i] = inputsValues[i].replaceAll("'", "");
-            inputsValues[i] = inputsValues[i].replaceAll("\"", "");
-            inputsValues[i] = inputsValues[i].replaceAll("&", "");
-            queryMiddle.append(getPredicate(inputs[i], inputsOpers[i], inputsValues[i])).append(operator).append("\n");
+            if (!inputs[i].equals("refBy_/") && !inputs[i].equals("/" + category)) {
+                System.out.println("inputsOpers[i] " + operator);
+                System.out.println("input " + inputs[i]);
+
+                inputsValues[i] = inputsValues[i].replaceAll("'", "");
+                inputsValues[i] = inputsValues[i].replaceAll("\"", "");
+                inputsValues[i] = inputsValues[i].replaceAll("&", "");
+                String variable = "";
+
+                if (inputs[i].equals("")) {
+
+                    variable = "i";
+                } else {
+                    String inputEntity = inputs[i].split("/")[1];
+                    String key = ApplicationBasicServlet.systemDbCollection + inputEntity;
+                    variable = colToVariable.get(key);
+                }
+                if (inputs[i].contains("refBy_")) {
+                    countRefBy++;
+                }
+                if (countRefBy == 1) {
+
+                    int index = queryMiddle.lastIndexOf(operator);
+                    if (index != -1) {
+                        queryMiddle.delete(index, queryMiddle.length());
+                        queryMiddle.append("or");
+                    }
+                }
+
+                if (inputsValues[i].contains("__")) {
+                    String externalEntity = inputsValues[i].split("__")[0];
+                    String externalkey = ApplicationBasicServlet.systemDbCollection + externalEntity;
+                    String extVariable = colToVariable.get(externalkey);
+                    if (extVariable != null) {
+                        if (inputs[i].contains("refBy_")) {
+                            String condition = "$" + variable + inputs[i].split("refBy_")[1] + "/@sps_type = '" + externalEntity + "' \n";
+                            condition += "and " + "$" + variable + inputs[i].split("refBy_")[1] + "/@sps_id = $" + extVariable + "/" + externalEntity + "/admin/id/text()";
+                            queryMiddle.append(condition).append(operator).append("\n");
+                        } else {
+                            String condition = "$" + variable + inputs[i] + "/@sps_type = '" + externalEntity + "' \n";
+                            condition += "and " + "$" + variable + inputs[i] + "/@sps_id = $" + extVariable + "/" + externalEntity + "/admin/id/text()";
+                            queryMiddle.append(condition).append(operator).append("\n");
+                        }
+                    }
+                } else {
+                    if (inputs[i].contains("refBy_")) {
+                        queryMiddle.append(getPredicate(inputs[i].split("refBy_")[1], inputsOpers[i], inputsValues[i], variable)).append(operator).append("\n");
+                    } else {
+                        queryMiddle.append(getPredicate(inputs[i], inputsOpers[i], inputsValues[i], variable)).append(operator).append("\n");
+                    }
+                }
+
+            }
         }
         try {
             queryMiddle.delete(queryMiddle.lastIndexOf(operator), queryMiddle.length());
         } catch (StringIndexOutOfBoundsException se) {
         }
+        for (int j = 0; j < refByEntities.length; j++) {
+            String externalEntity = refByEntities[j];
+            String externalkey = ApplicationBasicServlet.systemDbCollection + externalEntity;
+            String extVariable = colToVariable.get(externalkey);
+            if (extVariable != null) {
+                String op = "";
+                if (queryMiddle.length() > 0) {
+                    op = "and";
+                }
+                String condition = " " + op + " $i//admin//ref_by/@sps_type = '" + externalEntity + "' \n";
+                condition += "and " + "$i//admin//ref_by/@sps_id = $" + extVariable + "/" + externalEntity + "/admin/id/text()";
+                queryMiddle.append(condition).append("\n");
+            }
 
+        }
+//        try {
+//            queryMiddle.delete(queryMiddle.lastIndexOf(operator), queryMiddle.length());
+//        } catch (StringIndexOutOfBoundsException se) {
+//        }
         if (queryMiddle.length() > 0) {
             queryWhere.append(" and (\n").append(queryMiddle).append("\n)\n");
         }
@@ -188,13 +277,14 @@ public class QueryTools {
         queryEnd.append("</result>}</stats>");
 
         StringBuffer query = new StringBuffer("let $collections:=\n");
-        query.append("let $b:= xmldb:get-child-collections('").append(queryTargets).append("')");
+        query.append("let $b:= xmldb:get-child-collections('").append(querychildTargets).append("')");
         query.append("return count($b),");
         query.append("$collcount:=$collections+").append(dataCol).append(",");
         query.append("$results:=\n");
-        query.append("for $m in ").append(dataCol).append(" to  $collcount\n");
+        //     query.append("for $m in ").append(dataCol).append(" to  $collcount\n");
+        query.append("for $m in ").append("1").append(" to  1\n");
         query.append("return\n");
-        query.append("for $i in collection(concat('").append(queryTargets).append("/',$m))");
+        query.append(queryFor);
 
         query.append("let $id := $i//admin/id\n");
 
@@ -226,7 +316,7 @@ public class QueryTools {
         String[] tagXPaths = DMSTag.valueOf("xpath", "target", category, conf);
         String[] tagDisplayNames = DMSTag.valueOf("displayname/" + conf.LANG, "target", category, conf);
 
-        java.util.Arrays.sort(targets);
+//       / java.util.Arrays.sort(targets);
         StringBuffer targetsTag = new StringBuffer("<targets>\n");
         for (int i = 0; i < tagXPaths.length; i++) {
             String xPath = tagXPaths[i];
@@ -238,8 +328,12 @@ public class QueryTools {
             }
             targetsTag.append(tagDisplayNames[i]).append("</path>\n");
         }
-        targetsTag.append("</targets>\n");
+        for (int i = 1; i < targets.length; i++) {
+            targetsTag.append("<path xpath=\"").append(targets[i]).append("\"");
+            targetsTag.append(" selected=\"no\">").append("</path>\n");
 
+        }
+        targetsTag.append("</targets>\n");
         ArrayList[] all = getListOfTags(category, lang, session);
         ArrayList<String> xpaths = all[0];
 
@@ -274,16 +368,26 @@ public class QueryTools {
         thesTags.append(all[5]);
         thesTags.append("</thesTags>\n");
 
+        StringBuffer linksTags = new StringBuffer("<linksTags>\n");
+        linksTags.append(all[6]);
+        linksTags.append("</linksTags>\n");
+
         StringBuffer input = new StringBuffer("");
 
         int i = 0;
 
         for (String t : inputs) {
             input.append("<input>\n");
+            if (!t.equals("/" + category)) {
 
-            input.append("<selectedXapths>\n");
-            input.append(t.trim());
-            input.append("</selectedXapths>\n");
+                input.append("<selectedXapths>\n");
+                input.append(t.trim());
+                input.append("</selectedXapths>\n");
+            } else {
+                input.append("<selectedXapths>\n");
+                input.append("[]");
+                input.append("</selectedXapths>\n");
+            }
             input.append("<value>");
             input.append(inputsValues[i].trim());
             input.append("</value>\n");
@@ -303,11 +407,14 @@ public class QueryTools {
         inputsTag.append(xpathsTags);
         inputsTag.append(labelsTags);
         inputsTag.append(dataTypesTags);
+
         for (int j = 0; j < inputs.length; j++) {
             inputsTag.append("<selectedTags>\n").append(inputs[j]).append("</selectedTags>\n");
         }
         inputsTag.append(vocTags);
         inputsTag.append(thesTags);
+        inputsTag.append(linksTags);
+
         inputsTag.append(input);
 
         inputsTag.append("</inputs>\n");
@@ -411,6 +518,10 @@ public class QueryTools {
         thesTags.append(all[5]);
         thesTags.append("</thesTags>\n");
 
+        StringBuffer linksTags = new StringBuffer("<linksTags>\n");
+        linksTags.append(all[6]);
+        linksTags.append("</linksTags>\n");
+
         StringBuffer input = new StringBuffer("");
         ArrayList<String> inputs = new ArrayList();
 
@@ -423,10 +534,21 @@ public class QueryTools {
 
             inputs.add(xpath);
             input.append("<input>\n");
+            System.out.println("xpath " + xpath);
+            if (!xpath.equals("/" + category)) {
 
-            input.append("<selectedXapths>\n");
-            input.append(xpath);
-            input.append("</selectedXapths>\n");
+                input.append("<selectedXapths>\n");
+                input.append(xpath.trim());
+                input.append("</selectedXapths>\n");
+            } else {
+                System.out.println("in");
+                input.append("<selectedXapths>\n");
+                input.append("[]");
+                input.append("</selectedXapths>\n");
+            }
+//            input.append("<selectedXapths>\n");
+//            input.append(xpath);
+//            input.append("</selectedXapths>\n");
             input.append("<value>\n");
             input.append(value);
             input.append("</value>\n");
@@ -445,10 +567,15 @@ public class QueryTools {
         inputsTag.append(labelsTags);
         inputsTag.append(dataTypesTags);
         for (int i = 0; i < inputs.size(); i++) {
-            inputsTag.append("<selectedTags>\n").append(inputs.get(i)).append("</selectedTags>\n");
+            if (!inputs.get(i).equals("/" + category)) {
+                inputsTag.append("<selectedTags>\n").append(inputs.get(i)).append("</selectedTags>\n");
+            } else {
+                inputsTag.append("<selectedTags>\n").append("[]").append("</selectedTags>\n");
+            }
         }
         inputsTag.append(vocTags);
         inputsTag.append(thesTags);
+        inputsTag.append(linksTags);
 
         inputsTag.append(input);
 
@@ -504,6 +631,18 @@ public class QueryTools {
         return ret.toString();
     }
 
+    public static String getReferecedByEntities(DBCollection col, String category) {
+        StringBuffer refByTag = new StringBuffer("<refByTag>\n");
+        String[] res = col.query("data(//admin/refs_by/ref_by[@sps_id!=0 and @sps_type!='" + category + "']/@sps_type)");
+        for (String r : res) {
+            if (!refByTag.toString().contains(r)) {
+                refByTag.append("<type>").append(r).append("</type>\n");
+            }
+        }
+        refByTag.append("</refByTag>\n");
+        return refByTag.toString();
+    }
+
     private static StringBuffer buildXML(int qId, String category, StringBuffer infoTag, StringBuffer targetsTag, StringBuffer inputsTag, StringBuffer outputsTag) {
         StringBuffer ret = new StringBuffer("<query id=\"" + qId + "\">\n");
         ret.append(infoTag).append(targetsTag).append(inputsTag).append(outputsTag);
@@ -513,11 +652,11 @@ public class QueryTools {
         return ret;
     }
 
-    private static String getPredicate(String input, String oper, String value) {
+    private static String getPredicate(String input, String oper, String value, String variable) {
 
         // perform a case-insensitive match
         if (oper.equals("matches")) {
-            return " matches($i" + input + ", \'" + value + "\', \'i\') ";
+            return " matches($" + variable + input + ", \'" + value + "\', \'i\') ";
         }
 
         // assume operators like: =, !=, etc.
@@ -525,7 +664,7 @@ public class QueryTools {
         oper = oper.replaceAll("&gt;", ">");
         oper = oper.replaceAll("&lt;", "<");
         if (oper.length() <= 2) {
-            return " ($i" + input + oper + "\'" + value + "\') ";
+            return " ($" + variable + input + oper + "\'" + value + "\') ";
         }
 
         //TIME-HANDLING 
@@ -538,28 +677,28 @@ public class QueryTools {
             String newOper = "";
             if (oper.endsWith("1")) {
                 //ΠΡΙΝ
-                newOper = " ($i" + input + "/@y/number() <" + from + ") ";
+                newOper = " ($" + variable + input + "/@y/number() <" + from + ") ";
             } else if (oper.endsWith("2")) {
                 //ΜΕΤΑ
-                newOper = " ($i" + input + "/@x/number() >" + to + ") ";
+                newOper = " ($" + variable + input + "/@x/number() >" + to + ") ";
             } else if (oper.endsWith("3")) {
                 //ΣΥΜΠΙΠΤΕΙ
-                newOper = " ($i" + input + "/@x/number() =" + from + " and $i" + input + "/@y/number() =" + to + ") ";
+                newOper = " ($" + variable + input + "/@x/number() =" + from + " and $" + variable + input + "/@y/number() =" + to + ") ";
             } else if (oper.endsWith("4")) {
                 //ΠΕΡΙΕΧΕΤΑΙ
-                newOper = " ($i" + input + "/@x/number() >" + from + " and $i" + input + "/@y/number() <" + to + ") ";
+                newOper = " ($" + variable + input + "/@x/number() >" + from + " and $" + variable + input + "/@y/number() <" + to + ") ";
             } else if (oper.endsWith("5")) {
                 //ΠΕΡΙΕΧΕΙ
-                newOper = " ($i" + input + "/@x/number() <" + from + " and $i" + input + "/@y/number() >" + to + ") ";
+                newOper = " ($" + variable + input + "/@x/number() <" + from + " and $" + variable + input + "/@y/number() >" + to + ") ";
             } else if (oper.endsWith("6")) {
                 //ΤΟΜΗ
-                newOper = " ($i" + input + "/@x/number() <" + to + " and $i" + input + "/@y/number() >" + from + ") ";
+                newOper = " ($" + variable + input + "/@x/number() <" + to + " and $" + variable + input + "/@y/number() >" + from + ") ";
             } else if (oper.endsWith("7")) {
                 //ΤΟΜΗ ΔΕΞΙΑ
-                newOper = " ($i" + input + "/@x/number() >=" + from + " and $i" + input + "/@x/number() <=" + to + " and $i" + input + "/@y/number() >" + to + ") ";
+                newOper = " ($" + variable + input + "/@x/number() >=" + from + " and $" + variable + input + "/@x/number() <=" + to + " and $" + variable + input + "/@y/number() >" + to + ") ";
             } else if (oper.endsWith("8")) {
                 //ΤΟΜΗ ΑΡΙΣΤΕΡΑ
-                newOper = " ($i" + input + "/@x/number() <" + from + " and $i" + input + "/@y/number() >=" + from + " and $i" + input + "/@y/number() <=" + to + ") ";
+                newOper = " ($" + variable + input + "/@x/number() <" + from + " and $" + variable + input + "/@y/number() >=" + from + " and $" + variable + input + "/@y/number() <=" + to + ") ";
             }
             return newOper;
 
@@ -567,20 +706,20 @@ public class QueryTools {
             String newOper = "";
 
             if (oper.endsWith("1")) {
-                newOper = " ($i" + input + "/text() =" + value + ") ";
+                newOper = " ($" + variable + input + "/text() =" + value + ") ";
             } else if (oper.endsWith("2")) {
-                newOper = " ($i" + input + "/text() !=" + value + ") ";
+                newOper = " ($" + variable + input + "/text() !=" + value + ") ";
             } else if (oper.endsWith("3")) {
-                newOper = " ($i" + input + "/text() >" + value + ") ";
+                newOper = " ($" + variable + input + "/text() >" + value + ") ";
             } else if (oper.endsWith("4")) {
-                newOper = " ($i" + input + "/text() >=" + value + ") ";
+                newOper = " ($" + variable + input + "/text() >=" + value + ") ";
             } else if (oper.endsWith("5")) {
-                newOper = " ($i" + input + "/text() <" + value + ") ";
+                newOper = " ($" + variable + input + "/text() <" + value + ") ";
             } else if (oper.endsWith("6")) {
-                newOper = " ($i" + input + "/text() <=" + value + ") ";
+                newOper = " ($" + variable + input + "/text() <=" + value + ") ";
             }
             return newOper;
-        } else if (oper.equals("containsNT")) {
+        } else if (oper.contains("containsNT")) {
             DBCollection laAndLiCol = new DBCollection(ApplicationBasicServlet.DBURI, ApplicationBasicServlet.systemDbCollection + "/LaAndLi", ApplicationBasicServlet.DBuser, ApplicationBasicServlet.DBpassword);
             String temp = input.replaceFirst("/", "");
             String q = "//node[xpath/text()='" + temp + "']/facet";
@@ -602,21 +741,35 @@ public class QueryTools {
                 Logger.getLogger(QueryTools.class.getName()).log(Level.SEVERE, null, ex);
             }
             String themasServiceResponse = Utils.consumeService(serviceURL);
-            String condition = "  contains($i" + input + ", \'" + value + "\') ";
+            String condition = "";
+            if (oper.equals("containsNT")) {
+                condition = "  contains($" + variable + input + ", \'" + value + "\') ";
+            } else {
+                condition = "  not(contains($" + variable + input + ", \'" + value + "\')) ";
+
+            }
 
             if (themasServiceResponse.length() > 0) {
                 org.w3c.dom.Element xml = Utils.getElement(themasServiceResponse);
                 NodeList nts = xml.getElementsByTagName("rnt");
                 for (int i = 0; i < nts.getLength(); i++) {
                     if (!nts.item(i).getTextContent().equals("")) {
+                        if (oper.equals("containsNT")) {
+                            condition += " or contains($" + variable + input + ", \'" + nts.item(i).getTextContent() + "\') ";
+                        } else {
+                            condition += " or not(contains($" + variable + input + ", \'" + nts.item(i).getTextContent() + "\')) ";
 
-                        condition += " or contains($i" + input + ", \'" + nts.item(i).getTextContent() + "\') ";
+                        }
                     }
                 }
             }
             return condition;
+        } else if (oper.equals("containsTerm") || oper.equals("containsLink")) {
+            return " " + "contains" + "($" + variable + input + ", \'" + value + "\') ";
+        } else if (oper.equals("notContainsTerm") || oper.equals("notContains")) {
+            return " " + "not(contains" + "($" + variable + input + ", \'" + value + "\')) ";
         } else {
-            return " " + oper + "($i" + input + ", \'" + value + "\') ";
+            return " " + oper + "($" + variable + input + ", \'" + value + "\') ";
         }
     }
 
@@ -685,27 +838,33 @@ public class QueryTools {
         thesTags.append("</thesTags>\n");
         StringBuffer inputsTag = new StringBuffer("<inputs>\n");
 
+        StringBuffer linksTags = new StringBuffer("<linksTags>\n");
+        linksTags.append(allListTags[6]);
+        linksTags.append("</linksTags>\n");
+
         inputsTag.append(xpathsTags);
         inputsTag.append(labelsTags);
         inputsTag.append(dataTypesTags);
         inputsTag.append(selectedTags);
         inputsTag.append(vocTags);
         inputsTag.append(thesTags);
+        inputsTag.append(linksTags);
 
         inputsTag.append("</inputs>\n");
         return inputsTag;
 
     }
 
-    private static ArrayList[] getListOfTags(String category, String lang, HttpSession session) {
+    public static ArrayList[] getListOfTags(String category, String lang, HttpSession session) {
 
-        ArrayList[] allList = new ArrayList[6];
+        ArrayList[] allList = new ArrayList[7];
         ArrayList<String> xpaths = new ArrayList<String>();
         ArrayList<String> labels = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
         ArrayList selectedInputs = new ArrayList();
         ArrayList<String> vocabulary = new ArrayList<String>();
         ArrayList<String> thesaurus = new ArrayList<String>();
+        ArrayList<String> links = new ArrayList<String>();
 
         String existsXpath = (String) session.getAttribute(category + ".xpaths");
         try {
@@ -720,6 +879,7 @@ public class QueryTools {
                         + " <lang>{$node/" + lang + "/string()}</lang>"
                         + " <dataType>{$node/dataType/string()}</dataType>"
                         + " <vocabulary>{$node/vocabulary/string()}</vocabulary>"
+                        + " <valueFrom>{$node/valueFrom/string()}</valueFrom>"
                         + " <thes>{$node/facet}</thes>"
                         + " </label>";
 
@@ -734,6 +894,8 @@ public class QueryTools {
                     xpaths.add(getMatch(nodes[i], "(?<=<xpath>)[^<]+(?=</xpath>)"));
                     labels.add(getMatch(nodes[i], "(?<=<lang>)[^<]+(?=</lang>)"));
                     String vocName = getMatch(nodes[i], "(?<=<vocabulary>)[^<]+(?=</vocabulary>)");
+                    String valueFrom = getMatch(nodes[i], "(?<=<valueFrom>)[^<]+(?=</valueFrom>)");
+
                     if (!vocName.equals("")) {
                         // Vocabulary voc = new Vocabulary(vocName, lang, vocConf);
                         // String[] terms = voc.termValues();
@@ -741,6 +903,11 @@ public class QueryTools {
                         vocabulary.add(vocName);
                     } else {
                         vocabulary.add("");
+                    }
+                    if (!valueFrom.equals("")) {
+                        links.add("true");
+                    } else {
+                        links.add("false");
                     }
                     if (nodes[i].contains("<facet")) {
                         thesaurus.add("true");
@@ -783,6 +950,7 @@ public class QueryTools {
         allList[3] = selectedInputs;
         allList[4] = vocabulary;
         allList[5] = thesaurus;
+        allList[6] = links;
 
         return allList;
 

@@ -78,85 +78,150 @@ This file is part of the FIMS webapp.
                             
                         </div>
                     </div>
+                    <xsl:if test="$DocStatus!='' and $DocStatus!='all'">    
+                        <xsl:variable name="systemName" select="//context/systemName/text()"/>
 
-                    <xsl:if test="$SearchMode!=''">
-                        <xsl:if test="$DocStatus!='' and $DocStatus!='all'">    
-                            <xsl:variable name="systemName" select="//context/systemName/text()"/>
-
-                            <p  class="searchResults">
-                                <b>
-                                    <xsl:variable name="tag" select=" 'tableContent' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                    <xsl:value-of select="$translated"/>:
-                                    <xsl:text></xsl:text>
-                                    <xsl:choose>
-                                        <xsl:when test="$DocStatus='published'">
-                                            <xsl:variable name="tag" select=" 'ProboliDimosieumenwn' "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                            <xsl:value-of select="$translated"/>
-                                        </xsl:when>
-                                        <xsl:when test="$DocStatus='unpublished'">
-                                            <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                            <xsl:value-of select="$translated"/>
-                                        </xsl:when>
-                                        <xsl:when test="$DocStatus='unpublished'">
-                                            <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                            <xsl:value-of select="$translated"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:variable name="tag" select=" $DocStatus "/>
-                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
-                                            <xsl:value-of select="$translated"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
+                        <p  class="searchResults">
+                            <b>
+                                <xsl:variable name="tag" select=" 'tableContent' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                <xsl:value-of select="$translated"/>:
+                                <xsl:text></xsl:text>
+                                <xsl:choose>
+                                    <xsl:when test="$DocStatus='published'">
+                                        <xsl:variable name="tag" select=" 'ProboliDimosieumenwn' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                        <xsl:value-of select="$translated"/>
+                                    </xsl:when>
+                                    <xsl:when test="$DocStatus='unpublished'">
+                                        <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                        <xsl:value-of select="$translated"/>
+                                    </xsl:when>
+                                    <xsl:when test="$DocStatus='unpublished'">
+                                        <xsl:variable name="tag" select=" 'ProboliMhDimosieumenwn' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                        <xsl:value-of select="$translated"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:variable name="tag" select=" $DocStatus "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>     
+                                        <xsl:value-of select="$translated"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             
-                                </b>
-                            </p>                    
-                        </xsl:if>
+                            </b>
+                        </p>                    
+                    </xsl:if>
+                    <p  class="searchResults">
+                        <strong>
+                            <xsl:variable name="tag" select=" 'MeKritiriaAnazitisis' "/>
+                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
+                            <xsl:value-of select="$translated"/> 
+                        </strong>
+                        <br/>
+                        <br/>
+
+                        <xsl:for-each select="//context/query/inputs/input">
+                            
+                            <xsl:variable name="operatorRealname" select="oper/text()"/>
+                           
+                            <xsl:variable name="temp" select="substring(selectedXapths/text(),3)"/>
+                            <xsl:variable name="temp_ref" select="substring-after(selectedXapths/text(),'refBy_/')"/>
+
+                            <xsl:variable name="entity" select="substring-before($temp,'/')"/>
+                            <xsl:variable name="entity_ref" select="substring-before($temp_ref,'/')"/>
+
+                            <xsl:choose>
+                                <xsl:when test="$entity != '' and $entity_ref=''">
+                                    <strong>
+                                        <xsl:variable name="tag" select=" 'Ontotita' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
+                                        <xsl:value-of select="$translated"/> 
+                                    </strong>:
+                                    <xsl:text> </xsl:text>
+
+                                    <xsl:variable name="tag" select="$entity"/>
+                                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>                             
+                                    <xsl:value-of select="$translated"/> 
+                                </xsl:when> 
+                                <xsl:when test="$entity_ref != ''">
+                                    <strong>
+                                        <xsl:variable name="tag" select=" 'referencedEntity' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
+                                        <xsl:value-of select="$translated"/> 
+                                    </strong>:
+                                    <xsl:text> </xsl:text>
+
+                                    <xsl:variable name="tag" select="$entity_ref"/>
+                                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>                             
+                                    <xsl:value-of select="$translated"/> 
+                                </xsl:when> 
+                                <xsl:otherwise>
+                                    <strong>
+                                        <xsl:variable name="tag" select=" 'Ontotita' "/>
+                                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
+                                        <xsl:value-of select="$translated"/> 
+                                    </strong>:
+                                    <xsl:text> </xsl:text>
+                                    <xsl:variable name="tag" select="$EntityType"/>
+                                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>                             
+                                    <xsl:value-of select="$translated"/> 
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:text> </xsl:text>
+                            <xsl:text> </xsl:text>
+                            <strong style="padding-left:5px;">
+                                <xsl:variable name="tag" select=" 'Sinthiki' "/>
+                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
+                                <xsl:value-of select="$translated"/> 
+                            </strong>:
+                            <xsl:text> </xsl:text>
+                            <xsl:value-of select="inputLabel/text()"/>
+                            <xsl:text> </xsl:text>
+                            <xsl:text> </xsl:text>
+                            <xsl:text> </xsl:text>
+
+                            <xsl:text> </xsl:text>
+                            <xsl:value-of select="//types/*/operator[text()=$operatorRealname]/@*[name(.)=$lang]"/>
+                            <xsl:text> </xsl:text>
+                            '
+                            <xsl:choose>
+                                <xsl:when test="contains(value/text(),'__')">
+                                    <xsl:value-of select="substring-after(value/text(), '__')"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="value/text()"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:text> </xsl:text>
+                            '
+                            <xsl:if test="position()!=last()">
+                                ,
+                                <br/>
+                            </xsl:if>
+                        </xsl:for-each>	
+                    </p>
+                    <xsl:if test="//context/query/info/operator!=''">
+                        <br/>
+
                         <p  class="searchResults">
                             <strong>
-                                <xsl:variable name="tag" select=" 'MeKritiriaAnazitisis' "/>
+                                <xsl:variable name="tag" select=" 'Telestis' "/>
                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
                                 <xsl:value-of select="$translated"/> :
-                            </strong>
-                            <xsl:for-each select="//context/query/inputs/input">
-                                <xsl:variable name="operatorRealname" select="oper/text()"/>
-                               
-                                <xsl:value-of select="inputLabel/text()"/>
-                                
-                                <xsl:text> </xsl:text>
-                                <xsl:value-of select="//types/*/operator[text()=$operatorRealname]/@*[name(.)=$lang]"/>
-                                <xsl:text> </xsl:text>
-                                '
-                                <xsl:value-of select="value/text()"/>
-                                <xsl:text> </xsl:text>
-                                '
-                                <xsl:if test="position()!=last()">
-                                    ,
-                                </xsl:if>
-                            </xsl:for-each>	
+                            </strong>                            
+                            <xsl:value-of select="//context/query/info/operator"/>
                         </p>
-                        <xsl:if test="//context/query/info/operator!=''">
-                            <p  class="searchResults">
-                                <strong>
-                                    <xsl:variable name="tag" select=" 'Telestis' "/>
-                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>                             
-                                    <xsl:value-of select="$translated"/> :
-                                </strong>                            
-                                <xsl:value-of select="//context/query/info/operator"/>
-                            </p>
-                        </xsl:if>
-                        <!--                        <p  class="searchbottom searchResults">
-                            <xsl:variable name="tag" select=" 'execTime' "/>
-                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <strong>
-                                <xsl:value-of select="$translated"/> :  
-                            </strong>
-                            <xsl:value-of select="//querytime/text()"/> sec.
-                        </p>-->
                     </xsl:if>
+                    <!--                        <p  class="searchbottom searchResults">
+                        <xsl:variable name="tag" select=" 'execTime' "/>
+                        <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                        <strong>
+                            <xsl:value-of select="$translated"/> :  
+                        </strong>
+                        <xsl:value-of select="//querytime/text()"/> sec.
+                    </p>-->
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
 
@@ -435,9 +500,8 @@ This file is part of the FIMS webapp.
     </xsl:template>
     
     <xsl:template name="searchButton">
-      
         <xsl:choose>
-            <xsl:when test="$SearchMode=''">
+            <xsl:when test="$SearchMode='' or $SearchMode='throughTrans advanceSearch'">
                 <form id="searchResultsForm" method="post" action="">
                     <xsl:variable name="tag" select=" 'Epistrofi' "/>
                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
@@ -451,11 +515,10 @@ This file is part of the FIMS webapp.
                     <xsl:for-each select="//context/query/inputs/input/selectedXapths">
                         <input type="hidden" name="input" value="{./text()}"/>
                     </xsl:for-each>
-                    <xsl:for-each select="//context/query/targets/path[@selected='yes']">
+                    <xsl:for-each select="//context/query/targets/path">
                         <input type="hidden" name="target" value="{./@xpath}"/>
                     </xsl:for-each>
                     <xsl:for-each select="//context/query/inputs/input/value">
-                      
                         <input type="hidden" name="inputvalue" value="{./text()}"/>
                     </xsl:for-each>
                     <xsl:for-each select="//context/query/inputs/input/oper">                      

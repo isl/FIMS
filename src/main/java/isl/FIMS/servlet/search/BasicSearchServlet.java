@@ -105,7 +105,7 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         }
         for (int i = 0; i < inputs.length; i++) {
             if (inputs[i].equals("/")) {
-                inputs[i] = "/" + type;
+                inputs[i] = "/" + category;
             }
         }
 
@@ -114,7 +114,6 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         if (inputsOpers == null) {
             inputsOpers = new String[0];
         }
-     
 
         String[] inputsValues = request.getParameterValues("inputvalue");
         if (inputsValues == null) {
@@ -122,11 +121,11 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         } else {
             inputsValues[0] = inputsValues[0].trim();
         }
-         String[] inputLabels = request.getParameterValues("inputLabels");
+        String[] inputLabels = request.getParameterValues("inputLabels");
         if (inputLabels == null) {
             inputLabels = new String[0];
         }
-        
+
         String[] outputs = request.getParameterValues("output");
         if (outputs == null) {
             outputs = new String[0];
@@ -135,6 +134,12 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         if (labelsOutput == null) {
             labelsOutput = new String[0];
         }
+
+        String[] refByEntities = request.getParameterValues("refByEntities");
+        if (refByEntities == null) {
+            refByEntities = new String[0];
+        }
+
         String[] extraStatus = request.getParameterValues("extraStatus");
         if (extraStatus != null) {
             if (extraStatus.length == 3) {
@@ -180,6 +185,8 @@ public class BasicSearchServlet extends ApplicationBasicServlet {
         params.put("operator", operator);
         params.put("inputs", inputs);
         params.put("inputsOpers", inputsOpers);
+        params.put("refByEntities", refByEntities);
+
         params.put("inputsValues", inputsValues);
         params.put("outputs", outputs);
         params.put("labelsOutput", labelsOutput);

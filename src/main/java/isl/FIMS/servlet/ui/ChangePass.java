@@ -117,10 +117,10 @@ public class ChangePass extends ApplicationBasicServlet {
                 if (usernameNew.length() == 0) {
                     displayMsg = Messages.EMPTY_FIELD_UserName + Messages.NL;
                 }
-
-                if (password.length() == 0) {
-                    displayMsg += Messages.EMPTY_FIELD_Password + Messages.NL;
-                }
+//
+//                if (password.length() == 0) {
+//                    displayMsg += Messages.EMPTY_FIELD_Password + Messages.NL;
+//                }
 
                 if (password.equals(passwordV) == false) {
                     displayMsg += Messages.FIELD_Password_NOT_VERIFIED + Messages.NL;
@@ -133,9 +133,11 @@ public class ChangePass extends ApplicationBasicServlet {
                 if (firstname.length() == 0) {
                     displayMsg += Messages.EMPTY_FIELD_FirstName + Messages.NL;
                 }
-                if (!hassOldPass.equals(user.getPassword())) {
-                    displayMsg += Messages.PASSNPTMATCH + Messages.NL;
+                if (password.length() != 0) {
+                    if (!hassOldPass.equals(user.getPassword())) {
+                        displayMsg += Messages.PASSNPTMATCH + Messages.NL;
 
+                    }
                 }
 
                 if (displayMsg.length() == 0) {

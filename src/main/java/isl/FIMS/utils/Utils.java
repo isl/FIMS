@@ -896,4 +896,14 @@ public class Utils extends ApplicationBasicServlet {
         return toReplace;
 
     }
+
+    public static String getTranslationFromMultiLang(String word, String lang, String xmlPart) {
+        String trans = "";
+        Document doc = ParseXMLFile.parseFile(ApplicationConfig.SYSTEM_ROOT + "formating/multi_lang.xml");
+        Element root = doc.getDocumentElement();
+        Element contextTag = (Element) root.getElementsByTagName(xmlPart).item(0);
+        Element transE = (Element) contextTag.getElementsByTagName(word).item(0);
+        trans = transE.getElementsByTagName(lang).item(0).getTextContent();
+        return trans;
+    }
 }

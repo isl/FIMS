@@ -179,7 +179,6 @@ html,body{
 
 #content{
     background-color: white;
-    min-height: 70%;
     display: flex;
     flex-wrap: wrap;
 }
@@ -336,8 +335,7 @@ html,body{
     padding-right: 10px;
     padding-left: 0px;
     padding-top: 0px;
-	cursor: pointer;
-
+    cursor: pointer;
 }
 .actionsMenu >.nav>li>a:focus{
     border-color: #ffffff;
@@ -352,8 +350,7 @@ html,body{
 .moreDropDown a {
     color: #565655;
     text-decoration:none;
-	cursor: pointer;
-		 
+    cursor: pointer;
 }
 
 /* unvisited link */
@@ -614,11 +611,11 @@ html,body{
 }
 
 #forthImg{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .footerCopy{
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .nowrap{
@@ -642,3 +639,8 @@ html,body{
 .highlight{
     background-color: yellow;
 }
+
+.select-editable { position:relative; background-color:white; border:solid grey 1px;  left:4px; width:14vw; height:25px; }
+.select-editable select { position:absolute; top:0px; left:0px; font-size:14px; border:none; width:100%; margin:0; }
+.select-editable input { position:absolute; top:3px; left:4px; width:85%; padding:1px;  border:none; }
+.select-editable select:focus, .select-editable input:focus { outline:none; }

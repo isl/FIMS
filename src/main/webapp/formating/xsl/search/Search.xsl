@@ -80,14 +80,14 @@ This file is part of the FIMS webapp.
 
             if ($("#default").prop("checked") == true) {
             $('#outputTree').css('pointer-events', 'none');
-            $("#style").val("throughTrans");        
+            $("#style").val("throughTrans advanceSearch");        
 
 
             }
 
             $('.outputOptions').change(function () {
             if ($("#default").prop("checked") == true) {
-            $("#style").val("throughTrans");
+            $("#style").val("throughTrans advanceSearch");
             $('#outputTree').css('pointer-events', 'none');
             } else {
             $('#outputTree').css('pointer-events', 'all');
@@ -112,12 +112,16 @@ This file is part of the FIMS webapp.
                 </h4>
                 <form id="searchForm"  action="" method="post">   
                     <input type="hidden" id="lang" value="{$lang}"/>         
-                    <input type="hidden" name="target" value="{//context/query/targets/path[@selected='yes']/@xpath}"/>
+                    <!--                    <input id="target" type="hidden" name="target" value="{//context/query/targets/path[@selected='yes']/@xpath}"/>-->
+                    <xsl:for-each select="//context/query/targets/path[@xpath!='']">
+                        <input id="target" type="hidden" name="target" value="{@xpath}"/>
+                    </xsl:for-each>
                     <input type="hidden" id="xpaths" value="{//context/query/inputs/xpaths}"/>
                     <input type="hidden" id="dataTypes" value="{//context/query/inputs/dataTypes}"/>
                     <input type="hidden" id="labels" value="{//context/query/inputs/labels}"/>
                     <input type="hidden" id="vocabularies" value="{//context/query/inputs/vocTags}"/>
                     <input type="hidden" id="thesaurus" value="{//context/query/inputs/thesTags}"/>
+                    <input type="hidden" id="links" value="{//context/query/inputs/linksTags}"/>
 
 
                     <xsl:for-each select="//context/query/inputs/selectedTags">
@@ -142,12 +146,45 @@ This file is part of the FIMS webapp.
                                         </h5>
                                     </div>
                                 </div>
+                                
+                                <div class="row" style="margin-top:15px;">
+                                    <div class="col-sm-1 col-md-1 col-lg-1">
+                                        <p>
+                                            <b>
+                                                <xsl:variable name="tag" select="'Telestis'"/>
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                <xsl:value-of select="$translated"/>:
+                                            </b>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-11 col-md-1 col-lg-11">
+                                        <p>
+                                            <xsl:choose>
+                                                <xsl:when test="//context/query/info/operator='or'">                                           
+                                                    <input  type="radio" name="operator" value="and"/>AND 
+                                                    <xsl:text> </xsl:text>                                           
+                                                    <input type="radio" name="operator" value="or" style="margin-left:5px;" checked="checked"/>OR
+                                                </xsl:when>
+                                                <xsl:otherwise>                                            
+                                                    <input  type="radio" name="operator" value="and" checked="checked"/>AND
+                                                    <xsl:text> </xsl:text>                                           
+                                                    <input  type="radio" name="operator" style="margin-left:5px;" value="or"/>OR
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </p>
+                                    </div>
+                                </div>
+                               
                                 <div class="row">
                                     <div class="col-sm-11 col-md-11 col-lg-11">
                                         <table class="table" id="searchTable">
                                             <thead>
                                                 <tr class="contentHeadText">
-                                        
+                                                    <xsl:variable name="tag" select=" 'Ontotita' "/>
+                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                    <th>
+                                                        <xsl:value-of select="$translated"/>
+                                                    </th>
                                                     <xsl:variable name="tag" select=" 'EpiloghPediouKrithriou' "/>
                                                     <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                     <th>
@@ -165,7 +202,7 @@ This file is part of the FIMS webapp.
                                                     <th>
                                                         <xsl:value-of select="$translated"/>
                                                     </th>    
-                                                    <th>
+                                                    <!--                                                    <th>
                                                         <xsl:choose>
                                                             <xsl:when test="//context/query/info/operator='or'">                                           
                                                                 <input ng-disabled="items.length&lt;2" type="radio" name="operator" value="and"/>AND 
@@ -178,30 +215,48 @@ This file is part of the FIMS webapp.
                                                                 <input ng-disabled="items.length&lt;2" type="radio" name="operator" style="margin-left:5px;" value="or"/>OR
                                                             </xsl:otherwise>
                                                         </xsl:choose>
-                                                    </th>                                    
+                                                    </th>                                    -->
                                                 </tr>
                                             </thead>  				
-                                            <tbody id="criteriaBody">
+                                            <tbody class="criteriaBody">
                                         
                                                 <tr class="criterion" ng-repeat="item in items  track by $index">
+                                                    {{item.selectedItem2[0].id}}
+                                                    <td title="" onmouseover="this.title=this.nextElementSibling.value">
+                                                        <input  disabled="true" class="text-center" type="text" ng-value="item.data[0].name"/>
+                                                    </td>
+                                                    <input type="hidden" ng-value="item.selectedItem2[0].id"/>
+
                                                     <td>
                                                         <xsl:variable name="tag" select=" 'Epilogi' "/>
                                                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-
-                                                        <multi-select-tree data-input-model="item.data"  
+                                                        <multi-select-tree data-input-model="item.data"
                                                                            data-output-model="item.selectedItem2" data-default-label="{$translated}"
-                                                                           data-callback="setDataType(item)" 
+                                                                           data-callback="setDataType(item,$index,'currentEntity')"
                                                                            data-select-only-leafs="true"/>                                                            
                                     
                                                         <input type="hidden" name="input" ng-value="'/'+item.selectedItem2[0].id"/>
                                                         <input type="hidden" class="dataTypes" ng-value="item.selectedItem2[0].dataType"/>
-                                                        <input type="hidden" name="inputLabels" ng-value="item.selectedItem2[0].name"/>
+                                                        <input  type="hidden" name="inputLabels" ng-value="item.selectedItem2[0].name"/>
                                                     </td>
 
                                                     <td>                                                
                                                         <xsl:variable name="operPos" select="position()"/>    
                                                         <select data-ng-show="showConditionOr(showString(item.selectedItem2[0].showString), showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0]))" ng-disabled="!(showConditionOr(showString(item.selectedItem2[0].showString), showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])))" class="string_inputoper"  name="inputoper" >                                                              
                                                             <xsl:for-each select="//types/string/operator">
+
+                                                                <option value="{./text()}">                                                              
+                                                                    <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
+                                                                        <xsl:attribute name="selected">
+                                                                            <xsl:value-of select="selected"/>
+                                                                        </xsl:attribute>
+                                                                    </xsl:if>
+                                                                    <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                </option>
+                                                            </xsl:for-each>                                                   
+                                                        </select>
+                                                        <select data-ng-show="showLink(item.selectedItem2[0].showLink, item.selectedItem2[0])" ng-disabled="!(showLink(item.selectedItem2[0].showLink,item.selectedItem2[0]))" class="string_inputoper"  name="inputoper" >                                                              
+                                                            <xsl:for-each select="//types/link/operator">
 
                                                                 <option value="{./text()}">                                                              
                                                                     <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
@@ -261,36 +316,295 @@ This file is part of the FIMS webapp.
                                                     </td>
                                                      
                                                     <td  nowrap="nowrap">                                             
-                                                        <input data-ng-show="showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0]))" ng-disabled="!(showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])))" type="text" class="searchString" name="inputvalue" ng-value="item.selectedItem2[0].valueString"/>
+                                                        <input data-ng-show="showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0]), !showLink(item.selectedItem2[0].showLink,item.selectedItem2[0]))" ng-disabled="!(showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0]), !showLink(item.selectedItem2[0].showLink, item.selectedItem2[0])))" type="text" class="searchString" name="inputvalue" ng-value="item.selectedItem2[0].valueString"/>
                                                         <input data-ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" type="text"  class="timeString" style="width:120px;margin-right:5px;" name="inputvalue" onkeydown="timeCheck(this);" onkeyup="timeCheck(this);" ng-value="item.selectedItem2[0].valueTime"/>
                                                         <img data-ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" class="timeImg" style=" margin-right:10px;" src="formating/images/info.png" onclick="javascript:popUp('time_directives/HelpPage_{$lang}.html','helpPage',450,580);"></img>
                                                         <input data-ng-show="showMath(item.selectedItem2[0].showMath)" ng-disabled="!showTime(item.selectedItem2[0].showMath)" type="number"  class="timeString" name="inputvalue" ng-value="item.selectedItem2[0].valueMath"/>
+                                                        
+                                                        <div class="select-editable" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])">
+                                                            <select onchange="this.nextElementSibling.value=this.value" id="vocList" class="vocSelect" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])" ng-disabled="!showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])">
+                                                                <option></option>
+                                                                <option ng-repeat="term in item.selectedItem2[0].term | filter : voc track by $index"  ng-value="term" ng-selected="vocSelected(term,item.selectedItem2[0].valueVoc)">
+                                                                    {{term}}
+                                                                </option>
+                                                            </select>  
+                                                            <input ng-model="voc" class="string_inputoper" ng-value="item.selectedItem2[0].valueVoc" id="voc-list" autocomplete="off" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])" ng-disabled="!showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])" type="text" name="inputvalue"/>
+                                                        </div>
 
-                                                        <select class="vocSelect" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])" ng-disabled="!showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])" name="inputvalue">
-                                                            <option ng-repeat="term in item.selectedItem2[0].term  track by $index"  ng-value="term" ng-selected="vocSelected(term,item.selectedItem2[0].valueVoc)">
-                                                                {{term}}
+                                                     
+                                                        <select ng-model="item.selectedItem2[0].valueLink" ng-options="term.split('__')[1] for term in item.selectedItem2[0].term  track by term" ng-change="addNewEntity(item.selectedItem2[0].valueLink.split('__')[0],$index,'currentEntity');" class="vocSelect" name="inputvalue" ng-show="showLink(item.selectedItem2[0].showLink, item.selectedItem2[0])" ng-disabled="!showLink(item.selectedItem2[0].showLink,item.selectedItem2[0])">
+                                                            <option>
                                                             </option>
-                                                        </select>   
-                                                        <select class="vocSelect" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes,item.selectedItem2[0])" name="inputvalue">
-                                                            <option ng-repeat="term in item.selectedItem2[0].term  track by $index"  ng-value="term" ng-selected="thesSelected(term,item.selectedItem2[0].valueThes)">
-                                                                {{term}}
-                                                            </option>
-                                                        </select>   
-
+                                                        </select>  
+                                                        <div class="select-editable" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])">
+                                                            <select onchange="this.nextElementSibling.value=this.value" id="thesList" class="vocSelect" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes,item.selectedItem2[0])">
+                                                                <option></option>
+                                                                <option ng-repeat="term in item.selectedItem2[0].term | filter : thes track by $index"  ng-value="term" ng-selected="thesSelected(term,item.selectedItem2[0].valueThes)">
+                                                                    {{term}}
+                                                                </option>
+                                                            </select>   
+                                                            <input  ng-model="thes" ng-value="item.selectedItem2[0].valueThes" autocomplete="off" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes,item.selectedItem2[0])" type="text" name="inputvalue" list="thesList"/>
+                                                        </div>
                                                     </td> 
                                                     <td  nowrap="nowrap">
                                                         <xsl:variable name="tag" select=" 'ProsthikiKritiriou' "/>
                                                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                        <input style="font-size: x-small;" type="button" class="btn btn-default .btn-xs" title="{$translated}" name="more" value="+" ng-click="addItem(item)"/>
+                                                        <input style="font-size: x-small;" type="button" class="btn btn-default .btn-xs" title="{$translated}" name="more" value="+" ng-click="addItem(item,'currentEntity')"/>
                                                         <xsl:variable name="tag" select=" 'DiagrafiKritiriou' "/>
                                                         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                                                        <input ng-show="$index>0" style=" margin-left: 4px;font-size: x-small;" type="button" class="btn btn-default .btn-xs" value="X" title="{$translated}" ng-click="removeItem(item)"/>
+                                                        <input ng-show="$index>0" style=" margin-left: 4px;font-size: x-small;" type="button" class="btn btn-default .btn-xs" value="X" title="{$translated}" ng-click="removeItem(item,'currentEntity')"/>
                                                     </td>   
                                                 </tr>  
                                             </tbody>
                                         </table>
                                     </div>
+                                    <xsl:if test="count(//refByTag/type) &gt; 0">
+                                        <div class="row extraSearch">
+                                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                                <xsl:variable name="tag" select=" 'searchAtRefsBy' "/>
+                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                <h5 class="titleSearch">
+                                                    <a class="extraSearchaccordion-toggle" data-toggle="collapse" href="#collapsesearchAtRefsBy" aria-expanded="false" aria-controls="collapsesearchAtRefsBy">
+                                                        <xsl:value-of select="$translated"/>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="collapsesearchAtRefsBy"> 
+                                            <div class="col-sm-11 col-md-11 col-lg-11">
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <p>
+                                                            <b>
+                                                                <xsl:variable name="tag" select="'referencedEntity'"/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <xsl:value-of select="$translated"/>:
+                                                            </b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-sm-9 col-md-9 col-lg-9">
+                                                        <p>
+                                                            <xsl:variable name="tag" select=" 'Epilogi_more' "/>
+                                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                            <select id="refByChosen" ng-model="selValue"  ng-change="selectEntity(selValue);" data-placeholder="{$translated}" class="chzn-select" style="width:350px;"  multiple="multiple" name="refByEntities">                             
+                                                                <option value=""></option> 
+                                                                <xsl:for-each select="//refByTag/type">
+                                                                    <xsl:variable name="tag" select="./text()"/>
+                                                                    <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                                                                    <option  value="{./text()}">
+                                                                        <xsl:value-of select="$translated"/>
+                                                                    </option>
+                                                                </xsl:for-each>
+                                                            </select>                                                           
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="refByItems.length &gt; 0">
+
+                                                    <table class="table" id="searchTable">
+                                                        <thead>
+                                                            <tr class="contentHeadText">
+                                                                <xsl:variable name="tag" select=" 'referencedEntity' "/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <th>
+                                                                    <xsl:value-of select="$translated"/>
+                                                                </th>
+                                                                <xsl:variable name="tag" select=" 'EpiloghPediouKrithriou' "/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <th>
+                                                                    <xsl:value-of select="$translated"/>
+                                                                </th>
+                            
+                                                                <xsl:variable name="tag" select=" 'Sinthiki' "/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <th>
+                                                                    <xsl:value-of select="$translated"/>
+                                                                </th>
+                            
+                                                                <xsl:variable name="tag" select=" 'Timi' "/>
+                                                                <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                <th>
+                                                                    <xsl:value-of select="$translated"/>
+                                                                </th>    
+                                                                <!--                                                                <th>
+                                                                    <xsl:choose>
+                                                                        <xsl:when test="//context/query/info/operator='or'">                                           
+                                                                            <input ng-disabled="refByItems.length&lt;2" type="radio" name="operator" value="and"/>AND 
+                                                                            <xsl:text> </xsl:text>                                           
+                                                                            <input ng-disabled="refByItems.length&lt;2" type="radio" name="operator" value="or" style="margin-left:5px;" checked="checked"/>OR
+                                                                        </xsl:when>
+                                                                        <xsl:otherwise>                                            
+                                                                            <input ng-disabled="refByItems.length&lt;2" type="radio" name="operator" value="and" checked="checked"/>AND
+                                                                            <xsl:text> </xsl:text>                                           
+                                                                            <input ng-disabled="refByItems.length&lt;2" type="radio" name="operator" style="margin-left:5px;" value="or"/>OR
+                                                                        </xsl:otherwise>
+                                                                    </xsl:choose>
+                                                                </th>                                    -->
+                                                            </tr>
+                                                        </thead>  				
+                                                        <tbody class="criteriaBodyRef">
+                                        
+                                                            <tr class="criterionRef" ng-repeat="item in refByItems  track by $index">
+                                                                <td onmouseover="this.title=this.nextElementSibling.value">
+                                                                    <input  disabled="true" class="text-center" type="text" ng-value="item.data[0].name"/>
+                                                                </td>
+                                                                <!--                                                            <td class="refSelect" onmouseover="this.title=this.nextElementSibling.value">
+                                                                    <select ng-model="selValue" ng-change="selectEntity(selValue,$index);" class="string_inputoper"  name="inputoper" >      
+                                                                        <option value="">                                                              
+                                                                            <xsl:variable name="tag" select=" 'Epilogi' "/>
+                                                                            <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>    
+                                                                            <xsl:value-of select="$translated"/>
+                                                                        </option>
+                                                                        <xsl:for-each select="//refByTag/type">
+                                                                            <xsl:variable name="tag" select="./text()"/>
+                                                                            <xsl:variable name="translated" select="$locale/leftmenu/*[name()=$tag]/*[name()=$lang]"/>
+                                                                            <option value="{./text()}">                                                              
+                                                                                                                                                            <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
+                                                                                    <xsl:attribute name="selected">
+                                                                                        <xsl:value-of select="selected"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:value-of select="$translated"/>
+                                                                            </option>
+                                                                        </xsl:for-each>                                                   
+                                                                    </select>                                                            
+                                                                </td>-->
+                                                                <input type="hidden" ng-value="item.selectedItem2[0].id"/>
+
+                                                                <td>
+                                                                    <xsl:variable name="tag" select=" 'Epilogi' "/>
+                                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                    <multi-select-tree data-input-model="item.data"
+                                                                                       data-output-model="item.selectedItem2" data-default-label="{$translated}"
+                                                                                       data-callback="setDataType(item,$index,'refEntity')"
+                                                                                       data-select-only-leafs="true"/>                                                            
                                     
+                                                                    <input type="hidden" name="input" ng-value="'refBy_/'+item.selectedItem2[0].id"/>
+                                                                    <input type="hidden" class="dataTypes" ng-value="item.selectedItem2[0].dataType"/>
+                                                                    <input  type="hidden" name="inputLabels" ng-value="item.selectedItem2[0].name"/>
+                                                                </td>
+
+                                                                <td>                                                
+                                                                    <xsl:variable name="operPos" select="position()"/>    
+                                                                    <select data-ng-show="showConditionOr(showString(item.selectedItem2[0].showString), showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0]))" ng-disabled="!(showConditionOr(showString(item.selectedItem2[0].showString), showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])))" class="string_inputoper"  name="inputoper" >                                                              
+                                                                        <xsl:for-each select="//types/string/operator">
+
+                                                                            <option value="{./text()}">                                                              
+                                                                                <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
+                                                                                    <xsl:attribute name="selected">
+                                                                                        <xsl:value-of select="selected"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                            </option>
+                                                                        </xsl:for-each>                                                   
+                                                                    </select>
+                                                                    <select data-ng-show="showLink(item.selectedItem2[0].showLink, item.selectedItem2[0])" ng-disabled="!(showLink(item.selectedItem2[0].showLink,item.selectedItem2[0]))" class="string_inputoper"  name="inputoper" >                                                              
+                                                                        <xsl:for-each select="//types/link/operator">
+
+                                                                            <option value="{./text()}">                                                              
+                                                                                <xsl:if test="./text()=//input[position()=$operPos]/oper/text()">
+                                                                                    <xsl:attribute name="selected">
+                                                                                        <xsl:value-of select="selected"/>
+                                                                                    </xsl:attribute>
+                                                                                </xsl:if>
+                                                                                <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                            </option>
+                                                                        </xsl:for-each>                                                   
+                                                                    </select>
+                                                                    <select ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" class="time_inputoper"  name="inputoper">
+                                                                        <xsl:for-each select="//types/time/operator">
+                                                                            <xsl:variable name="oper" select="./text()"/>
+                                                                            <option value="{$oper}">
+                                                                                <xsl:for-each select="//inputs/input/oper">                                                            
+                                                                                    <xsl:if test="./text()=$oper">
+                                                                                        <xsl:attribute name="selected">
+                                                                                            <xsl:value-of select="selected"/>
+                                                                                        </xsl:attribute>
+                                                                                    </xsl:if>
+                                                                                </xsl:for-each>
+                                                                                <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                            </option>
+                                                                        </xsl:for-each>                                                   
+                                                                    </select>
+                                                                    <select ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" class="time_inputoper"  name="inputoper">
+                                                                        <xsl:for-each select="//types/thesaurus/operator">
+                                                                            <xsl:variable name="oper" select="./text()"/>
+                                                                            <option value="{$oper}">
+                                                                                <xsl:for-each select="//inputs/input/oper">                                                            
+                                                                                    <xsl:if test="./text()=$oper">
+                                                                                        <xsl:attribute name="selected">
+                                                                                            <xsl:value-of select="selected"/>
+                                                                                        </xsl:attribute>
+                                                                                    </xsl:if>
+                                                                                </xsl:for-each>
+                                                                                <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                            </option>
+                                                                        </xsl:for-each>                                                   
+                                                                    </select>
+                                                                    <select ng-show="showMath(item.selectedItem2[0].showMath)" ng-disabled="!showMath(item.selectedItem2[0].showMath)" class="time_inputoper"  name="inputoper">
+                                                                        <xsl:for-each select="//types/math/operator">
+                                                                            <xsl:variable name="oper" select="./text()"/>
+                                                                            <option value="{$oper}">
+                                                                                <xsl:for-each select="//inputs/input/oper">                                                            
+                                                                                    <xsl:if test="./text()=$oper">
+                                                                                        <xsl:attribute name="selected">
+                                                                                            <xsl:value-of select="selected"/>
+                                                                                        </xsl:attribute>
+                                                                                    </xsl:if>
+                                                                                </xsl:for-each>
+                                                                                <xsl:value-of select="@*[name(.)=$lang]"/>
+                                                                            </option>
+                                                                        </xsl:for-each>                                                   
+                                                                    </select>      
+                                                                </td>
+                                                     
+                                                                <td  nowrap="nowrap">                                             
+                                                                    <input data-ng-show="showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0]), !showLink(item.selectedItem2[0].showLink,item.selectedItem2[0]))" ng-disabled="!(showConditionAnd(showString(item.selectedItem2[0].showString), !showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0]), !showLink(item.selectedItem2[0].showLink, item.selectedItem2[0])))" type="text" class="searchString" name="inputvalue" ng-value="item.selectedItem2[0].valueString"/>
+                                                                    <input data-ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" type="text"  class="timeString" style="width:120px;margin-right:5px;" name="inputvalue" onkeydown="timeCheck(this);" onkeyup="timeCheck(this);" ng-value="item.selectedItem2[0].valueTime"/>
+                                                                    <img data-ng-show="showTime(item.selectedItem2[0].showTime)" ng-disabled="!showTime(item.selectedItem2[0].showTime)" class="timeImg" style=" margin-right:10px;" src="formating/images/info.png" onclick="javascript:popUp('time_directives/HelpPage_{$lang}.html','helpPage',450,580);"></img>
+                                                                    <input data-ng-show="showMath(item.selectedItem2[0].showMath)" ng-disabled="!showTime(item.selectedItem2[0].showMath)" type="number"  class="timeString" name="inputvalue" ng-value="item.selectedItem2[0].valueMath"/>
+                                                        
+                                                                    <div class="select-editable" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])">
+                                                                        <select onchange="this.nextElementSibling.value=this.value" id="vocList" class="vocSelect" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])" ng-disabled="!showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])">
+                                                                            <option></option>
+                                                                            <option ng-repeat="term in item.selectedItem2[0].term | filter : voc track by $index"  ng-value="term" ng-selected="vocSelected(term,item.selectedItem2[0].valueVoc)">
+                                                                                {{term}}
+                                                                            </option>
+                                                                        </select>  
+                                                                        <input ng-model="voc" class="string_inputoper" ng-value="item.selectedItem2[0].valueVoc" id="voc-list" autocomplete="off" ng-show="showVoc(item.selectedItem2[0].showVoc, item.selectedItem2[0])" ng-disabled="!showVoc(item.selectedItem2[0].showVoc,item.selectedItem2[0])" type="text" name="inputvalue"/>
+                                                                    </div>
+
+                                                     
+                                                                    <select ng-model="item.selectedItem2[0].valueLink" ng-options="term.split('__')[1] for term in item.selectedItem2[0].term  track by term" ng-change="addNewEntity(item.selectedItem2[0].valueLink.split('__')[0],$index,'refEntity');" class="vocSelect" name="inputvalue" ng-show="showLink(item.selectedItem2[0].showLink, item.selectedItem2[0])" ng-disabled="!showLink(item.selectedItem2[0].showLink,item.selectedItem2[0])">
+                                                                        <option>
+                                                                        </option>
+                                                                    </select>  
+                                                                    <div class="select-editable" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])">
+                                                                        <select onchange="this.nextElementSibling.value=this.value" id="thesList" class="vocSelect" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes,item.selectedItem2[0])">
+                                                                            <option></option>
+                                                                            <option ng-repeat="term in item.selectedItem2[0].term | filter : thes track by $index"  ng-value="term" ng-selected="thesSelected(term,item.selectedItem2[0].valueThes)">
+                                                                                {{term}}
+                                                                            </option>
+                                                                        </select>   
+                                                                        <input  ng-model="thes" ng-value="item.selectedItem2[0].valueThes" autocomplete="off" ng-show="showThes(item.selectedItem2[0].showThes, item.selectedItem2[0])" ng-disabled="!showThes(item.selectedItem2[0].showThes,item.selectedItem2[0])" type="text" name="inputvalue" list="thesList"/>
+                                                                    </div>
+                                                                </td> 
+                                                                <td  nowrap="nowrap">
+                                                                    <xsl:variable name="tag" select=" 'ProsthikiKritiriou' "/>
+                                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                    <input style="font-size: x-small;" type="button" class="btn btn-default .btn-xs" title="{$translated}" name="more" value="+" ng-click="addItem(item,'refEntity')"/>
+                                                                    <xsl:variable name="tag" select=" 'DiagrafiKritiriou' "/>
+                                                                    <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
+                                                                    <input ng-show="$index>0" style=" margin-left: 4px;font-size: x-small;" type="button" class="btn btn-default .btn-xs" value="X" title="{$translated}" ng-click="removeItem(item,'refEntity')"/>
+                                                                </td>   
+                                                            </tr>  
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </xsl:if>
                                     <div class="row extraSearch">
                                         <div class="col-sm-6 col-md-6 col-lg-6">
                                             <xsl:variable name="tag" select=" 'ExtraSearchKrithria' "/>
@@ -430,7 +744,7 @@ This file is part of the FIMS webapp.
                                     <div class="col-sm-12 col-md-12 col-lg-12">
                                         <xsl:choose>
                                             <xsl:when test="//context/query/outputs/path/@xpath!='' ">     
-                                                <input id="default" type="radio" name="default" class="outputOptions" />
+                                                <input ng-click="clearOutput(selectedItem3);" id="default" type="radio" name="default" class="outputOptions" />
                                                 <xsl:variable name="tag" select=" 'defaultOutput' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                 <xsl:value-of select="$translated"/>
@@ -442,7 +756,7 @@ This file is part of the FIMS webapp.
                                                 <xsl:value-of select="$translated"/>
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                <input id="default" type="radio" name="default" class="outputOptions" checked="checked"/>
+                                                <input ng-click="clearOutput(selectedItem3);" id="default" type="radio" name="default" class="outputOptions" checked="checked"/>
                                                 <xsl:variable name="tag" select=" 'defaultOutput' "/>
                                                 <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
                                                 <xsl:value-of select="$translated"/>
@@ -495,13 +809,13 @@ This file is part of the FIMS webapp.
                         <div class="col-sm-3 col-md-3 col-lg-3" style="width:21%;">
                             <xsl:variable name="tag" select=" 'Eperotisi' "/>
                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <input id="submitSearch" type="submit" class="btn btn-default .btn-sm" name="submit4search" value="{$translated}"  style="width:180"/> 
+                            <input ng-click="addTargets();" id="submitSearch" type="submit" class="btn btn-default .btn-sm" name="submit4search" value="{$translated}"  style="width:180"/> 
          
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-6">
                             <xsl:variable name="tag" select=" 'clearAll' "/>
                             <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
-                            <input id="submitClearSearch" ng-click="clearAll(selectedItem3);" class="btn btn-default .btn-sm" value="{$translated}"  style="width:180"/> 
+                            <input  ng-click="clearAll(selectedItem3);" class="btn btn-default .btn-sm" value="{$translated}"  style="width:180"/> 
          
                         </div>
                     </div>

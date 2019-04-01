@@ -58,6 +58,7 @@ This file is part of the FIMS webapp.
                                             <xsl:with-param name="image" select="string(./@img_src)"/>
                                             <xsl:with-param name="help" select="string(./@help)"/>
                                             <xsl:with-param name="hasText" select="'no'"/>
+                                            <xsl:with-param name="target" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@target"/>
 
                                         </xsl:call-template> 
                                     </li>              
@@ -102,6 +103,8 @@ This file is part of the FIMS webapp.
                                                             <xsl:with-param name="onclick" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@onclick"/>
                                                             <xsl:with-param name="help" select="$help_submenu"/>
                                                             <xsl:with-param name="hasText" select="'yes'"/>
+                                                            <xsl:with-param name="target" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@target"/>
+
                                                         </xsl:call-template>  
                                                     </li>     
                                                 </xsl:for-each>
@@ -162,6 +165,8 @@ This file is part of the FIMS webapp.
                                                     <xsl:with-param name="image" select="$image"/>
                                                     <xsl:with-param name="help" select="$help"/>
                                                     <xsl:with-param name="hasText" select="'yes'"/>
+                                                    <xsl:with-param name="target" select="./actionPerType[@id=$EntityType]/userRights[text()=$user]/@target"/>
+
                                                 </xsl:call-template>
                                             </xsl:for-each>
                                         </li>
@@ -183,7 +188,10 @@ This file is part of the FIMS webapp.
         <xsl:param name="id" />
         <xsl:param name="help" />
         <xsl:param name="hasText"/>
+        <xsl:param name="target" />
+
         <xsl:variable name="EntityType" select="//context/EntityType"/>        
+
 
         <xsl:variable name="tag" select="./label"/>
         <xsl:variable name="translated" select="$locale/context/*[name()=$tag]/*[name()=$lang]"/>
@@ -204,6 +212,11 @@ This file is part of the FIMS webapp.
                     <xsl:value-of select="string($onclick)"/>
                 </xsl:attribute>
             </xsl:if>  
+            <xsl:if test="count($target)>0">
+                <xsl:attribute name="target">
+                    <xsl:value-of select="string($target)"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:if test="$image!=''">
                 <xsl:text> </xsl:text>
                 <xsl:variable name="imageName" select="substring-before($image,'.')"/>
